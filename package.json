@@ -1,0 +1,19 @@
+{
+  "name": "cellular-automata",
+  "version": "1.0.0",
+  "description": "automated cells",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hyan18/the-css.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hyan18/the-css/issues"
+  },
+  "homepage": "https://github.com/Hyan18/the-css#readme"
+}
