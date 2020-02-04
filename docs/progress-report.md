@@ -31,8 +31,6 @@ https://devcenter.heroku.com/articles/getting-started-with-rails5#heroku-gems
 
 ### Retros
 
-Retro Monday 03/02/2020
-
 #### Went poorly / could improve
 - Remaining setup
 - Start writing some tests
@@ -48,9 +46,30 @@ Retro Monday 03/02/2020
 
 ### Goal / To do
 - [x] Code climate
-- Linter (ESLint)
-- [x] Test coverage for REACT
+- Linter (ESLint) (?)
+- Test coverage for REACT (?)
 - [x] Heroku
 - First feature tests
-- Unit tests
-- Aim to get a visualisation of a grid (map)
+- [x] Unit tests
+- [x] Aim to get a visualisation of a grid (map)
+
+### Blockers
+- Linter and test coverage (not sure if it is inbuilt)
+
+
+### Learning Resources
+
+- https://reactjs.org/docs/hello-world.html
+- https://jestjs.io/docs/en/getting-started
+
+### Retros
+
+#### Went poorly / could improve
+- Jest mocking (constructors)
+- More structure in splitting of tasks
+
+#### Went well
+- Accidently completing GoL
+- Wrote test in react
+- Heroku setup
+- On the way to completing MVP
