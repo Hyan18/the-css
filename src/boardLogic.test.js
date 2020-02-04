@@ -13,4 +13,10 @@ describe('BoardLogic test', () => {
     board.iterate();
     expect(board.cellStates()).toEqual([[0]]);
   });
+
+  test('empty 2x2 grid', () => {
+    const board = new BoardLogic([[0,0],[0,0]]);
+    board.iterate();
+    expect(board.cellStates()).toEqual([[0,0],[0,0]]);
+  });
 });

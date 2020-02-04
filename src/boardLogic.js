@@ -1,10 +1,12 @@
 export default class BoardLogic {
 
   constructor(initialGrid) {
+    this.grid = initialGrid;
   };
 
   iterate() {
-    this.grid = [[0]];
+    // set all cells to zero
+    this.grid = this.grid.map(row => row.map(item => 0));
   };
 
   cellStates() {
