@@ -9,6 +9,7 @@ script:
   - yarn run build
 deploy:
   provider: heroku
+  skip_cleanup: true
   app: the-css
   on:
     repo: Hyan18/the-css
