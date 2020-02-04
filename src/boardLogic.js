@@ -5,8 +5,8 @@ export default class BoardLogic {
   };
 
   iterate() {
-    // set all cells to zero
-    this.grid = this.grid.map(row => row.map(item => 0));
+    if(this.grid.flat().reduce((acc, cell) => acc + cell) != 4)
+      this.grid = this.grid.map(row => row.map(item => 0));
   };
 
   cellStates() {
