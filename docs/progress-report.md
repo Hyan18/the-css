@@ -11,9 +11,9 @@ set up:
 - [x] Slack group
 - [x] Trello board
 - Code climate
-- lint (es lint)
-- test coverage for REACT
-- enzyme/jest?
+- Linter (ESLint)
+- Test coverage for REACT
+- Enzyme/jest?
 - [x] README.md
 - [x] Progress report
 
@@ -43,3 +43,14 @@ Retro Monday 03/02/2020
 - Project outline
 - Initial planning
 - README.md
+
+## Day 2 04-02-2020
+
+### Goal / To do
+- Code climate
+- Linter (ESLint)
+- [x] Test coverage for REACT
+- Heroku
+- First feature tests
+- Unit tests
+- Aim to get a visualisation of a grid (map)
