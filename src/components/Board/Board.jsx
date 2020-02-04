@@ -10,7 +10,7 @@ const HEIGHT = 600;
 class Board extends Component {
   constructor () {
     super()
-    this.boardLogic = new BoardLogic ([[0,1,0],[0,1,1],[0,1,0]])
+    this.boardLogic = new BoardLogic ([[0,1,0],[0,1,0],[0,1,0]])
   }
   
   render = () => {
