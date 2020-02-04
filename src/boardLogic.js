@@ -1,11 +1,10 @@
 export default class BoardLogic {
 
   constructor(initialGrid) {
-    this.grid = initialGrid;
   };
 
   iterate() {
-
+    this.grid = [[0]];
   };
 
   cellStates() {
