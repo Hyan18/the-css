@@ -1,3 +1,9 @@
 .board-div {
-  background-color: black
+  background-color: #effffb;
+  background-image: linear-gradient(#272727 1px, transparent 1px), linear-gradient(90deg, #272727 1px, transparent 1px);
+  background-size: 20px 20px;
+  position: relative;
+  margin: 0 auto;
+  width: 800px;
+  height: 800px
 }

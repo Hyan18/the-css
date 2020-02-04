@@ -1,15 +1,13 @@
 import React, { Component } from 'react'
 import './Board.css';
 
-const CELL_SIZE = 20
-const WIDTH = 800
-const HEIGHT = 600
+// const CELL_SIZE = 20
 
 class Board extends Component {
 
   render = () =>{
     return (
-      <div className="board-div" style={{ width: WIDTH, height: HEIGHT }}>
+      <div className="board-div">
 
       </div>
     )
