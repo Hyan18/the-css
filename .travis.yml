@@ -13,6 +13,5 @@ deploy:
   app: the-css
   on:
     repo: Hyan18/the-css
-    branch: heroku-setup
   api_key:
     secure: N/IxCu60eWqlKB5q5M1CkGkeOz27V6BoHePqwQJ+vWdCjJaszWwm1Kj+fFaYePKi/9JL4V7zRTLuGQGAUSTcV7iwg4m+f0trLQJefC+pQmHD/JZbZBHLsCMPuaAqZH+9fwVkAYB9AJOk7jAzPVS2wmy1hjpKgFuLEtLH9yDgoKO8MjRkKsUwnZq0slAGJHfV2MjSw7VT+c2deAnkQBGT/BAozHyKFIooZ3fkLWdMo0mdh8OjN+L3Wu1INrSdgZUnPZAGNc4WiVOrpcM0zHd5nJHofR71faJM4/SO2fmSS77it6kC4BJ71uyQUUfy2O8uEVLerOIc7ddhlGzDNaVyGQ7t3HKVd0CXVtVRJ0yZ+8+Ec0IVYQ3eki89jsmT7U+gU+UIC1/C4g1fn97bIvoKr0Qw4OXoWh4gDPdcEmQuEX2PLQX66W1/Ysh+Ini/zj1yIjVL1nRdY+mDy5zlCWosGjiqIstz3t3C3iWNJPcLlQxBUYJhn0U+Qtaj9S6oow357v/Z/A1RzAF5qEpEC9w0V+Eyfvb3niz/ev7P8I9ulDD340aiS2/Nl6OUFeYUgiT3/R6udF6A9jxhF1S+8eSCVq5tEM9UB0p7ejhrqaBMPpIjdx06mKrJfzcvGZDbDcfBXF+Wx41xVAx2mmW0DyxjfMTtsS7NyjySqD19JENOezY=
