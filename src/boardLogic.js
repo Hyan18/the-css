@@ -20,7 +20,8 @@ export default class BoardLogic {
           }
         }
       }
-      if (sum >= 2) return 1;
+      if (sum === 3) return 1;
+      if (sum === 2 && cell === 1) return 1;
       return 0;
     }));
   };
