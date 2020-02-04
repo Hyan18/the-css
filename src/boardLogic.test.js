@@ -2,21 +2,20 @@ import BoardLogic from './boardLogic';
 
 describe('BoardLogic test', () => {
 
-  test('empty one by one grid', () => {
-    const board = new BoardLogic([[0]]);
-    board.iterate();
-    expect(board.cellStates()).toEqual([[0]]);
-  });
+  testBoard('empty 1x1 grid', [[0]], [[0]]);
 
-  test('alive one by one grid', () => {
-    const board = new BoardLogic([[1]]);
-    board.iterate();
-    expect(board.cellStates()).toEqual([[0]]);
-  });
+  testBoard('alive one by one grid', [[1]], [[0]]);
 
-  test('empty 2x2 grid', () => {
-    const board = new BoardLogic([[0,0],[0,0]]);
-    board.iterate();
-    expect(board.cellStates()).toEqual([[0,0],[0,0]]);
-  });
+  testBoard('empty 2x2 grid', [[0,0],[0,0]], [[0,0],[0,0]]);
+
+  testBoard('one alive cell in a 2x2', [[1,0],[0,0]], [[0,0],[0,0]]);
+
+  function testBoard(description, initialGrid, expectedGrid) {
+    test(description, () => {
+      const board = new BoardLogic(initialGrid);
+      board.iterate();
+      expect(board.cellStates()).toEqual(expectedGrid);
+    });
+  };
+
 });
