@@ -12,6 +12,8 @@ describe('BoardLogic test', () => {
 
   testBoard('4 alive cells in a 2x2', [[1,1],[1,1]], [[1,1],[1,1]]);
 
+  testBoard('3 alive cells in a 2x2', [[1,1],[1,0]], [[1,1],[1,1]]);
+
   function testBoard(description, initialGrid, expectedGrid) {
     test(description, () => {
       const board = new BoardLogic(initialGrid);
