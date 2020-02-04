@@ -47,10 +47,10 @@ Retro Monday 03/02/2020
 ## Day 2 04-02-2020
 
 ### Goal / To do
-- Code climate
+- [x] Code climate
 - Linter (ESLint)
 - [x] Test coverage for REACT
-- Heroku
+- [x] Heroku
 - First feature tests
 - Unit tests
 - Aim to get a visualisation of a grid (map)
