@@ -1,15 +1,14 @@
 import React from 'react'
-import { shallow, mount, render } from 'enzyme'
+import { shallow } from 'enzyme'
 import Board from './Board'
 
 describe('Board', () => {
-
   const wrapper = shallow(<Board />)
 
   it('should render a <div />', () => {
     expect(wrapper.find('.board-div')).toBeDefined()
     expect(wrapper.find('.board-div').length).toEqual(1)
-  });
+  })
 
   it('should render a 10x10 grid', () => {
     const wrapper = shallow(<Board />)
@@ -49,5 +48,4 @@ describe('Board', () => {
       .prop('state')
     ).toBe(1)
   })
-
 })

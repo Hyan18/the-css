@@ -3,7 +3,6 @@ import { shallow } from 'enzyme'
 import Cell from './Cell'
 
 describe('Cell', () => {
-
   it('with a state of 0 should have the class Cell0', () => {
     const wrapper = shallow(<Cell x={4} y={5} state={0}/>)
 
@@ -15,5 +14,4 @@ describe('Cell', () => {
 
     expect(wrapper.hasClass('Cell1')).toBeTruthy()
   })
-
 })

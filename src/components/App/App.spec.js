@@ -6,7 +6,9 @@ import Game from '../Game/Game'
 describe('App', () => {
   let wrapper
 
-  beforeEach(() => wrapper = shallow(<App />))
+  beforeEach(() => {
+    wrapper = shallow(<App />)
+  })
 
   it('should render a <div />', () => {
     expect(wrapper.find('div').length).toEqual(1)
