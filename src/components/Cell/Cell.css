@@ -1,0 +1,13 @@
+.Cell0 {
+  background: #ccc;
+  position: absolute;
+  width: 60px;
+  height: 60px;
+}
+
+.Cell1 {
+  background: black;
+  position: absolute;
+  width: 60px;
+  height: 60px;
+}
