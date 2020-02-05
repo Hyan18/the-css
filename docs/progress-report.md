@@ -77,23 +77,28 @@ https://devcenter.heroku.com/articles/getting-started-with-rails5#heroku-gems
 ## Day 3 05-02-2020
 
 ### Goal / To do
-- MVP
-- TDD integration of logic
-- Refactor BoardLogic
+- [x] MVP
+- [x] TDD integration of logic
+- [x] Refactor BoardLogic
 
-- EsLint on Trav
-- Check 100% Test Coverage
+- [x] EsLint on Trav
+- [x] Check 100% Test Coverage
 
 ### Blockers
-- 
+- googling wrong tags
 
 ### Learning Resources
-- 
+- https://reactjs.org/tutorial/tutorial.html
+- https://scotch.io/tutorials/testing-react-components-with-enzyme-and-jest
+- https://airbnb.io/enzyme/docs/api
 
 ### Retros
 
 #### Went poorly / could improve
-- 
+- Testing components in REACT (shallow, mount, dive)
+- deploying to heroku (multiple lock files)
 
 #### Went well
-- 
+- Completed MVP
+- three way teamwork
+- extracting cell logic
