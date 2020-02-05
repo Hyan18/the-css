@@ -24,55 +24,66 @@ describe('CellLogic', () => {
     })
 
     it("Should return an array of two neighbours", () => {
-      const neighbour2 = new CellLogic(0)
       deadCell.addNeighbour(liveNeighbour)
-      expect(deadCell.addNeighbour(neighbour2)).toEqual([liveNeighbour, neighbour2])
+      expect(deadCell.addNeighbour(deadNeighbour)).toEqual([liveNeighbour, deadNeighbour])
     })
   })
 
   describe('nextState', () => {
-    it('dead cell should return 0 if it has no neighbours', () => {
-      expect(deadCell.nextState()).toEqual(0);
-    })
+    describe('dead cell', () => {
+      it('should return 0 if it has no neighbours', () => {
+        expect(deadCell.nextState()).toEqual(0);
+      })
 
-    it('dead cell should return 1 when there are enough neighbours to come alive', () => {
-      for(let i = 0; i < 3; i++) {
+      it('should return 0 when there are two neighbours', () => {
+        for(let i = 0; i < 2; i++) {
+          deadCell.addNeighbour(liveNeighbour)
+        }
+  
+        expect(deadCell.nextState()).toEqual(0)
+      })
+  
+      it('should return 1 when there are enough neighbours to come alive', () => {
+        for(let i = 0; i < 3; i++) {
+          deadCell.addNeighbour(liveNeighbour)
+        }
+  
+        expect(deadCell.nextState()).toEqual(1)
+      })
+  
+      it('should return 0 if there are too many live neighbours', () => {
+        for(let i = 0; i < 4; i++) {
+          deadCell.addNeighbour(liveNeighbour)
+        }
+  
+        expect(deadCell.nextState()).toEqual(0)
+      })
+  
+      it('should return 0 if too few neighbours are alive', () => {
         deadCell.addNeighbour(liveNeighbour)
-      }
-
-      expect(deadCell.nextState()).toEqual(1)
-    })
-
-    it('dead cell should return 0 when there are two neighbours', () => {
-      for(let i = 0; i < 2; i++) {
         deadCell.addNeighbour(liveNeighbour)
-      }
+        deadCell.addNeighbour(deadNeighbour)
 
-      expect(deadCell.nextState()).toEqual(0)
+        expect(deadCell.nextState()).toEqual(0)
+      })
     })
 
-    it('dead cell should return 0 if there are too many live neighbours', () => {
-      for(let i = 0; i < 4; i++) {
-        deadCell.addNeighbour(liveNeighbour)
-      }
-
-      expect(deadCell.nextState()).toEqual(0)
-    })
-
-    it('live cell should return 1 if there are two live neighbours', () => {
-      for(let i = 0; i < 2; i++) {
-        liveCell.addNeighbour(liveNeighbour)
-      }
-
-      expect(liveCell.nextState()).toEqual(1)
-    })
-
-    it('live cell should return 0 if there are 4 or more live neighbours', () => {
-      for(let i = 0; i < 4; i++) {
-        liveCell.addNeighbour(liveNeighbour)
-      }
-
-      expect(liveCell.nextState()).toEqual(0)
+    describe('live cell', () => {
+      it('live cell should return 1 if there are two live neighbours', () => {
+        for(let i = 0; i < 2; i++) {
+          liveCell.addNeighbour(liveNeighbour)
+        }
+  
+        expect(liveCell.nextState()).toEqual(1)
+      })
+  
+      it('live cell should return 0 if there are 4 or more live neighbours', () => {
+        for(let i = 0; i < 4; i++) {
+          liveCell.addNeighbour(liveNeighbour)
+        }
+  
+        expect(liveCell.nextState()).toEqual(0)
+      })
     })
   })
 })

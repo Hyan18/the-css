@@ -14,12 +14,16 @@ export default class CellLogic {
   }
 
   nextState () {
-    if (this.neighbours.length === 3) {
-      return 1
-    } else if (this.state === 1 && this.neighbours.length === 2) { 
-      return 1
-    } else {
-      return 0
-    }
+    const sum = sumNeighbourStates(this.neighbours)
+    
+    if (sum === 3) return 1 
+    if (this.state === 1 && sum === 2) return 1
+    return 0
   }
+}
+
+function sumNeighbourStates (neighbours) {
+  return neighbours.reduce((acc, neighbour)=> {
+    return acc + neighbour.state
+  }, 0)
 }
