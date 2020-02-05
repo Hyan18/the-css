@@ -16,9 +16,14 @@ export default class CellLogic {
   nextState () {
     const sum = sumNeighbourStates(this.neighbours)
     
-    if (sum === 3) return 1 
-    if (this.state === 1 && sum === 2) return 1
-    return 0
+    if (sum === 3) return this.futureState = 1 
+    if (this.state === 1 && sum === 2) return this.futureState = 1
+    return this.futureState = 0
+  }
+
+  updateState () {
+    this.state = this.futureState
+    return this.state
   }
 }
 
