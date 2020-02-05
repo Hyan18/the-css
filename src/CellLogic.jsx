@@ -13,4 +13,8 @@ export default class CellLogic {
     return this.neighbours
   }
 
+  nextState () {
+    if (this.neighbours.length === 3) return 1
+    return 0
+  }
 }
