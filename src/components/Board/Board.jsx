@@ -1,29 +1,37 @@
 import React, { Component } from 'react'
 import './Board.css';
-import BoardLogic from '../BoardLogic/BoardLogic'
-import Cell from '../Cell/Cell'
 
-const CELL_SIZE = 60;
-const WIDTH = 600;
-const HEIGHT = 600;
+const ROWS = 10
+const COLS = 10
 
 class Board extends Component {
   constructor () {
     super()
-    // this.state = {
-    //
-    // }
+    this.state = {
+      cells: this.emptyBoard()
+    }
+  }
+
+  emptyBoard() {
+    let board = []
+    for (let y = 0; y < ROWS; y++) {
+      board[y] = [];
+      for (let x = 0; x < COLS; x++) {
+          board[y][x] = 0;
+      }
+    }
+
+    return board;
   }
 
   render = () => {
-    // const currentState = this.boardLogic.cellStates()
+    let currentState = this.state.cells
 
-    // {currentState.map((row, i) => row.map((cell, j) =>
-    // (<Cell x={j} y={i} state={cell}/>)
-    // ))}
     return (
-      <div className="board-div" style={{ width: WIDTH, height: HEIGHT, backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px` }}>
-
+      <div className="board-div">
+        {currentState.map((row, i) => row.map((cell, j) =>
+          (<div className="Cell0"/>)
+        ))}
       </div>
     )
   }
