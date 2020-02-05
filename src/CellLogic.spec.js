@@ -1,7 +1,6 @@
 import CellLogic from './CellLogic'
 
 describe('CellLogic', () => {
-
   let deadCell
   let liveCell
   let liveNeighbour
@@ -18,12 +17,12 @@ describe('CellLogic', () => {
     expect(deadCell.currentState()).toEqual(0)
   })
 
-  describe("Add neighbour", () => {
-    it("Should return an array of the first neighbour", () => {
+  describe('Add neighbour', () => {
+    it('Should return an array of the first neighbour', () => {
       expect(deadCell.addNeighbour(liveNeighbour)).toEqual([liveNeighbour])
     })
 
-    it("Should return an array of two neighbours", () => {
+    it('Should return an array of two neighbours', () => {
       deadCell.addNeighbour(liveNeighbour)
       expect(deadCell.addNeighbour(deadNeighbour)).toEqual([liveNeighbour, deadNeighbour])
     })
@@ -32,11 +31,11 @@ describe('CellLogic', () => {
   describe('nextState', () => {
     describe('dead cell', () => {
       it('should return 0 if it has no neighbours', () => {
-        expect(deadCell.nextState()).toEqual(0);
+        expect(deadCell.nextState()).toEqual(0)
       })
 
       it('should return 0 when there are two neighbours', () => {
-        for(let i = 0; i < 2; i++) {
+        for (let i = 0; i < 2; i++) {
           deadCell.addNeighbour(liveNeighbour)
         }
 
@@ -44,7 +43,7 @@ describe('CellLogic', () => {
       })
 
       it('should return 1 when there are enough neighbours to come alive', () => {
-        for(let i = 0; i < 3; i++) {
+        for (let i = 0; i < 3; i++) {
           deadCell.addNeighbour(liveNeighbour)
         }
 
@@ -52,7 +51,7 @@ describe('CellLogic', () => {
       })
 
       it('should return 0 if there are too many live neighbours', () => {
-        for(let i = 0; i < 4; i++) {
+        for (let i = 0; i < 4; i++) {
           deadCell.addNeighbour(liveNeighbour)
         }
 
@@ -70,7 +69,7 @@ describe('CellLogic', () => {
 
     describe('live cell', () => {
       it('live cell should return 1 if there are two live neighbours', () => {
-        for(let i = 0; i < 2; i++) {
+        for (let i = 0; i < 2; i++) {
           liveCell.addNeighbour(liveNeighbour)
         }
 
@@ -78,7 +77,7 @@ describe('CellLogic', () => {
       })
 
       it('live cell should return 0 if there are 4 or more live neighbours', () => {
-        for(let i = 0; i < 4; i++) {
+        for (let i = 0; i < 4; i++) {
           liveCell.addNeighbour(liveNeighbour)
         }
 
@@ -89,7 +88,7 @@ describe('CellLogic', () => {
 
   describe('updateState', () => {
     it('should set the current state to the future state', () => {
-      for(let i = 0; i < 4; i++) {
+      for (let i = 0; i < 4; i++) {
         liveCell.addNeighbour(liveNeighbour)
       }
 

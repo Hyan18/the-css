@@ -1,27 +1,26 @@
 export default class BoardLogic {
-
-  constructor(initialGrid, CellLogic) {
+  constructor (initialGrid, CellLogic) {
     this.cells = initialGrid.map(row => row.map(state => new CellLogic(state)))
     setNeighbours(this.cells)
   }
 
-  iterate() {
+  iterate () {
     this.cells.forEach(row => row.forEach(cell => cell.nextState()))
     this.cells.forEach(row => row.forEach(cell => cell.updateState()))
   };
 
-  cellStates() {
+  cellStates () {
     return this.cells.map(row => row.map(cell => cell.currentState()))
   }
 }
 
-function setNeighbours(cells) {
+function setNeighbours (cells) {
   cells.forEach((row, i) => row.forEach((cell, j) => {
     const xLowerBound = (i > 0 ? i - 1 : i)
-    const xUpperBound = (i < cells.length-1 ? i + 1 : i)
+    const xUpperBound = (i < cells.length - 1 ? i + 1 : i)
 
     const yLowerBound = (j > 0 ? j - 1 : j)
-    const yUpperBound = (j < cells.length-1 ? j + 1 : j)
+    const yUpperBound = (j < cells.length - 1 ? j + 1 : j)
 
     for (let x = xLowerBound; x <= xUpperBound; x++) {
       for (let y = yLowerBound; y <= yUpperBound; y++) {
