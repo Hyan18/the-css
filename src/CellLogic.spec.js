@@ -34,11 +34,19 @@ describe('CellLogic', () => {
     })
 
     it('should return 1 when there are enough neighbours to come alive', () => {
-      deadCell.addNeighbour(neighbour1)
-      deadCell.addNeighbour(neighbour1)
-      deadCell.addNeighbour(neighbour1)
+      for(let i = 0; i < 3; i++) {
+        deadCell.addNeighbour(neighbour1)
+      }
 
       expect(deadCell.nextState()).toEqual(1)
+    })
+
+    it('should return 0 when there are two neighbours', () => {
+      for(let i = 0; i < 2; i++) {
+        deadCell.addNeighbour(neighbour1)
+      }
+
+      expect(deadCell.nextState()).toEqual(0)
     })
 
     it('should return 0 if there are too many live neighbours', () => {
@@ -47,6 +55,22 @@ describe('CellLogic', () => {
       }
 
       expect(deadCell.nextState()).toEqual(0)
+    })
+
+    it('live cell should return 1 if there are two live neighbours', () => {
+      for(let i = 0; i < 2; i++) {
+        liveCell.addNeighbour(neighbour1)
+      }
+
+      expect(liveCell.nextState()).toEqual(1)
+    })
+
+    it('live cell should return 0 if there are 4 or more live neighbours', () => {
+      for(let i = 0; i < 4; i++) {
+        liveCell.addNeighbour(neighbour1)
+      }
+
+      expect(liveCell.nextState()).toEqual(0)
     })
   })
 })
