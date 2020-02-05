@@ -73,3 +73,27 @@ https://devcenter.heroku.com/articles/getting-started-with-rails5#heroku-gems
 - Wrote test in react
 - Heroku setup
 - On the way to completing MVP
+
+## Day 3 05-02-2020
+
+### Goal / To do
+- MVP
+- TDD integration of logic
+- Refactor BoardLogic
+
+- EsLint on Trav
+- Check 100% Test Coverage
+
+### Blockers
+- 
+
+### Learning Resources
+- 
+
+### Retros
+
+#### Went poorly / could improve
+- 
+
+#### Went well
+- 
