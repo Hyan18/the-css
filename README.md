@@ -61,6 +61,38 @@ Give an example
 
 Add additional notes about how to deploy this on a live system
 
+## User stories
+
+```
+As a user
+So that I know what is going on
+I want to see a grid of cells
+
+As a user
+So I know the state of the cell
+I want the cells to have different colours
+
+As a user
+So I can decide when the game begins
+I want to be able to press a play button
+
+As a user
+So I can decide when the game ends
+I want to be able to press a stop button
+
+As a user
+So I can decide when the game iterates
+I want to be able to press a step button
+
+As a user
+So I can observe the simulation
+I want it to follow Conway's Game of Life
+
+As a user
+So I can set the initial state
+I want to be able to click on a cell to set it's state
+```
+
 ## Built With
 
 * [React](https://reactjs.org/) - The web framework used
@@ -68,19 +100,19 @@ Add additional notes about how to deploy this on a live system
 ## Authors
 
 
-* **Dawid Szpener** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **[Dawid Szpener](https://github.com/DawidSzpener)** - *Initial work* - 
 
 
-* **Harrison Yan** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **[Harrison Yan](https://github.com/Hyan18)** - *Initial work* - 
 
 
-* **Harry Mufford** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **[Harry Mumford](https://github.com/HarryMumford)** - *Initial work* - 
 
 
-* **Jamie Wong** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **[Jamie Wong](https://github.com/Jamie95187)** - *Initial work* - 
 
 
-* **Alastair Gilles** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **[Alastair Gilles](https://github.com/ffgi-es)** - *Initial work* - 
 
 
 
