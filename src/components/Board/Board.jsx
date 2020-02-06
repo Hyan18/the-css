@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import './Board.css';
 import Cell from '../Cell/Cell'
 import BoardLogic from '../BoardLogic/BoardLogic'
+import CellLogic from '../CellLogic/CellLogic'
 
 const CELL_SIZE = 60
 const WIDTH = 600
@@ -29,7 +30,7 @@ class Board extends Component {
   }
 
   iterate = () => {
-    let board = new BoardLogic(this.state.cells)
+    let board = new BoardLogic(this.state.cells, CellLogic)
     board.iterate()
     this.setState({ cells: board.cellStates() })
   }
