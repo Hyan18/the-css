@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './Cell.css'
 
-const CELL_SIZE = 60
+const CELL_SIZE = 10
 
 class Cell extends Component {
 

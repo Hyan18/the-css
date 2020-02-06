@@ -3,17 +3,19 @@ import './Board.css';
 import Cell from '../Cell/Cell'
 import BoardLogic from '../BoardLogic/BoardLogic'
 
-const CELL_SIZE = 60
+const CELL_SIZE = 10
 const WIDTH = 600
 const HEIGHT = 600
-const ROWS = 10
-const COLS = 10
+const ROWS = 60
+const COLS = 60
 
 class Board extends Component {
   constructor () {
     super()
     this.state = {
-      cells: this.emptyBoard()
+      cells: this.emptyBoard(),
+      rows: 60,
+      cols: 60
     }
   }
 
@@ -42,18 +44,28 @@ class Board extends Component {
     this.setState( { cells: cells } )
   }
 
+  changeBoardSize = (event) => {
+    this.setState({ rows: 2})
+    this.setState({ cols: 3})
+  }
+
   render = () => {
     let currentState = this.state.cells
 
     return (
       <div class="board-container">
-        <div className="board-div" style={{ width: WIDTH, height: HEIGHT, backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px`}}>
+        <div className="board-div" style={{ width: WIDTH, maxWidth: WIDTH, height: HEIGHT, maxHeight: HEIGHT, backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px`}}>
           {currentState.map((row, i) => row.map((cell, j) =>
             (<Cell x={j} y={i} state={cell} key={`${j}, ${i}`} onClick={ () => this.handleClick(j, i, cell) }/>)
           ))}
         </div>
         <div className="controls">
-            <button className="button" onClick={this.iterate}>Iterate</button>
+          <button className="button" onClick={this.iterate}>Iterate</button>  
+          <form>
+              <input type="text" ref="rows" name="rows" />
+              <input type="text" ref="cols" name="cols" />
+              <button type="button" onClick={this.changeBoardSize}>Update</button>
+            </form>
         </div>
       </div>
     )
