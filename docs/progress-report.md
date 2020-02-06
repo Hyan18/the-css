@@ -116,6 +116,7 @@ https://devcenter.heroku.com/articles/getting-started-with-rails5#heroku-gems
 ### Blockers
 
 ### Learning Resources
+- https://jestjs.io/docs/en/mock-functions
 
 ### Retros
 
