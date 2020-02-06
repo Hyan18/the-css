@@ -61,10 +61,10 @@ describe('BoardLogic test', () => {
   //   })
   // })
 
-  describe('.stop', () => {
+  describe('.pause', () => {
     it('returns false', () => {
       const board = new BoardLogic([[0,0],[0,0]])
-      expect(board.stop()).toEqual(false)
+      expect(board.pause()).toEqual(false)
     })
   })
 
@@ -81,6 +81,17 @@ describe('BoardLogic test', () => {
     it('returns 0 generation count by default', () => {
       const board = new BoardLogic([[0,0],[0,0]])
       expect(board.getGenerationCount()).toBe(0)
+    })
+  })
+
+  describe('.reset', () => {
+    it('returns correct generation count', () => {
+      const board = new BoardLogic([[0,0],[0,0]])
+      board.iterate()
+      board.iterate()
+      board.iterate()
+      board.iterate()
+      expect(board.reset()).toEqual(0)
     })
   })
 

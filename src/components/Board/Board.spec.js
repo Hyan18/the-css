@@ -30,9 +30,9 @@ describe('Board', () => {
   it('should iterate', () => {
     const wrapper = shallow(<Board />)
 
-    wrapper.children().find('Cell').findWhere(n => n.prop('x') === 0 && n.prop('y') === 0).simulate('click')
-    wrapper.children().find('Cell').findWhere(n => n.prop('x') === 1 && n.prop('y') === 0).simulate('click')
-    wrapper.children().find('Cell').findWhere(n => n.prop('x') === 0 && n.prop('y') === 1).simulate('click')
+    setCell(wrapper, 0, 0)
+    setCell(wrapper, 1, 0)
+    setCell(wrapper, 0, 1)
 
     expect(wrapper
       .children()
@@ -48,5 +48,10 @@ describe('Board', () => {
       .prop('state')
     ).toBe(1)
   })
-
 })
+
+function setCell(wrapper, x, y) {
+  wrapper.children().find('Cell').findWhere(n => n.prop('x') === x && n.prop('y') === y).simulate('click')
+}
+
+

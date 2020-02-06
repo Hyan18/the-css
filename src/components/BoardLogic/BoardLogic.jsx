@@ -40,8 +40,12 @@ export default class BoardLogic {
     }
   }
 
-  stop(){
+  pause () {
     return this.isRunning = false
+  }
+
+  reset () {
+    return this.generationCount = 0
   }
 
   cellStates() {
