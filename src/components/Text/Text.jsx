@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import logo from './logo.png'
+import './Text.css'
 
 export const Text = () => <Fragment>
   <img src={logo} alt="Logo" width="400" height="200" />

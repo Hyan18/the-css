@@ -1,7 +1,7 @@
 import React from 'react';
 import Board from '../Board/Board'
-import './App.css'
 import { Text } from '../Text/Text'
+import './App.css'
 
 const App = () => (
   
