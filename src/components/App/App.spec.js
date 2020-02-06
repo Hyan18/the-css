@@ -11,7 +11,7 @@ describe('App', () => {
   })
 
   it('should render a <div />', () => {
-    expect(wrapper.find('div')).toBeDefined()
+    expect(wrapper.find('div').length).toEqual(1)
   })
 
   it('should render the game component', () => {

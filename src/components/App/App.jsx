@@ -6,9 +6,7 @@ import './App.css'
 const App = () => (
   
   <div className="app-container">
-    <div className="description-div">
-      <Text />
-    </div>
+    <Text />
     <Board />
   </div>
 );
