@@ -135,3 +135,10 @@ https://devcenter.heroku.com/articles/getting-started-with-rails5#heroku-gems
 - play/pause
 - Title and explanation about cellular automata on the page
 - Integrate Cell Logic
+
+## Direction
+- Game-ify: - snakes? 
+            - kill off/survive 
+            - change of environment
+            - user moves as it iterates
+            - saving board (using backend)
