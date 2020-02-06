@@ -15,10 +15,17 @@ export default class CellLogic {
 
   nextState () {
     const sum = sumNeighbourStates(this.neighbours)
-    
-    if (sum === 3) return this.futureState = 1 
-    if (this.state === 1 && sum === 2) return this.futureState = 1
-    return this.futureState = 0
+
+    if (sum === 3) {
+      this.futureState = 1
+      return this.futureState
+    }
+    if (this.state === 1 && sum === 2) {
+      this.futureState = 1
+      return this.futureState
+    }
+    this.futureState = 0
+    return this.futureState
   }
 
   updateState () {
@@ -28,7 +35,7 @@ export default class CellLogic {
 }
 
 function sumNeighbourStates (neighbours) {
-  return neighbours.reduce((acc, neighbour)=> {
+  return neighbours.reduce((acc, neighbour) => {
     return acc + neighbour.state
   }, 0)
 }

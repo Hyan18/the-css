@@ -18,4 +18,4 @@ plugins:
   - react
   - jest
 rules: {}
-ignorePatterns: [ 'serviceWorker.js' ]
+ignorePatterns: [ 'serviceWorker.js', '*.css' ]
