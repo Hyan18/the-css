@@ -3,9 +3,15 @@ export default class BoardLogic {
   constructor(initialGrid) {
     this.grid = initialGrid;
     this.isRunning = true
+    this.generationCount = 0
   };
 
-  iterate() {
+  getGenerationCount () {
+    return this.generationCount
+  }
+
+  iterate () {
+    this.generationCount ++
     this.grid = this.grid.map((row, i) => row.map((cell, j) => {
       const xLowerBound = (i > 0 ? i - 1 : i);
       const xUpperBound = (i < this.grid.length-1 ? i + 1 : i);
@@ -26,11 +32,6 @@ export default class BoardLogic {
       return 0;
     }));
   };
-
-  // play(timeout = new setInterval(function() {play()}, 300)) {
-  //   this.iterate()
-  //   setInterval(play)
-  // }
 
   play(timeout = setTimeout, iterate = this.iterate){
     if(this.isRunning){

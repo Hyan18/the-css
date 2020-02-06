@@ -68,6 +68,22 @@ describe('BoardLogic test', () => {
     })
   })
 
+  describe('.getGenerationCount', () => {
+    it('returns correct generation count', () => {
+      const board = new BoardLogic([[0,0],[0,0]])
+      board.iterate()
+      board.iterate()
+      board.iterate()
+      board.iterate()
+      expect(board.getGenerationCount()).toBe(4)
+    })
+
+    it('returns 0 generation count by default', () => {
+      const board = new BoardLogic([[0,0],[0,0]])
+      expect(board.getGenerationCount()).toBe(0)
+    })
+  })
+
   function testBoard (description, initialGrid, expectedGrid) {
     test(description, () => {
       const board = new BoardLogic(initialGrid)
