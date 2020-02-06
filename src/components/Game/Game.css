@@ -1,0 +1,24 @@
+.description-div{
+  display: inline-block;
+  height: 90%;
+  width: 400px;
+  padding: 50px;
+  font-size: 20px;
+  color: darkslateblue;
+  text-align:center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.board-container {
+  margin-top: 50px;
+  height: 100%;
+  display: inline-block;
+  padding-bottom: 150px;
+  position: fixed;
+}
+.game-container {
+  height: 700px;
+  max-height: 745px;
+  width: 1100px;
+  max-width: 1100px;
+  position: fixed;
+}
