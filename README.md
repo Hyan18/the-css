@@ -1,65 +1,70 @@
-<p align="center">
-  <img width="460" height="300" src="https://i.imgur.com/0YA9sD4.png">
-</p>
+[![Maintainability](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability)](https://codeclimate.com/github/codeclimate/codeclimate/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/test_coverage)](https://codeclimate.com/github/codeclimate/codeclimate/test_coverage)
 
 
-# Project Title
+# Snake Stimulator
 
 - [x] This project fundamentals are based on cellular automata discrete model [x]
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
-### Prerequisites
-
-What things you need to install the software and how to install them
+For local development:
 
 ```
-Give examples
+$ git clone git@github.com:Hyan18/the-css.git
+$ yarn install
+$ yarn start
 ```
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
+to run the jest/enzyme tests and the coverage:
 
 ```
-Give an example
+$ yarn run test
+$ yarn test --coverage --watchAll
 ```
 
-### And coding style tests
+This will run the jest/enzyme tests
 
-Explain what these tests test and why
+### Code style
+
+To run the linter
 
 ```
-Give an example
+$ yarn run eslint src
 ```
+## User stories
 
-## Deployment
+```
+As a user
+So that I know what is going on
+I want to see a grid of cells
 
-Add additional notes about how to deploy this on a live system
+As a user
+So I know the state of the cell
+I want the cells to have different colours
+
+As a user
+So I can decide when the game begins
+I want to be able to press a play button
+
+As a user
+So I can decide when the game ends
+I want to be able to press a stop button
+
+As a user
+So I can decide when the game iterates
+I want to be able to press a step button
+
+As a user
+So I can observe the simulation
+I want it to follow Conway's Game of Life
+
+As a user
+So I can set the initial state
+I want to be able to click on a cell to set it's state
+```
 
 ## User stories
 
@@ -122,8 +127,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
+* Cheers Conway for inspiring us to build this beatiful project.
 * etc
 
 <p align="center">
