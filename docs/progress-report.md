@@ -112,8 +112,9 @@ https://devcenter.heroku.com/articles/getting-started-with-rails5#heroku-gems
 - Variable rulesets
 - Saving state of map
 
-
 ### Blockers
+Retrieving form data
+Inter component communication
 
 ### Learning Resources
 - https://jestjs.io/docs/en/mock-functions
@@ -121,9 +122,18 @@ https://devcenter.heroku.com/articles/getting-started-with-rails5#heroku-gems
 ### Retros
 
 #### Went poorly / could improve
-
+React!
+Feature/Unit testing in Enzyme/Jest
+Harry's humour
+Lack of bread
+Lacok of Ambition
+Separation of concerns in React
+Miscalulation of complexity of each task - could have used the trello board to seperate tasks into smaller ones (T-shirt size method)
+Need to ask coaches for more help
 
 #### Went well
+Bob Marley
+Dawid - map size/add description and title to page
 
 ## First Sprint 
 
