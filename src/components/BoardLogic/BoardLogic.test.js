@@ -38,6 +38,36 @@ describe('BoardLogic test', () => {
     ]
   )
 
+  describe('.play', () => {
+    it('iterates continuously', () => {
+      const board = new BoardLogic([[0,0],[0,0]])
+      const mockSetTimeout = jest.fn()
+      const mockIterate = jest.fn()
+      board.play(mockSetTimeout, mockIterate)
+      expect(mockSetTimeout.mock.calls.length).toBe(1)
+      expect(mockSetTimeout.mock.calls[0][0]).toBe(board.play)
+      expect(mockSetTimeout.mock.calls[0][1]).toBe(100)
+      expect(mockIterate.mock.calls.length).toBe(1)
+    })
+  })
+
+  // describe('.stop', () => {
+  //   it('stops the simulation', () => {
+  //     const board = new BoardLogic([[0,0],[0,0]])
+  //     setTimeout( board.stop, 1000)
+  //     const mockIterate = jest.fn()
+  //     board.play(null, mockIterate)
+  //     expect(mockIterate.mock.calls.length).toBe(10)
+  //   })
+  // })
+
+  describe('.stop', () => {
+    it('returns false', () => {
+      const board = new BoardLogic([[0,0],[0,0]])
+      expect(board.stop()).toEqual(false)
+    })
+  })
+
   function testBoard (description, initialGrid, expectedGrid) {
     test(description, () => {
       const board = new BoardLogic(initialGrid)

@@ -48,4 +48,5 @@ describe('Board', () => {
       .prop('state')
     ).toBe(1)
   })
+
 })

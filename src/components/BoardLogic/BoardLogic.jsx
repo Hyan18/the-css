@@ -2,6 +2,7 @@ export default class BoardLogic {
 
   constructor(initialGrid) {
     this.grid = initialGrid;
+    this.isRunning = true
   };
 
   iterate() {
@@ -25,6 +26,22 @@ export default class BoardLogic {
       return 0;
     }));
   };
+
+  // play(timeout = new setInterval(function() {play()}, 300)) {
+  //   this.iterate()
+  //   setInterval(play)
+  // }
+
+  play(timeout = setTimeout, iterate = this.iterate){
+    if(this.isRunning){
+      iterate()
+      timeout(this.play, 100)
+    }
+  }
+
+  stop(){
+    return this.isRunning = false
+  }
 
   cellStates() {
     return this.grid;
