@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 import App from './App'
-import Game from '../Game/Game'
+import Board from '../Board/Board'
 
 describe('App', () => {
   let wrapper
@@ -15,6 +15,6 @@ describe('App', () => {
   })
 
   it('should render the game component', () => {
-    expect(wrapper.containsMatchingElement(<Game />)).toEqual(true)
+    expect(wrapper.containsMatchingElement(<Board />)).toEqual(true)
   })
 })
