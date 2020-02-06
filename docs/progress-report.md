@@ -123,3 +123,15 @@ https://devcenter.heroku.com/articles/getting-started-with-rails5#heroku-gems
 
 
 #### Went well
+
+## First Sprint 
+
+- First sprint not ambitious enough, would like to see more.
+- Look into Smart and Dumb components (for rendering the components)
+- Second sprint too ambitious
+
+### plans for next sprint
+
+- play/pause
+- Title and explanation about cellular automata on the page
+- Integrate Cell Logic
