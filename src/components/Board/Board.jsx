@@ -46,7 +46,7 @@ class Board extends Component {
     let currentState = this.state.cells
 
     return (
-      <div className="board-container">
+      <div class="board-container">
         <div className="board-div" style={{ width: WIDTH, height: HEIGHT, backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px`}}>
           {currentState.map((row, i) => row.map((cell, j) =>
             (<Cell x={j} y={i} state={cell} key={`${j}, ${i}`} onClick={ () => this.handleClick(j, i, cell) }/>)
