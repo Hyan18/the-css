@@ -102,3 +102,24 @@ https://devcenter.heroku.com/articles/getting-started-with-rails5#heroku-gems
 - Completed MVP
 - three way teamwork
 - extracting cell logic
+
+## Day 4 06-02-2020
+
+### Goal / To do
+- Have a pause and play button to control the iterations
+- Increase change map size or variable board size
+- Variable rules within conways GoL
+- Variable rulesets
+- Saving state of map
+
+
+### Blockers
+
+### Learning Resources
+
+### Retros
+
+#### Went poorly / could improve
+
+
+#### Went well
