@@ -17,11 +17,11 @@ describe('Board', () => {
     })
 
 
-  it('should render a 10x10 grid', () => {
-    const total = 10 * 10
-    expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
+    it('should render a 10x10 grid', () => {
+      const total = 10 * 10
+      expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
+    })
   })
-})
 
   describe('grid interaction', () => {
     it('should turn a cell to alive', () => {
@@ -108,10 +108,6 @@ describe('Board', () => {
     })
   })
 })
-
-function findCell(wrapper, x, y) {
-  return wrapper.children().find('Cell').findWhere(n => n.prop('x') === x && n.prop('y') === y)
-}
 
 function getGenerationCount(wrapper) {
   return  parseInt(wrapper.children().find('.generationCounter').text())

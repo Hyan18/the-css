@@ -11,6 +11,7 @@ export default class BoardLogic {
   }
 
   iterate () {
+    this.generationCount++
     this.cells.forEach(row => row.forEach(cell => cell.nextState()))
     this.cells.forEach(row => row.forEach(cell => cell.updateState()))
   }
@@ -35,7 +36,7 @@ export default class BoardLogic {
   }
 
   cellStates() {
-    return this.grid;
+    return this.cells.map(row => row.map(cell => cell.currentState()))
   }
 }
 
@@ -53,5 +54,6 @@ function setNeighbours (cells) {
           cell.addNeighbour(cells[x][y])
         }
       }
-    }))
-  }
+    }
+  }))
+}

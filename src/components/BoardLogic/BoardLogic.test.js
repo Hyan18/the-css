@@ -39,68 +39,61 @@ describe('BoardLogic test', () => {
     ]
   )
 
-  describe('.play', () => {
-    it('iterates continuously', () => {
-      const board = new BoardLogic([[0,0],[0,0]])
-      const mockSetTimeout = jest.fn()
-      const mockIterate = jest.fn()
-      board.play(mockSetTimeout, mockIterate)
-      expect(mockSetTimeout.mock.calls.length).toBe(1)
-      expect(mockSetTimeout.mock.calls[0][0]).toBe(board.play)
-      expect(mockSetTimeout.mock.calls[0][1]).toBe(100)
-      expect(mockIterate.mock.calls.length).toBe(1)
+  describe('controls', () => {
+    let board
+
+    beforeEach(() => {
+      board = new BoardLogic([[0,0],[0,0]], CellLogic)
+    })
+
+    describe('.play', () => {
+      it('iterates continuously', () => {
+        const mockSetTimeout = jest.fn()
+        const mockIterate = jest.fn()
+        board.play(mockSetTimeout, mockIterate)
+        expect(mockSetTimeout.mock.calls.length).toBe(1)
+        expect(mockSetTimeout.mock.calls[0][0]).toBe(board.play)
+        expect(mockSetTimeout.mock.calls[0][1]).toBe(100)
+        expect(mockIterate.mock.calls.length).toBe(1)
+      })
+    })
+
+    describe('.pause', () => {
+      it('returns false', () => {
+        expect(board.pause()).toEqual(false)
+      })
+    })
+
+    describe('.getGenerationCount', () => {
+      it('returns correct generation count', () => {
+        board.iterate()
+        board.iterate()
+        board.iterate()
+        board.iterate()
+        expect(board.getGenerationCount()).toBe(4)
+      })
+
+      it('returns 0 generation count by default', () => {
+        expect(board.getGenerationCount()).toBe(0)
+      })
+    })
+
+    describe('.reset', () => {
+      it('returns correct generation count', () => {
+        board.iterate()
+        board.iterate()
+        board.iterate()
+        board.iterate()
+        expect(board.reset()).toEqual(0)
+      })
     })
   })
-
-  // describe('.stop', () => {
-  //   it('stops the simulation', () => {
-  //     const board = new BoardLogic([[0,0],[0,0]])
-  //     setTimeout( board.stop, 1000)
-  //     const mockIterate = jest.fn()
-  //     board.play(null, mockIterate)
-  //     expect(mockIterate.mock.calls.length).toBe(10)
-  //   })
-  // })
-
-  describe('.pause', () => {
-    it('returns false', () => {
-      const board = new BoardLogic([[0,0],[0,0]])
-      expect(board.pause()).toEqual(false)
-    })
-  })
-
-  describe('.getGenerationCount', () => {
-    it('returns correct generation count', () => {
-      const board = new BoardLogic([[0,0],[0,0]])
-      board.iterate()
-      board.iterate()
-      board.iterate()
-      board.iterate()
-      expect(board.getGenerationCount()).toBe(4)
-    })
-
-    it('returns 0 generation count by default', () => {
-      const board = new BoardLogic([[0,0],[0,0]])
-      expect(board.getGenerationCount()).toBe(0)
-    })
-  })
-
-  describe('.reset', () => {
-    it('returns correct generation count', () => {
-      const board = new BoardLogic([[0,0],[0,0]])
-      board.iterate()
-      board.iterate()
-      board.iterate()
-      board.iterate()
-      expect(board.reset()).toEqual(0)
-    })
-  })
-
-  function testBoard (description, initialGrid, expectedGrid) {
-    test(description, () => {
-      const board = new BoardLogic(initialGrid, CellLogic)
-      board.iterate()
-      expect(board.cellStates()).toEqual(expectedGrid)
-    })
-  }
 })
+
+function testBoard (description, initialGrid, expectedGrid) {
+  test(description, () => {
+    const board = new BoardLogic(initialGrid, CellLogic)
+    board.iterate()
+    expect(board.cellStates()).toEqual(expectedGrid)
+  })
+}

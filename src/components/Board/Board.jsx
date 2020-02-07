@@ -14,7 +14,7 @@ class Board extends Component {
   constructor () {
     super()
     this.isRunning = true
-    this.board = new BoardLogic(this.emptyBoard())
+    this.board = new BoardLogic(this.emptyBoard(), CellLogic)
     this.state = {
       cells: this.board.cellStates()
     }
@@ -63,10 +63,9 @@ class Board extends Component {
     const currentState = this.state.cells
 
     return (
-
       <div className="board-container">
         <div className="board-div" style={{ width: WIDTH, height: HEIGHT, backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px` }}>
-          {currentState.map((row, i) => row.map((cell, j) =>
+          {this.state.cells.map((row, i) => row.map((cell, j) =>
             (<Cell x={j} y={i} state={cell} key={`${j}, ${i}`} onClick={ () => this.handleClick(j, i, cell) }/>)
           ))}
         </div>
