@@ -1,4 +1,5 @@
 import BoardLogic from './BoardLogic'
+import CellLogic from '../CellLogic/CellLogic'
 
 describe('BoardLogic test', () => {
   testBoard('empty 1x1 grid', [[0]], [[0]])
@@ -40,7 +41,7 @@ describe('BoardLogic test', () => {
 
   function testBoard (description, initialGrid, expectedGrid) {
     test(description, () => {
-      const board = new BoardLogic(initialGrid)
+      const board = new BoardLogic(initialGrid, CellLogic)
       board.iterate()
       expect(board.cellStates()).toEqual(expectedGrid)
     })

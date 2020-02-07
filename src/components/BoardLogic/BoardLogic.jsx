@@ -1,32 +1,33 @@
 export default class BoardLogic {
+  constructor (initialGrid, CellLogic) {
+    this.cells = initialGrid.map(row => row.map(state => new CellLogic(state)))
+    setNeighbours(this.cells)
+  }
 
-  constructor(initialGrid) {
-    this.grid = initialGrid;
+  iterate () {
+    this.cells.forEach(row => row.forEach(cell => cell.nextState()))
+    this.cells.forEach(row => row.forEach(cell => cell.updateState()))
   };
 
-  iterate() {
-    this.grid = this.grid.map((row, i) => row.map((cell, j) => {
-      const xLowerBound = (i > 0 ? i - 1 : i);
-      const xUpperBound = (i < this.grid.length-1 ? i + 1 : i);
+  cellStates () {
+    return this.cells.map(row => row.map(cell => cell.currentState()))
+  }
+}
 
-      const yLowerBound = (j > 0 ? j - 1 : j);
-      const yUpperBound = (j < this.grid.length-1 ? j + 1 : j);
+function setNeighbours (cells) {
+  cells.forEach((row, i) => row.forEach((cell, j) => {
+    const xLowerBound = (i > 0 ? i - 1 : i)
+    const xUpperBound = (i < cells.length - 1 ? i + 1 : i)
 
-      let sum = 0;
-      for (let x = xLowerBound; x <= xUpperBound; x++) {
-        for (let y = yLowerBound; y <= yUpperBound; y++) {
-          if (x !== i || y !== j) {
-            sum += this.grid[x][y];
-          }
+    const yLowerBound = (j > 0 ? j - 1 : j)
+    const yUpperBound = (j < cells.length - 1 ? j + 1 : j)
+
+    for (let x = xLowerBound; x <= xUpperBound; x++) {
+      for (let y = yLowerBound; y <= yUpperBound; y++) {
+        if (x !== i || y !== j) {
+          cell.addNeighbour(cells[x][y])
         }
       }
-      if (sum === 3) return 1;
-      if (sum === 2 && cell === 1) return 1;
-      return 0;
-    }));
-  };
-
-  cellStates() {
-    return this.grid;
-  };
+    }
+  }))
 }
