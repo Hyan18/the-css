@@ -16,7 +16,7 @@ describe('Board', () => {
   })
 
   it('should render a 10x10 grid', () => {
-    const total = 10 * 10
+    const total = 60 * 60
 
     expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
   })

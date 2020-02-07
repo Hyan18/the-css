@@ -3,7 +3,6 @@ import './Board.css';
 import Cell from '../Cell/Cell'
 import BoardLogic from '../BoardLogic/BoardLogic'
 
-const CELL_SIZE = 10
 const WIDTH = 600
 const HEIGHT = 600
 const ROWS = 60
@@ -15,10 +14,10 @@ class Board extends Component {
     this.state = {
       cells: this.emptyBoard(),
       rows: 60,
-      cols: 60
+      cols: 60,
+      cellSize: 10
     }
 
-    this.handleChange = this.handleChange.bind(this);
     this.changeBoardSize = this.changeBoardSize.bind(this);
   }
 
@@ -58,19 +57,21 @@ class Board extends Component {
     this.setState( { cells: cells } )
   }
 
-  handleChange(event) {
-    if(event.target.value <= 60 )
-    if(event.target.name === 'rows')
-        this.setState({rows: parseInt(event.target.value, 10)})
-    else
-        this.setState({cols: parseInt(event.target.value, 10)})
-  }
+  // this.setState({count:42}, () => {
+  //   console.log(this.state.count)
+  // })
 
-  changeBoardSize() {
+  changeBoardSize(event) {
+    event.preventDefault()
+
     this.setState( {
-      rows: this.state.rows,
-      cols: this.state.cols,
-      cells: this.boardRerender()
+      rows: this.refs.size.value,
+      cols: this.refs.size.value,
+      cellSize: this.state.cellSize,
+    }, () => {
+      this.setState( {
+        cells: this.boardRerender()
+      })
     })
   }
 
@@ -79,21 +80,19 @@ class Board extends Component {
 
     return (
       <div className="board-container">
-        <div className="board-div" style={{ width: WIDTH, maxWidth: WIDTH, height: HEIGHT, maxHeight: HEIGHT, backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px`}}>
+        <div className="board-div" style={{ width: WIDTH, maxWidth: WIDTH, height: HEIGHT, maxHeight: HEIGHT}}>
           {currentState.map((row, i) => row.map((cell, j) =>
-            (<Cell x={j} y={i} state={cell} key={`${j}, ${i}`} onClick={ () => this.handleClick(j, i, cell) }/>)
+            (<Cell x={j} y={i} state={cell} cellSize={WIDTH/this.state.cols} key={`${j}, ${i}`} onClick={ () => this.handleClick(j, i, cell) }/>)
           ))}
         </div>
         <div className="controls">
           <button className="button" onClick={this.iterate}>Iterate</button>
-          <form>
+          <form onSubmit={this.changeBoardSize}>
             <label>
-              Rows:
-              <input type="number" name="rows" placeholder="max 60" onChange={this.handleChange}/>
-              Cols:
-              <input type="number" name="cols" placeholder="max 60" onChange={this.handleChange}/> 
+              Size:
+              <input type="number" placeholder="max 60" ref="size" name="rows"/> 
             </label>
-            <button type="button" onClick={this.changeBoardSize}>Update</button>
+            <input type="submit" value="submit" />
             </form>
         </div>
       </div>
