@@ -51,12 +51,10 @@ class Board extends Component {
     this.isRunning = false
   }
 
-  handleClick (x, y, state) {
-    const cells = this.state.cells.slice()
+  handleClick (x, y) {
+    this.board.toggleCellState(y, x)
 
-    cells[y][x] = (state + 1) % 2
-
-    this.setState({ cells: cells })
+    this.setState({ cells: this.board.cellStates() })
   }
 
   render () {
@@ -64,7 +62,7 @@ class Board extends Component {
       <div className="board-container">
         <div className="board-div" style={{ width: WIDTH, height: HEIGHT, backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px` }}>
           {this.state.cells.map((row, i) => row.map((cell, j) =>
-            (<Cell x={j} y={i} state={cell} key={`${j}, ${i}`} onClick={ () => this.handleClick(j, i, cell) }/>)
+            (<Cell x={j} y={i} state={cell} key={`${j}, ${i}`} onClick={ () => this.handleClick(j, i) }/>)
           ))}
         </div>
         <div className="controls">

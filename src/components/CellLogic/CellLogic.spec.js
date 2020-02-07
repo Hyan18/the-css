@@ -100,4 +100,16 @@ describe('CellLogic', () => {
       expect(liveCell.currentState()).toEqual(nextState)
     })
   })
+
+  describe('toggleState', () => {
+    it('should turn a dead cell alive', () => {
+      expect(deadCell.toggleState()).toEqual(1)
+      expect(deadCell.currentState()).toEqual(1)
+    })
+
+    it('should turn a live cell dead', () => {
+      expect(liveCell.toggleState()).toEqual(0)
+      expect(liveCell.currentState()).toEqual(0)
+    })
+  })
 })

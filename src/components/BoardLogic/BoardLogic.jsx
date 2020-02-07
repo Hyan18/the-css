@@ -36,6 +36,14 @@ export default class BoardLogic {
     this.generationCount = 0
     return this.generationCount
   }
+
+  toggleCellState (row, col) {
+    this._findCell(row, col).toggleState()
+  }
+
+  _findCell (row, col) {
+    return this.cells[row][col]
+  }
 }
 
 function setNeighbours (cells) {
