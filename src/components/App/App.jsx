@@ -1,10 +1,14 @@
-import React from 'react';
-import Game from '../Game/Game'
+import React from 'react'
+import Board from '../Board/Board'
+import { Text } from '../Text/Text'
+import './App.css'
 
 const App = () => (
-  <div className="app-container">
-    <Game />
-  </div>
-);
 
-export default App;
+  <div className="app-container">
+    <Text />
+    <Board />
+  </div>
+)
+
+export default App

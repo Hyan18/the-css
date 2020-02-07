@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import './Board.css';
+import './Board.css'
 import Cell from '../Cell/Cell'
 import BoardLogic from '../BoardLogic/BoardLogic'
+import CellLogic from '../CellLogic/CellLogic'
 
 const CELL_SIZE = 60
 const WIDTH = 600
@@ -19,12 +20,12 @@ class Board extends Component {
     }
   }
 
-  emptyBoard() {
-    let board = []
+  emptyBoard () {
+    const board = []
     for (let y = 0; y < ROWS; y++) {
-      board[y] = [];
+      board[y] = []
       for (let x = 0; x < COLS; x++) {
-          board[y][x] = 0;
+        board[y][x] = 0
       }
     }
     return board
@@ -50,20 +51,21 @@ class Board extends Component {
     this.isRunning = false
   }
 
-  handleClick(x, y, state) {
-    let cells = this.state.cells.slice()
+  handleClick (x, y, state) {
+    const cells = this.state.cells.slice()
 
     cells[y][x] = (state + 1) % 2
 
-    this.setState( { cells: cells } )
+    this.setState({ cells: cells })
   }
 
-  render() {
-    let currentState = this.state.cells
+  render () {
+    const currentState = this.state.cells
 
     return (
-      <div>
-        <div className="board-div" style={{ width: WIDTH, height: HEIGHT, backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px`}}>
+
+      <div className="board-container">
+        <div className="board-div" style={{ width: WIDTH, height: HEIGHT, backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px` }}>
           {currentState.map((row, i) => row.map((cell, j) =>
             (<Cell x={j} y={i} state={cell} key={`${j}, ${i}`} onClick={ () => this.handleClick(j, i, cell) }/>)
           ))}

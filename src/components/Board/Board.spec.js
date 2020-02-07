@@ -1,9 +1,14 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 import Board from './Board'
+import { findCell } from '../../testHelper'
 
 describe('Board', () => {
-  const wrapper = shallow(<Board />)
+  let wrapper
+
+  beforeEach(() => {
+    wrapper = shallow(<Board />)
+  })
 
   describe('.render', () => {
     it('should render a <div />', () => {
@@ -11,18 +16,15 @@ describe('Board', () => {
       expect(wrapper.find('.board-div').length).toEqual(1)
     })
 
-    it('should render a 10x10 grid', () => {
-      const wrapper = shallow(<Board />)
-      const total = 10 * 10
 
-      expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
-    })
+  it('should render a 10x10 grid', () => {
+    const total = 10 * 10
+    expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
   })
+})
 
   describe('grid interaction', () => {
     it('should turn a cell to alive', () => {
-      const wrapper = shallow(<Board />)
-
       findCell(wrapper, 0, 0).simulate('click')
 
       expect(findCell(wrapper, 0, 0).prop('state')).toBe(1)
@@ -32,8 +34,6 @@ describe('Board', () => {
   describe('iteration controls', () => {
     describe('iterate button', () => {
       it('should iterate', () => {
-        const wrapper = shallow(<Board />)
-
         findCell(wrapper, 0, 0).simulate('click')
         findCell(wrapper, 1, 0).simulate('click')
         findCell(wrapper, 0, 1).simulate('click')
@@ -59,7 +59,6 @@ describe('Board', () => {
       })
 
       it('should update the generation counter to ~20', (done) => {
-        const wrapper = shallow(<Board />)
         wrapper.find('.play-button').simulate('click')
 
         setTimeout(() => {
@@ -79,7 +78,6 @@ describe('Board', () => {
       })
 
       it('should update the generation counter to ~12', (done) => {
-        const wrapper = shallow(<Board />)
         wrapper.find('.play-button').simulate('click')
 
         setTimeout(() => {
@@ -98,8 +96,6 @@ describe('Board', () => {
       })
 
       it('should allow to play after pausing', () => {
-        const wrapper = shallow(<Board />)
-
         wrapper.find('.play-button').simulate('click')
         wrapper.find('.pause-button').simulate('click')
 
