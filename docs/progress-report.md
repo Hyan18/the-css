@@ -164,6 +164,7 @@ Dawid - map size/add description and title to page
 - Saving state of map
 
 ### Blockers
+- Blocks at some point were blocked due to waiting for merge
 
 ### Learning Resources
 - https://jestjs.io/docs/en/mock-functions
@@ -171,5 +172,10 @@ Dawid - map size/add description and title to page
 ### Retros
 
 #### Went poorly / could improve
+ - Need to merge more frequently
 
 #### Went well
+ - Board size feature
+ - Generation counter
+ - Controls (play and stop button)
+ 
