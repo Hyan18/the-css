@@ -37,7 +37,7 @@ class Board extends Component {
   }
 
   play (timeout = setTimeout, iterateFunc) {
-    if(this.isRunning){
+    if (this.isRunning) {
       if (iterateFunc) {
         iterateFunc()
       } else {
@@ -47,7 +47,7 @@ class Board extends Component {
     }
   }
 
-  pause(){
+  pause () {
     this.isRunning = false
   }
 
@@ -60,8 +60,6 @@ class Board extends Component {
   }
 
   render () {
-    const currentState = this.state.cells
-
     return (
       <div className="board-container">
         <div className="board-div" style={{ width: WIDTH, height: HEIGHT, backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px` }}>
@@ -70,9 +68,9 @@ class Board extends Component {
           ))}
         </div>
         <div className="controls">
-            <button className="iterate-button" onClick={() => this.iterate()}>Iterate</button>
-            <button className="play-button" onClick={() => {this.isRunning = true; this.play()} }>Play</button>
-            <button className="pause-button" onClick={() => this.pause()}>Pause</button>
+          <button className="iterate-button" onClick={() => this.iterate()}>Iterate</button>
+          <button className="play-button" onClick={() => { this.isRunning = true; this.play() } }>Play</button>
+          <button className="pause-button" onClick={() => this.pause()}>Pause</button>
         </div>
         <text className="generationCounter">
           {this.board.getGenerationCount()}

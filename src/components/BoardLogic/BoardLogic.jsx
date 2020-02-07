@@ -20,23 +20,21 @@ export default class BoardLogic {
     return this.cells.map(row => row.map(cell => cell.currentState()))
   }
 
-  play(timeout = setTimeout, iterate = this.iterate){
-    if(this.isRunning){
+  play (timeout = setTimeout, iterate = this.iterate) {
+    if (this.isRunning) {
       iterate()
       timeout(this.play, 100)
     }
   }
 
   pause () {
-    return this.isRunning = false
+    this.isRunning = false
+    return this.isRunning
   }
 
   reset () {
-    return this.generationCount = 0
-  }
-
-  cellStates() {
-    return this.cells.map(row => row.map(cell => cell.currentState()))
+    this.generationCount = 0
+    return this.generationCount
   }
 }
 

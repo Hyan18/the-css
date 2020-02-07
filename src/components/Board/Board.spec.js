@@ -16,7 +16,6 @@ describe('Board', () => {
       expect(wrapper.find('.board-div').length).toEqual(1)
     })
 
-
     it('should render a 10x10 grid', () => {
       const total = 10 * 10
       expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
@@ -109,6 +108,6 @@ describe('Board', () => {
   })
 })
 
-function getGenerationCount(wrapper) {
-  return  parseInt(wrapper.children().find('.generationCounter').text())
+function getGenerationCount (wrapper) {
+  return parseInt(wrapper.children().find('.generationCounter').text())
 }

@@ -43,7 +43,7 @@ describe('BoardLogic test', () => {
     let board
 
     beforeEach(() => {
-      board = new BoardLogic([[0,0],[0,0]], CellLogic)
+      board = new BoardLogic([[0, 0], [0, 0]], CellLogic)
     })
 
     describe('.play', () => {
