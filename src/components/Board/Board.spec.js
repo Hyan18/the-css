@@ -5,129 +5,118 @@ import Board from './Board'
 describe('Board', () => {
   const wrapper = shallow(<Board />)
 
-  it('should render a <div />', () => {
-    expect(wrapper.find('.board-div')).toBeDefined()
-    expect(wrapper.find('.board-div').length).toEqual(1)
+  describe('.render', () => {
+    it('should render a <div />', () => {
+      expect(wrapper.find('.board-div')).toBeDefined()
+      expect(wrapper.find('.board-div').length).toEqual(1)
+    })
+
+    it('should render a 10x10 grid', () => {
+      const wrapper = shallow(<Board />)
+      const total = 10 * 10
+
+      expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
+    })
   })
 
-  it('should render a 10x10 grid', () => {
-    const wrapper = shallow(<Board />)
-    const total = 10 * 10
+  describe('grid interaction', () => {
+    it('should turn a cell to alive', () => {
+      const wrapper = shallow(<Board />)
 
-    expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
+      findCell(wrapper, 0, 0).simulate('click')
+
+      expect(findCell(wrapper, 0, 0).prop('state')).toBe(1)
+    })
   })
 
-  it('should turn a cell to alive', () => {
-    const wrapper = shallow(<Board />)
+  describe('iteration controls', () => {
+    describe('iterate button', () => {
+      it('should iterate', () => {
+        const wrapper = shallow(<Board />)
 
-    let cell = wrapper.children().find('Cell').findWhere(n => n.prop('x') === 0 && n.prop('y') === 0)
+        findCell(wrapper, 0, 0).simulate('click')
+        findCell(wrapper, 1, 0).simulate('click')
+        findCell(wrapper, 0, 1).simulate('click')
 
-    cell.simulate('click')
-    cell = wrapper.children().find('Cell').findWhere(n => n.prop('x') === 0 && n.prop('y') === 0)
-    expect(cell.prop('state')).toBe(1)
-  })
+        expect(findCell(wrapper, 1, 1).prop('state')).toBe(0)
 
-  it('should iterate', () => {
-    const wrapper = shallow(<Board />)
+        wrapper.find('.iterate-button').simulate('click')
+        expect(findCell(wrapper, 1, 1).prop('state')).toBe(1)
+      })
+    })
 
-    setCell(wrapper, 0, 0)
-    setCell(wrapper, 1, 0)
-    setCell(wrapper, 0, 1)
+    describe('play/pause buttons', () => {
+      describe('.play', () => {
+        it('iterates continuously', () => {
+          const board = new Board()
+          const mockSetTimeout = jest.fn()
+          const mockIterate = jest.fn()
+          board.play(mockSetTimeout, mockIterate)
+          expect(mockSetTimeout.mock.calls.length).toBe(1)
+          expect(mockSetTimeout.mock.calls[0][1]).toBe(100)
+          expect(mockIterate.mock.calls.length).toBe(1)
+        })
+      })
 
-    expect(wrapper
-      .children()
-      .find('Cell')
-      .findWhere(n => n.prop('x') === 1 && n.prop('y') === 1)
-      .prop('state')
-    ).toBe(0)
-    wrapper.find('.iterate-button').simulate('click')
-    expect(wrapper
-      .children()
-      .find('Cell')
-      .findWhere(n => n.prop('x') === 1 && n.prop('y') === 1)
-      .prop('state')
-    ).toBe(1)
-  })
-})
+      it('should update the generation counter to ~20', (done) => {
+        const wrapper = shallow(<Board />)
+        wrapper.find('.play-button').simulate('click')
 
-it('should update the generation counter to ~20', (done) => {
-  const wrapper = shallow(<Board />)
-  wrapper.find('.play-button').simulate('click')
-  setTimeout(() => {
-    wrapper.find('.pause-button').simulate('click')
-    const generationCount1 = parseInt(
-      wrapper
-        .children()
-        .find('.generationCounter')
-        .text())
-    expect(generationCount1).toBeGreaterThanOrEqual(19)
-    expect(generationCount1).toBeLessThan(21)
-    setTimeout(() => {
-      const generationCount2 = parseInt(
-        wrapper
-          .children()
-          .find('.generationCounter')
-          .text())
-      expect(generationCount2).toEqual(generationCount1)
-      done()
-    }, 300)
-  }, 2000)
-})
+        setTimeout(() => {
+          wrapper.find('.pause-button').simulate('click')
 
-it('should update the generation counter to ~12', (done) => {
-  const wrapper = shallow(<Board />)
-  wrapper.find('.play-button').simulate('click')
-  setTimeout(() => {
-    wrapper.find('.pause-button').simulate('click')
-    const generationCount1 = parseInt(
-      wrapper
-        .children()
-        .find('.generationCounter')
-        .text())
-    expect(generationCount1).toBeGreaterThanOrEqual(11)
-    expect(generationCount1).toBeLessThan(13)
-    setTimeout(() => {
-      const generationCount2 = parseInt(
-        wrapper
-          .children()
-          .find('.generationCounter')
-          .text())
-      expect(generationCount2).toEqual(generationCount1)
-      done()
-    }, 500)
-  }, 1200)
-})
+          const generationCount1 = getGenerationCount(wrapper)
 
-it('should allow to play after pausing', () => {
-  const wrapper = shallow(<Board />)
-  wrapper.find('.play-button').simulate('click')
-  wrapper.find('.pause-button').simulate('click')
-  const generationCount1 = parseInt(
-    wrapper
-      .children()
-      .find('.generationCounter')
-      .text())
-  wrapper.find('.play-button').simulate('click')
-  wrapper.find('.pause-button').simulate('click')
-  expect(parseInt(
-    wrapper
-      .children()
-      .find('.generationCounter')
-      .text())).toBeGreaterThan(generationCount1)
-})
+          expect(generationCount1).toBeGreaterThanOrEqual(18)
+          expect(generationCount1).toBeLessThan(21)
 
-describe('.play', () => {
-  it('iterates continuously', () => {
-    const board = new Board()
-    const mockSetTimeout = jest.fn()
-    const mockIterate = jest.fn()
-    board.play(mockSetTimeout, mockIterate)
-    expect(mockSetTimeout.mock.calls.length).toBe(1)
-    expect(mockSetTimeout.mock.calls[0][1]).toBe(100)
-    expect(mockIterate.mock.calls.length).toBe(1)
+          setTimeout(() => {
+            expect(getGenerationCount(wrapper)).toEqual(generationCount1)
+
+            done()
+          }, 300)
+        }, 2000)
+      })
+
+      it('should update the generation counter to ~12', (done) => {
+        const wrapper = shallow(<Board />)
+        wrapper.find('.play-button').simulate('click')
+
+        setTimeout(() => {
+          wrapper.find('.pause-button').simulate('click')
+
+          const generationCount1 = getGenerationCount(wrapper)
+
+          expect(generationCount1).toBeGreaterThanOrEqual(11)
+          expect(generationCount1).toBeLessThan(13)
+
+          setTimeout(() => {
+            expect(getGenerationCount(wrapper)).toEqual(generationCount1)
+            done()
+          }, 500)
+        }, 1200)
+      })
+
+      it('should allow to play after pausing', () => {
+        const wrapper = shallow(<Board />)
+
+        wrapper.find('.play-button').simulate('click')
+        wrapper.find('.pause-button').simulate('click')
+
+        const generationCount1 = getGenerationCount(wrapper)
+
+        wrapper.find('.play-button').simulate('click')
+        wrapper.find('.pause-button').simulate('click')
+        expect(getGenerationCount(wrapper)).toBeGreaterThan(generationCount1)
+      })
+    })
   })
 })
 
-function setCell(wrapper, x, y) {
-  wrapper.children().find('Cell').findWhere(n => n.prop('x') === x && n.prop('y') === y).simulate('click')
+function findCell(wrapper, x, y) {
+  return wrapper.children().find('Cell').findWhere(n => n.prop('x') === x && n.prop('y') === y)
+}
+
+function getGenerationCount(wrapper) {
+  return  parseInt(wrapper.children().find('.generationCounter').text())
 }
