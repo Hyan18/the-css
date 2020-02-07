@@ -153,3 +153,23 @@ Dawid - map size/add description and title to page
             - change of environment
             - user moves as it iterates
             - saving board (using backend)
+            
+## Day 5 07-02-2020
+
+### Goal / To do
+- Have a pause and play button to control the iterations (unit tests are partially done)
+- Increase change map size or variable board size (partially done)
+- Variable rules within conways GoL
+- Variable rulesets
+- Saving state of map
+
+### Blockers
+
+### Learning Resources
+- https://jestjs.io/docs/en/mock-functions
+
+### Retros
+
+#### Went poorly / could improve
+
+#### Went well
