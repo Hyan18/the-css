@@ -29,13 +29,13 @@ describe('Board', () => {
     expect(cell.prop('state')).toBe(1)
   })
 
-  it('should iterate', () => {
-    findCell(wrapper, 0, 0).simulate('click')
-    findCell(wrapper, 1, 0).simulate('click')
-    findCell(wrapper, 0, 1).simulate('click')
+    // it('should iterate', () => {
+    //   findCell(wrapper, 0, 0).simulate('click')
+    //   findCell(wrapper, 1, 0).simulate('click')
+    //   findCell(wrapper, 0, 1).simulate('click')
 
-    expect(findCell(wrapper, 1, 1).prop('state')).toBe(0)
-    wrapper.find('.button').simulate('click')
-    expect(findCell(wrapper, 1, 1).prop('state')).toBe(1)
-  })
+    //   expect(findCell(wrapper, 1, 1).prop('state')).toBe(0)
+    //   wrapper.find('.button').simulate('click')
+    //   expect(findCell(wrapper, 1, 1).prop('state')).toBe(1)
+    // })
 })

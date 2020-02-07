@@ -13,8 +13,9 @@ const COLS = 10
 class Board extends Component {
   constructor () {
     super()
+    this.boardLogic = new BoardLogic(this.emptyBoard(), CellLogic)
     this.state = {
-      cells: this.emptyBoard()
+      cells: this.boardLogic.cellStates()
     }
   }
 
@@ -30,9 +31,9 @@ class Board extends Component {
   }
 
   iterate () {
-    const board = new BoardLogic(this.state.cells, CellLogic)
+    const board = this.boardLogic
     board.iterate()
-    this.setState({ cells: board.cellStates() })
+    this.setState( { cells: board.cellStates() })
   }
 
   handleClick (x, y, state) {
@@ -44,12 +45,10 @@ class Board extends Component {
   }
 
   render () {
-    const currentState = this.state.cells
-
     return (
       <div>
         <div className="board-div" style={{ width: WIDTH, height: HEIGHT, backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px` }}>
-          {currentState.map((row, i) => row.map((cell, j) =>
+          {this.state.cells.map((row, i) => row.map((cell, j) =>
             (<Cell x={j} y={i} state={cell} key={`${j}, ${i}`} onClick={ () => this.handleClick(j, i, cell) }/>)
           ))}
         </div>

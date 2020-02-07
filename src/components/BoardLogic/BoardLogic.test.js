@@ -39,11 +39,21 @@ describe('BoardLogic test', () => {
     ]
   )
 
-  function testBoard (description, initialGrid, expectedGrid) {
-    test(description, () => {
-      const board = new BoardLogic(initialGrid, CellLogic)
-      board.iterate()
-      expect(board.cellStates()).toEqual(expectedGrid)
+  describe('toggleCellState', () => {
+    it("should toggle a cell's state given a row and col", () => {
+      const board = new BoardLogic([[0, 0], [0, 0]], CellLogic)
+
+      board.toggleCellState(1, 1)
+      expect(board.cellStates()[1][1]).toEqual(1)
     })
-  }
+  })
+
 })
+
+function testBoard (description, initialGrid, expectedGrid) {
+  test(description, () => {
+    const board = new BoardLogic(initialGrid, CellLogic)
+    board.iterate()
+    expect(board.cellStates()).toEqual(expectedGrid)
+  })
+}

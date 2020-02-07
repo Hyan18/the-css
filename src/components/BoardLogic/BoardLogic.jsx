@@ -12,6 +12,14 @@ export default class BoardLogic {
   cellStates () {
     return this.cells.map(row => row.map(cell => cell.currentState()))
   }
+
+  findCell (row, col) {
+    return this.cells[row][col]
+  }
+
+  toggleCellState (row, col) {
+    this.findCell(row, col).toggleState()
+  }
 }
 
 function setNeighbours (cells) {
