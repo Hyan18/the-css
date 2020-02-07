@@ -12,8 +12,10 @@ const COLS = 10
 class Board extends Component {
   constructor () {
     super()
+    this.isRunning = true
+    this.board = new BoardLogic(this.emptyBoard())
     this.state = {
-      cells: this.emptyBoard()
+      cells: this.board.cellStates()
     }
   }
 
@@ -28,10 +30,24 @@ class Board extends Component {
     return board
   }
 
-  iterate = () => {
-    let board = new BoardLogic(this.state.cells)
-    board.iterate()
-    this.setState({ cells: board.cellStates() })
+  iterate () {
+    this.board.iterate()
+    this.setState({ cells: this.board.cellStates() })
+  }
+
+  play (timeout = setTimeout, iterateFunc) {
+    if(this.isRunning){
+      if (iterateFunc) {
+        iterateFunc()
+      } else {
+        this.iterate()
+      }
+      timeout(() => this.play(), 100)
+    }
+  }
+
+  pause(){
+    this.isRunning = false
   }
 
   handleClick(x, y, state) {
@@ -42,7 +58,7 @@ class Board extends Component {
     this.setState( { cells: cells } )
   }
 
-  render = () => {
+  render() {
     let currentState = this.state.cells
 
     return (
@@ -53,8 +69,13 @@ class Board extends Component {
           ))}
         </div>
         <div className="controls">
-            <button className="button" onClick={this.iterate}>Iterate</button>
+            <button className="iterate-button" onClick={() => this.iterate()}>Iterate</button>
+            <button className="play-button" onClick={() => {this.isRunning = true; this.play()} }>Play</button>
+            <button className="pause-button" onClick={() => this.pause()}>Pause</button>
         </div>
+        <text className="generationCounter">
+          {this.board.getGenerationCount()}
+        </text>
       </div>
     )
   }
