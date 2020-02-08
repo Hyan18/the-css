@@ -6,8 +6,8 @@ import CellLogic from '../CellLogic/CellLogic'
 
 const WIDTH = 600
 const HEIGHT = 600
-const ROWS = 60
-const COLS = 60
+const ROWS = 10
+const COLS = 10
 
 class Board extends Component {
   constructor () {
@@ -16,8 +16,8 @@ class Board extends Component {
     this.board = new BoardLogic(this.emptyBoard(), CellLogic)
     this.state = {
       cells: this.board.cellStates(),
-      rows: 60,
-      cols: 60,
+      rows: ROWS,
+      cols: COLS,
       cellSize: 10
     }
 
@@ -103,14 +103,14 @@ class Board extends Component {
           <form onSubmit={this.changeBoardSize}>
             <label>
               Size:
-              <input type="number" placeholder="max 60" ref="size" name="rows"/> 
+              <input type="number" placeholder="max 60" ref="size" name="size"/> 
             </label>
-            <input type="submit" value="submit" />
-            </form>
+            <input type="submit" value="submit" name="submit-reize" />
+          </form>
         </div>
-        <text className="generationCounter">
+        <div className="generationCounter">
           {this.board.getGenerationCount()}
-        </text>
+        </div>
       </div>
     )
   }

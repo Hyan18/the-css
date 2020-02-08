@@ -1,5 +1,5 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import Board from './Board'
 import { findCell } from '../../testHelper'
 
@@ -16,8 +16,8 @@ describe('Board', () => {
       expect(wrapper.find('.board-div').length).toEqual(1)
     })
 
-    it('should render a 60x60 grid', () => {
-      const total = 60 * 60
+    it('should render a 10x10 grid', () => {
+      const total = 10 * 10
       expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
     })
   })
@@ -30,7 +30,7 @@ describe('Board', () => {
     })
   })
 
-  describe('iteration controls', () => {
+  describe('controls', () => {
     describe('iterate button', () => {
       it('should iterate', () => {
         findCell(wrapper, 0, 0).simulate('click')
@@ -104,6 +104,18 @@ describe('Board', () => {
         wrapper.find('.pause-button').simulate('click')
         expect(getGenerationCount(wrapper)).toBeGreaterThan(generationCount1)
       })
+    })
+
+    it('should resize the board', () => {
+      wrapper = mount(<Board />)
+      const form = wrapper.find('form')
+      const input = wrapper.find('input').at(0)
+
+      input.instance().value = 20
+      form.simulate('submit')
+
+      const total = 20 * 20
+      expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
     })
   })
 })
