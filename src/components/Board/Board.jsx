@@ -34,8 +34,7 @@ class Board extends Component {
 
   iterate () {
     this.board.iterate()
-    this.setState({ generationCount: this.board.getGenerationCount() })
-    this.setState({ cells: this.board.cellStates() })
+    this.setState({ generationCount: this.board.getGenerationCount(), cells: this.board.cellStates() })
   }
 
   play (timeout = setTimeout, iterateFunc) {
@@ -57,13 +56,11 @@ class Board extends Component {
     this.pause()
     this.board.reset()
     this.board = new BoardLogic(this.emptyBoard(), CellLogic)
-    this.setState({ generationCount: this.board.getGenerationCount() })
-    this.setState({ cells: this.board.cellStates() })
+    this.setState({ generationCount: this.board.getGenerationCount(), cells: this.board.cellStates() })
   }
 
   handleClick (x, y) {
     this.board.toggleCellState(y, x)
-
     this.setState({ cells: this.board.cellStates() })
   }
 
