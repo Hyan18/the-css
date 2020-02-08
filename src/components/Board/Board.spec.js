@@ -105,6 +105,38 @@ describe('Board', () => {
         expect(getGenerationCount(wrapper)).toBeGreaterThan(generationCount1)
       })
     })
+
+    describe('reset button', () => {
+      it('should reset the cells and generation count to zeros', () => {
+        findCell(wrapper, 0, 0).simulate('click')
+        findCell(wrapper, 1, 0).simulate('click')
+        findCell(wrapper, 0, 1).simulate('click')
+
+        wrapper.find('.iterate-button').simulate('click')
+
+        expect(getGenerationCount(wrapper)).toEqual(1)
+        expect(findCell(wrapper, 1, 1).prop('state')).toEqual(1)
+
+        wrapper.find('.reset-button').simulate('click')
+
+        expect(getGenerationCount(wrapper)).toEqual(0)
+
+        expect(findCell(wrapper, 0, 0).prop('state')).toEqual(0)
+        expect(findCell(wrapper, 1, 0).prop('state')).toEqual(0)
+        expect(findCell(wrapper, 0, 1).prop('state')).toEqual(0)
+        expect(findCell(wrapper, 1, 1).prop('state')).toEqual(0)
+      })
+
+      it('clicking reset after play stops the iteration', (done) => {
+        wrapper.find('.play-button').simulate('click')
+        wrapper.find('.reset-button').simulate('click')
+
+        setTimeout(() => {
+          expect(getGenerationCount(wrapper)).toBe(0)
+          done()
+        }, 500)
+      })
+    })
   })
 })
 

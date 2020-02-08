@@ -34,7 +34,7 @@ export default class BoardLogic {
 
   reset () {
     this.generationCount = 0
-    return this.generationCount
+    return 0
   }
 
   toggleCellState (row, col) {

@@ -16,7 +16,8 @@ class Board extends Component {
     this.isRunning = true
     this.board = new BoardLogic(this.emptyBoard(), CellLogic)
     this.state = {
-      cells: this.board.cellStates()
+      cells: this.board.cellStates(),
+      generationCount: this.board.getGenerationCount()
     }
   }
 
@@ -33,6 +34,7 @@ class Board extends Component {
 
   iterate () {
     this.board.iterate()
+    this.setState({ generationCount: this.board.getGenerationCount() })
     this.setState({ cells: this.board.cellStates() })
   }
 
@@ -49,6 +51,14 @@ class Board extends Component {
 
   pause () {
     this.isRunning = false
+  }
+
+  reset () {
+    this.pause()
+    this.board.reset()
+    this.board = new BoardLogic(this.emptyBoard(), CellLogic)
+    this.setState({ generationCount: this.board.getGenerationCount() })
+    this.setState({ cells: this.board.cellStates() })
   }
 
   handleClick (x, y) {
@@ -69,9 +79,10 @@ class Board extends Component {
           <button className="iterate-button" onClick={() => this.iterate()}>Iterate</button>
           <button className="play-button" onClick={() => { this.isRunning = true; this.play() } }>Play</button>
           <button className="pause-button" onClick={() => this.pause()}>Pause</button>
+          <button className="reset-button" onClick={() => this.reset()}>Reset</button>
         </div>
         <text className="generationCounter">
-          {this.board.getGenerationCount()}
+          {this.state.generationCount}
         </text>
       </div>
     )
