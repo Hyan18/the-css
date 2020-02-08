@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import './Cell.css'
+import PropTypes from 'prop-types'
 
 
-class Cell extends Component {
+export default class Cell extends Component {
 
   render = () => {
     const { x, y, state, onClick, cellSize } = this.props;
@@ -15,9 +16,13 @@ class Cell extends Component {
         height: `${cellSize - 1}px`,
       }}
       />
-    );
+    )
   }
-  
 }
 
-export default Cell
+Cell.propTypes = {
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+  state: PropTypes.number.isRequired,
+  onClick: PropTypes.func.isRequired
+}

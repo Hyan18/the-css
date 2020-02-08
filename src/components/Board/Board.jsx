@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import './Board.css';
+import './Board.css'
 import Cell from '../Cell/Cell'
 import BoardLogic from '../BoardLogic/BoardLogic'
+import CellLogic from '../CellLogic/CellLogic'
 
 const WIDTH = 600
 const HEIGHT = 600
@@ -10,9 +11,11 @@ const COLS = 60
 
 class Board extends Component {
   constructor () {
-    super() 
+    super()
+    this.isRunning = true
+    this.board = new BoardLogic(this.emptyBoard(), CellLogic)
     this.state = {
-      cells: this.emptyBoard(),
+      cells: this.board.cellStates(),
       rows: 60,
       cols: 60,
       cellSize: 10
@@ -21,45 +24,48 @@ class Board extends Component {
     this.changeBoardSize = this.changeBoardSize.bind(this);
   }
 
-  emptyBoard() {
-    let board = []
+  emptyBoard () {
+    const board = []
     for (let y = 0; y < ROWS; y++) {
-      board[y] = [];
+      board[y] = []
       for (let x = 0; x < COLS; x++) {
-        board[y][x] = 0;
+        board[y][x] = 0
       }
     }
     return board
   }
 
-  boardRerender() {
+  newEmptyBoard() {
     let board = []
     for (let y = 0; y < this.state.rows; y++) {
-      board[y] = [];
+      board[y] = []
       for (let x = 0; x < this.state.cols; x++) {
-        board[y][x] = 0;
+        board[y][x] = 0
       }
     }
+    this.board = new BoardLogic(board, CellLogic)
     return board
   }
 
-  iterate = () => {
-    let board = new BoardLogic(this.state.cells)
-    board.iterate()
-    this.setState({ cells: board.cellStates() })
+  iterate () {
+    this.board.iterate()
+    this.setState({ cells: this.board.cellStates() })
   }
 
-  handleClick(x, y, state) {
-    let cells = this.state.cells.slice()
-
-    cells[y][x] = (state + 1) % 2
-
-    this.setState( { cells: cells } )
+  play (timeout = setTimeout, iterateFunc) {
+    if (this.isRunning) {
+      if (iterateFunc) {
+        iterateFunc()
+      } else {
+        this.iterate()
+      }
+      timeout(() => this.play(), 100)
+    }
   }
 
-  // this.setState({count:42}, () => {
-  //   console.log(this.state.count)
-  // })
+  pause () {
+    this.isRunning = false
+  }
 
   changeBoardSize(event) {
     event.preventDefault()
@@ -68,25 +74,32 @@ class Board extends Component {
       rows: this.refs.size.value,
       cols: this.refs.size.value,
       cellSize: this.state.cellSize,
+
     }, () => {
       this.setState( {
-        cells: this.boardRerender()
+        cells: this.newEmptyBoard()
       })
     })
   }
 
-  render = () => {
-    let currentState = this.state.cells
+  handleClick (x, y) {
+    this.board.toggleCellState(y, x)
 
+    this.setState({ cells: this.board.cellStates() })
+  }
+
+  render () {
     return (
       <div className="board-container">
         <div className="board-div" style={{ width: WIDTH, maxWidth: WIDTH, height: HEIGHT, maxHeight: HEIGHT}}>
-          {currentState.map((row, i) => row.map((cell, j) =>
-            (<Cell x={j} y={i} state={cell} cellSize={WIDTH/this.state.cols} key={`${j}, ${i}`} onClick={ () => this.handleClick(j, i, cell) }/>)
+          {this.state.cells.map((row, i) => row.map((cell, j) =>
+            (<Cell x={j} y={i} state={cell} cellSize={WIDTH/this.state.cols} key={`${j}, ${i}`} onClick={ () => this.handleClick(j, i) }/>)
           ))}
         </div>
         <div className="controls">
-          <button className="button" onClick={this.iterate}>Iterate</button>
+          <button className="iterate-button" onClick={() => this.iterate()}>Iterate</button>
+          <button className="play-button" onClick={() => { this.isRunning = true; this.play() } }>Play</button>
+          <button className="pause-button" onClick={() => this.pause()}>Pause</button>
           <form onSubmit={this.changeBoardSize}>
             <label>
               Size:
@@ -95,6 +108,9 @@ class Board extends Component {
             <input type="submit" value="submit" />
             </form>
         </div>
+        <text className="generationCounter">
+          {this.board.getGenerationCount()}
+        </text>
       </div>
     )
   }
