@@ -21,7 +21,7 @@ class Board extends Component {
       cellSize: 10
     }
 
-    this.changeBoardSize = this.changeBoardSize.bind(this);
+    this.changeBoardSize = this.changeBoardSize.bind(this)
   }
 
   emptyBoard () {
@@ -35,8 +35,8 @@ class Board extends Component {
     return board
   }
 
-  newEmptyBoard() {
-    let board = []
+  newEmptyBoard () {
+    const board = []
     for (let y = 0; y < this.state.rows; y++) {
       board[y] = []
       for (let x = 0; x < this.state.cols; x++) {
@@ -67,16 +67,16 @@ class Board extends Component {
     this.isRunning = false
   }
 
-  changeBoardSize(event) {
+  changeBoardSize (event) {
     event.preventDefault()
 
-    this.setState( {
+    this.setState({
       rows: this.refs.size.value,
       cols: this.refs.size.value,
-      cellSize: this.state.cellSize,
+      cellSize: this.state.cellSize
 
     }, () => {
-      this.setState( {
+      this.setState({
         cells: this.newEmptyBoard()
       })
     })
@@ -91,9 +91,9 @@ class Board extends Component {
   render () {
     return (
       <div className="board-container">
-        <div className="board-div" style={{ width: WIDTH, maxWidth: WIDTH, height: HEIGHT, maxHeight: HEIGHT}}>
+        <div className="board-div" style={{ width: WIDTH, maxWidth: WIDTH, height: HEIGHT, maxHeight: HEIGHT }}>
           {this.state.cells.map((row, i) => row.map((cell, j) =>
-            (<Cell x={j} y={i} state={cell} cellSize={WIDTH/this.state.cols} key={`${j}, ${i}`} onClick={ () => this.handleClick(j, i) }/>)
+            (<Cell x={j} y={i} state={cell} cellSize={WIDTH / this.state.cols} key={`${j}, ${i}`} onClick={ () => this.handleClick(j, i) }/>)
           ))}
         </div>
         <div className="controls">
@@ -103,7 +103,7 @@ class Board extends Component {
           <form onSubmit={this.changeBoardSize}>
             <label>
               Size:
-              <input type="number" placeholder="max 60" ref="size" name="size"/> 
+              <input type="number" placeholder="max 60" ref="size" name="size"/>
             </label>
             <input type="submit" value="submit" name="submit-reize" />
           </form>
