@@ -13,8 +13,10 @@ const COLS = 10
 class Board extends Component {
   constructor () {
     super()
+    this.isRunning = true
+    this.board = new BoardLogic(this.emptyBoard(), CellLogic)
     this.state = {
-      cells: this.emptyBoard()
+      cells: this.board.cellStates()
     }
   }
 
@@ -30,33 +32,47 @@ class Board extends Component {
   }
 
   iterate () {
-    const board = new BoardLogic(this.state.cells, CellLogic)
-    board.iterate()
-    this.setState({ cells: board.cellStates() })
+    this.board.iterate()
+    this.setState({ cells: this.board.cellStates() })
   }
 
-  handleClick (x, y, state) {
-    const cells = this.state.cells.slice()
+  play (timeout = setTimeout, iterateFunc) {
+    if (this.isRunning) {
+      if (iterateFunc) {
+        iterateFunc()
+      } else {
+        this.iterate()
+      }
+      timeout(() => this.play(), 100)
+    }
+  }
 
-    cells[y][x] = (state + 1) % 2
+  pause () {
+    this.isRunning = false
+  }
 
-    this.setState({ cells: cells })
+  handleClick (x, y) {
+    this.board.toggleCellState(y, x)
+
+    this.setState({ cells: this.board.cellStates() })
   }
 
   render () {
-    const currentState = this.state.cells
-
     return (
-
       <div className="board-container">
         <div className="board-div" style={{ width: WIDTH, height: HEIGHT, backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px` }}>
-          {currentState.map((row, i) => row.map((cell, j) =>
-            (<Cell x={j} y={i} state={cell} key={`${j}, ${i}`} onClick={ () => this.handleClick(j, i, cell) }/>)
+          {this.state.cells.map((row, i) => row.map((cell, j) =>
+            (<Cell x={j} y={i} state={cell} key={`${j}, ${i}`} onClick={ () => this.handleClick(j, i) }/>)
           ))}
         </div>
         <div className="controls">
-          <button className="button" onClick={() => this.iterate()}>Iterate</button>
+          <button className="iterate-button" onClick={() => this.iterate()}>Iterate</button>
+          <button className="play-button" onClick={() => { this.isRunning = true; this.play() } }>Play</button>
+          <button className="pause-button" onClick={() => this.pause()}>Pause</button>
         </div>
+        <text className="generationCounter">
+          {this.board.getGenerationCount()}
+        </text>
       </div>
     )
   }

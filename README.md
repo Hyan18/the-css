@@ -31,7 +31,7 @@ This will run the jest/enzyme tests
 To run the linter
 
 ```
-$ yarn run eslint src
+$ yarn run lint
 ```
 ## User stories
 

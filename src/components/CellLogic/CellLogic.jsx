@@ -32,6 +32,11 @@ export default class CellLogic {
     this.state = this.futureState
     return this.state
   }
+
+  toggleState () {
+    this.state = (this.state + 1) % 2
+    return this.state
+  }
 }
 
 function sumNeighbourStates (neighbours) {

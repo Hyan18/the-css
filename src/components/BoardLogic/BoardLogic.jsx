@@ -1,16 +1,48 @@
 export default class BoardLogic {
   constructor (initialGrid, CellLogic) {
     this.cells = initialGrid.map(row => row.map(state => new CellLogic(state)))
+    this.generationCount = 0
+    this.isRunning = true
     setNeighbours(this.cells)
   }
 
+  getGenerationCount () {
+    return this.generationCount
+  }
+
   iterate () {
+    this.generationCount++
     this.cells.forEach(row => row.forEach(cell => cell.nextState()))
     this.cells.forEach(row => row.forEach(cell => cell.updateState()))
-  };
+  }
 
   cellStates () {
     return this.cells.map(row => row.map(cell => cell.currentState()))
+  }
+
+  play (timeout = setTimeout, iterate = this.iterate) {
+    if (this.isRunning) {
+      iterate()
+      timeout(this.play, 100)
+    }
+  }
+
+  pause () {
+    this.isRunning = false
+    return this.isRunning
+  }
+
+  reset () {
+    this.generationCount = 0
+    return this.generationCount
+  }
+
+  toggleCellState (row, col) {
+    this._findCell(row, col).toggleState()
+  }
+
+  _findCell (row, col) {
+    return this.cells[row][col]
   }
 }
 
