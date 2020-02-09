@@ -51,8 +51,8 @@ class Board extends Component {
     }
   }
 
-  _checkIfPlaying() {
-    if(this.isPlaying == true){
+  _checkIfPlaying () {
+    if (this.isPlaying === true) {
       return
     }
     this.play()

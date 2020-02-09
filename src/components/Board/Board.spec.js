@@ -148,7 +148,7 @@ describe('Board', () => {
       })
 
       it('clicking reset after play stops the iteration', (done) => {
-        clickButton(wrapper, "play")
+        clickButton(wrapper, 'play')
         clickButton(wrapper, 'reset')
 
         setTimeout(() => {
