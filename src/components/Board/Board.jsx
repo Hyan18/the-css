@@ -14,6 +14,7 @@ class Board extends Component {
   constructor () {
     super()
     this.isRunning = true
+    this.isPlaying = false
     this.board = new BoardLogic(this.emptyBoard(), CellLogic)
     this.state = {
       cells: this.board.cellStates(),
@@ -45,11 +46,20 @@ class Board extends Component {
       } else {
         this.iterate()
       }
+      this.isPlaying = true
       timeout(() => this.play(), 100)
     }
   }
 
+  _checkIfPlaying() {
+    if(this.isPlaying == true){
+      return
+    }
+    this.play()
+  }
+
   pause () {
+    this.isPlaying = false
     this.isRunning = false
   }
 
@@ -77,7 +87,7 @@ class Board extends Component {
         </div>
         <div className="controls">
           <button className="iterate-button" onClick={() => this.iterate()}>Iterate</button>
-          <button className="play-button" onClick={() => { this.isRunning = true; this.play() } }>Play</button>
+          <button className="play-button" onClick={() => { this.isRunning = true; this._checkIfPlaying() } }>Play</button>
           <button className="pause-button" onClick={() => this.pause()}>Pause</button>
           <button className="reset-button" onClick={() => this.reset()}>Reset</button>
         </div>

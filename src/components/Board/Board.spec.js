@@ -39,7 +39,7 @@ describe('Board', () => {
 
         expect(findCell(wrapper, 1, 1).prop('state')).toBe(0)
 
-        wrapper.find('.iterate-button').simulate('click')
+        clickButton(wrapper, 'iterate')
         expect(findCell(wrapper, 1, 1).prop('state')).toBe(1)
       })
     })
@@ -57,11 +57,31 @@ describe('Board', () => {
         })
       })
 
-      it('should update the generation counter to ~20', (done) => {
-        wrapper.find('.play-button').simulate('click')
+      it('pressing play twice should not speed up the iteration rate', (done) => {
+        clickButton(wrapper, 'play')
 
         setTimeout(() => {
-          wrapper.find('.pause-button').simulate('click')
+          clickButton(wrapper, 'play')
+          const generationCount1 = getGenerationCount(wrapper)
+
+          expect(generationCount1).toBeGreaterThanOrEqual(5)
+          expect(generationCount1).toBeLessThan(8)
+
+          setTimeout(() => {
+            const generationCount2 = getGenerationCount(wrapper)
+
+            expect(generationCount2).toBeGreaterThanOrEqual(11)
+            expect(generationCount2).toBeLessThan(16)
+            done()
+          }, 600)
+        }, 600)
+      })
+
+      it('should update the generation counter to ~20', (done) => {
+        clickButton(wrapper, 'play')
+
+        setTimeout(() => {
+          clickButton(wrapper, 'pause')
 
           const generationCount1 = getGenerationCount(wrapper)
 
@@ -77,10 +97,10 @@ describe('Board', () => {
       })
 
       it('should update the generation counter to ~12', (done) => {
-        wrapper.find('.play-button').simulate('click')
+        clickButton(wrapper, 'play')
 
         setTimeout(() => {
-          wrapper.find('.pause-button').simulate('click')
+          clickButton(wrapper, 'pause')
 
           const generationCount1 = getGenerationCount(wrapper)
 
@@ -95,13 +115,13 @@ describe('Board', () => {
       })
 
       it('should allow to play after pausing', () => {
-        wrapper.find('.play-button').simulate('click')
-        wrapper.find('.pause-button').simulate('click')
+        clickButton(wrapper, 'play')
+        clickButton(wrapper, 'pause')
 
         const generationCount1 = getGenerationCount(wrapper)
 
-        wrapper.find('.play-button').simulate('click')
-        wrapper.find('.pause-button').simulate('click')
+        clickButton(wrapper, 'play')
+        clickButton(wrapper, 'pause')
         expect(getGenerationCount(wrapper)).toBeGreaterThan(generationCount1)
       })
     })
@@ -112,12 +132,12 @@ describe('Board', () => {
         findCell(wrapper, 1, 0).simulate('click')
         findCell(wrapper, 0, 1).simulate('click')
 
-        wrapper.find('.iterate-button').simulate('click')
+        clickButton(wrapper, 'iterate')
 
         expect(getGenerationCount(wrapper)).toEqual(1)
         expect(findCell(wrapper, 1, 1).prop('state')).toEqual(1)
 
-        wrapper.find('.reset-button').simulate('click')
+        clickButton(wrapper, 'reset')
 
         expect(getGenerationCount(wrapper)).toEqual(0)
 
@@ -128,8 +148,8 @@ describe('Board', () => {
       })
 
       it('clicking reset after play stops the iteration', (done) => {
-        wrapper.find('.play-button').simulate('click')
-        wrapper.find('.reset-button').simulate('click')
+        clickButton(wrapper, "play")
+        clickButton(wrapper, 'reset')
 
         setTimeout(() => {
           expect(getGenerationCount(wrapper)).toBe(0)
@@ -142,4 +162,8 @@ describe('Board', () => {
 
 function getGenerationCount (wrapper) {
   return parseInt(wrapper.children().find('.generationCounter').text())
+}
+
+function clickButton (wrapper, action) {
+  wrapper.find(`.${action}-button`).simulate('click')
 }
