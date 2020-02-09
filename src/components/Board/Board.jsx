@@ -12,6 +12,7 @@ const COLS = 10
 class Board extends Component {
   constructor () {
     super()
+    this.inputRef = React.createRef()
     this.isRunning = true
     this.board = new BoardLogic(this.emptyBoard(), CellLogic)
     this.state = {
@@ -22,6 +23,10 @@ class Board extends Component {
     }
 
     this.changeBoardSize = this.changeBoardSize.bind(this)
+  }
+
+  clickToResize() {
+    this.inputRef.current.focus()
   }
 
   emptyBoard () {
@@ -71,8 +76,8 @@ class Board extends Component {
     event.preventDefault()
 
     this.setState({
-      rows: this.refs.size.value,
-      cols: this.refs.size.value,
+      rows: this.inputRef.current.value,
+      cols: this.inputRef.current.value,
       cellSize: this.state.cellSize
 
     }, () => {
@@ -103,9 +108,9 @@ class Board extends Component {
           <form onSubmit={this.changeBoardSize}>
             <label>
               Size:
-              <input type="number" placeholder="max 60" ref="size" name="size"/>
+              <input type="number" placeholder="max 60" ref={this.inputRef} name="size"/>
             </label>
-            <input type="submit" value="submit" name="submit-reize" />
+            <input type="submit" value="submit" onClick={this.clickToResize.bind(this)}/>
           </form>
         </div>
         <div className="generationCounter">
