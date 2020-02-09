@@ -19,13 +19,13 @@ class Board extends Component {
       cells: this.board.cellStates(),
       rows: ROWS,
       cols: COLS,
-      cellSize: 10
+      cellSize: 60
     }
 
     this.changeBoardSize = this.changeBoardSize.bind(this)
   }
 
-  clickToResize() {
+  clickToResize () {
     this.inputRef.current.focus()
   }
 

@@ -13,7 +13,7 @@ describe('Cell', () => {
 })
 
 function testStateToClass (state) {
-  const wrapper = shallow(<Cell x={5} y={4} state={state} onClick={jest.fn()}/>)
+  const wrapper = shallow(<Cell x={5} y={4} state={state} onClick={jest.fn()} cellSize={60}/>)
 
   expect(wrapper.hasClass(`Cell${state}`)).toBeTruthy()
 }
