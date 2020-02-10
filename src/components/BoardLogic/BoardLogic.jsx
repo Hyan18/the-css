@@ -12,6 +12,15 @@ export default class BoardLogic {
     return this.activeCells
   }
 
+  clearInactiveCells () {
+    this.activeCells.forEach(cell => {
+      if (!cell.isActive()) {
+        this.activeCells.delete(cell)
+      }
+    })
+    return this.activeCells
+  }
+
   iterate () {
     this.generationCount++
     this.cells.forEach(row => row.forEach(cell => cell.nextState()))

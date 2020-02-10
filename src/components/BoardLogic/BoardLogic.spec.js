@@ -123,6 +123,19 @@ describe('BoardLogic test', () => {
       expect(board.addActiveCell(fakeCell1)).toEqual(new Set([fakeCell1]))
     })
   })
+
+  describe('clearInactiveCells', () => {
+    it('should return an array of active cells', () => {
+      const fakeCell1 = { name: 'fakeCell1', isActive: () => true }
+      const fakeCell2 = { name: 'fakeCell2', isActive: () => false }
+      const board = new BoardLogic([[1, 0], [0, 0]], CellLogic)
+
+      board.addActiveCell(fakeCell1)
+      board.addActiveCell(fakeCell2)
+
+      expect(board.clearInactiveCells()).toEqual(new Set([fakeCell1]))
+    })
+  })
 })
 
 function testBoard (description, initialGrid, expectedGrid) {
