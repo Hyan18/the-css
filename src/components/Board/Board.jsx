@@ -73,9 +73,11 @@ class Board extends Component {
   reset () {
     this.pause()
     this.board.reset()
-    this.board = new BoardLogic(this.newEmptyBoard(), CellLogic)
-    this.setState({ generationCount: this.board.getGenerationCount() })
-    this.setState({ cells: this.board.cellStates() })
+    this.board = new BoardLogic(this.newEmptyBoard(this.state.rows, this.state.cols), CellLogic)
+    this.setState({ 
+      generationCount: this.board.getGenerationCount(), 
+      cells: this.board.cellStates() 
+    })
   }
 
   changeBoardSize (event) {
