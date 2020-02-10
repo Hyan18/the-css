@@ -14,7 +14,7 @@ class Board extends Component {
     super()
     this.inputRef = React.createRef()
     this.isRunning = true
-    this.board = new BoardLogic(this.emptyBoard(), CellLogic)
+    this.board = new BoardLogic(this.newEmptyBoard(), CellLogic)
     this.state = {
       cells: this.board.cellStates(),
       rows: ROWS,
@@ -29,26 +29,25 @@ class Board extends Component {
     this.inputRef.current.focus()
   }
 
-  emptyBoard () {
-    const board = []
-    for (let y = 0; y < ROWS; y++) {
-      board[y] = []
-      for (let x = 0; x < COLS; x++) {
-        board[y][x] = 0
-      }
-    }
-    return board
-  }
+  // emptyBoard () {
+  //   const board = []
+  //   for (let y = 0; y < ROWS; y++) {
+  //     board[y] = []
+  //     for (let x = 0; x < COLS; x++) {
+  //       board[y][x] = 0
+  //     }
+  //   }
+  //   return board
+  // }
 
-  newEmptyBoard () {
+  newEmptyBoard (rows = ROWS, cols = COLS) {
     const board = []
-    for (let y = 0; y < this.state.rows; y++) {
+    for (let y = 0; y < rows; y++) {
       board[y] = []
-      for (let x = 0; x < this.state.cols; x++) {
+      for (let x = 0; x < cols; x++) {
         board[y][x] = 0
       }
     }
-    this.board = new BoardLogic(board, CellLogic)
     return board
   }
 
@@ -81,8 +80,10 @@ class Board extends Component {
       cellSize: this.state.cellSize
 
     }, () => {
+      const cells = this.newEmptyBoard(this.state.rows, this.state.cols)
+      this.board = new BoardLogic(cells, CellLogic)
       this.setState({
-        cells: this.newEmptyBoard()
+        cells: cells
       })
     })
   }
