@@ -8,11 +8,12 @@ script:
 - yarn test
 - yarn lint
 - yarn run build
-- yarn global add serve
 deploy:
   provider: heroku
   skip_cleanup: true
   app: the-css
+  run:
+    - "yarn global add serve"
   on:
     repo: Hyan18/the-css
   api_key:
