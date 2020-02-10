@@ -12,14 +12,15 @@ const COLS = 10
 class Board extends Component {
   constructor () {
     super()
+    this.isPlaying = false
     this.inputRef = React.createRef()
-    this.isRunning = true
     this.board = new BoardLogic(this.newEmptyBoard(), CellLogic)
     this.state = {
       cells: this.board.cellStates(),
       rows: ROWS,
       cols: COLS,
-      cellSize: 60
+      cellSize: 60,
+      generationCount: this.board.getGenerationCount()
     }
 
     this.changeBoardSize = this.changeBoardSize.bind(this)
@@ -28,17 +29,6 @@ class Board extends Component {
   clickToResize () {
     this.inputRef.current.focus()
   }
-
-  // emptyBoard () {
-  //   const board = []
-  //   for (let y = 0; y < ROWS; y++) {
-  //     board[y] = []
-  //     for (let x = 0; x < COLS; x++) {
-  //       board[y][x] = 0
-  //     }
-  //   }
-  //   return board
-  // }
 
   newEmptyBoard (rows = ROWS, cols = COLS) {
     const board = []
@@ -53,11 +43,12 @@ class Board extends Component {
 
   iterate () {
     this.board.iterate()
+    this.setState({ generationCount: this.board.getGenerationCount() })
     this.setState({ cells: this.board.cellStates() })
   }
 
   play (timeout = setTimeout, iterateFunc) {
-    if (this.isRunning) {
+    if (this.isPlaying) {
       if (iterateFunc) {
         iterateFunc()
       } else {
@@ -67,8 +58,24 @@ class Board extends Component {
     }
   }
 
+  _checkIfPlaying () {
+    if (this.isPlaying === true) {
+      return
+    }
+    this.isPlaying = true
+    this.play()
+  }
+
   pause () {
-    this.isRunning = false
+    this.isPlaying = false
+  }
+
+  reset () {
+    this.pause()
+    this.board.reset()
+    this.board = new BoardLogic(this.newEmptyBoard(), CellLogic)
+    this.setState({ generationCount: this.board.getGenerationCount() })
+    this.setState({ cells: this.board.cellStates() })
   }
 
   changeBoardSize (event) {
@@ -104,8 +111,9 @@ class Board extends Component {
         </div>
         <div className="controls">
           <button className="iterate-button" onClick={() => this.iterate()}>Iterate</button>
-          <button className="play-button" onClick={() => { this.isRunning = true; this.play() } }>Play</button>
+          <button className="play-button" onClick={() => { this._checkIfPlaying() } }>Play</button>
           <button className="pause-button" onClick={() => this.pause()}>Pause</button>
+          <button className="reset-button" onClick={() => this.reset()}>Reset</button>
           <form onSubmit={this.changeBoardSize}>
             <label>
               Size:
