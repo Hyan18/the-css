@@ -13,7 +13,6 @@ const COLS = 10
 class Board extends Component {
   constructor () {
     super()
-    // this.isRunning = true
     this.isPlaying = false
     this.board = new BoardLogic(this.emptyBoard(), CellLogic)
     this.state = {
