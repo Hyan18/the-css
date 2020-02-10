@@ -50,6 +50,7 @@ describe('Board', () => {
           const board = new Board()
           const mockSetTimeout = jest.fn()
           const mockIterate = jest.fn()
+          board.isPlaying = true
           board.play(mockSetTimeout, mockIterate)
           expect(mockSetTimeout.mock.calls.length).toBe(1)
           expect(mockSetTimeout.mock.calls[0][1]).toBe(100)
