@@ -169,6 +169,19 @@ describe('Board', () => {
           done()
         }, 500)
       })
+
+      it('clicking reset keeps the current board size', () => {
+        wrapper = mount(<Board />)
+        const form = wrapper.find('form')
+        const input = wrapper.find('input').at(0)
+
+        input.instance().value = 20
+        form.simulate('submit')
+
+        const total = 20 * 20
+        clickButton(wrapper, 'reset')
+        expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
+      })
     })
   })
 })
