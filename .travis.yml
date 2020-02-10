@@ -1,19 +1,19 @@
 language: node_js
 node_js:
-- stable
+  - stable
 cache:
   directories:
   - node_modules
 script:
-- yarn test
-- yarn lint
-- yarn run build
+  - yarn test
+  - yarn lint
+  - yarn run build
+before_deploy:
+  - yarn global add serve
 deploy:
   provider: heroku
   skip_cleanup: true
   app: the-css
-  run:
-    - "yarn global add serve"
   on:
     repo: Hyan18/the-css
   api_key:
