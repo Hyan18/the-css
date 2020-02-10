@@ -126,4 +126,26 @@ describe('CellLogic', () => {
       expect(callBack.mock.calls[1][0]).toBe(deadNeighbour)
     })
   })
+
+  describe('isActive', () => {
+    it('should return false if dead and has no neighbours', () => {
+      expect(deadCell.isActive()).toBe(false)
+    })
+
+    it('should return true if live', () => {
+      expect(liveCell.isActive()).toBe(true)
+    })
+
+    it('should return true if dead with live neighbour', () => {
+      deadCell.addNeighbour(liveNeighbour)
+
+      expect(deadCell.isActive()).toBe(true)
+    })
+
+    it('should return false if dead with no live neighbours', () => {
+      deadCell.addNeighbour(deadNeighbour)
+
+      expect(deadCell.isActive()).toBe(false)
+    })
+  })
 })

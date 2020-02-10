@@ -8,6 +8,12 @@ export default class CellLogic {
     return this.state
   }
 
+  isActive () {
+    if (this.state === 1) { return true }
+    if (sumNeighbourStates(this.neighbours) > 0) { return true }
+    return false
+  }
+
   addNeighbour (neighbour) {
     this.neighbours.push(neighbour)
     return this.neighbours
