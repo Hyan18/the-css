@@ -1,8 +1,7 @@
-[![Maintainability](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability)](https://codeclimate.com/github/codeclimate/codeclimate/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/test_coverage)](https://codeclimate.com/github/codeclimate/codeclimate/test_coverage)
+<!-- [![Build Status](https://travis-ci.org/Hyan18/the-css.svg?branch=master)](https://travis-ci.org/Hyan18/the-css)
+[![Maintainability](https://api.codeclimate.com/v1/badges/a82bed84d0c95cae9565/maintainability)](https://codeclimate.com/github/Hyan18/the-css/maintainability) -->
 
-
-# Snake Stimulator
+# The-CSS
 
 - [x] This project fundamentals are based on cellular automata discrete model [x]
 
@@ -22,7 +21,7 @@ to run the jest/enzyme tests and the coverage:
 
 ```
 $ yarn run test
-$ yarn test --coverage --watchAll
+$ yarn run coverage
 ```
 
 This will run the jest/enzyme tests
@@ -32,7 +31,7 @@ This will run the jest/enzyme tests
 To run the linter
 
 ```
-$ yarn run eslint src
+$ yarn run lint
 ```
 ## User stories
 
@@ -127,7 +126,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Cheers Conway for inspiring us to build this beatiful project.
+* Cheers Conway for inspiring us to build this beautiful project.
 * etc
 
 <p align="center">
