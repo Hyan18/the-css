@@ -193,3 +193,17 @@ Dawid - map size/add description and title to page
                 - Toggle set number of cells and set generations (cap)
                 - population check
  
+ ### Blockers
+- Backend (unsure of what to use)
+
+### Learning Resources
+- https://github.com/airbnb/enzyme/issues/346
+- https://reactjs.org/docs/refs-and-the-dom.html
+
+### Retros
+
+#### Went poorly / could improve
+ - Looked into some things which ended up being pointless
+
+#### Went well
+ - Further understanding of code interaction
