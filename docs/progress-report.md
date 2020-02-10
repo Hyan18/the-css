@@ -179,3 +179,17 @@ Dawid - map size/add description and title to page
  - Generation counter
  - Controls (play and stop button)
  
+ ## Day 6 10-02-2020
+ 
+ ### Goal / To do
+ - Git merge
+ - Fix iteration speed
+ - Gameifying (will need backend for storing levels
+                - Rails?
+                - Python?
+                - Javascript/Node?)
+              rules:
+                - Starting state
+                - Toggle set number of cells and set generations (cap)
+                - population check
+ 
