@@ -3,11 +3,15 @@ import { shallow, mount } from 'enzyme'
 import Board from './Board'
 import { findCell } from '../../testHelper'
 
+jest.useFakeTimers()
+
 describe('Board', () => {
   let wrapper
 
   beforeEach(() => {
     wrapper = shallow(<Board />)
+    jest.clearAllTimers()
+    setTimeout.mockClear()
   })
 
   describe('.render', () => {
@@ -48,82 +52,35 @@ describe('Board', () => {
       describe('.play', () => {
         it('iterates continuously', () => {
           const board = new Board()
-          const mockSetTimeout = jest.fn()
           const mockIterate = jest.fn()
           board.isPlaying = true
-          board.play(mockSetTimeout, mockIterate)
-          expect(mockSetTimeout.mock.calls.length).toBe(1)
-          expect(mockSetTimeout.mock.calls[0][1]).toBe(100)
+          board.play(mockIterate)
+          expect(setTimeout.mock.calls.length).toBe(1)
+          expect(setTimeout.mock.calls[0][1]).toBe(100)
           expect(mockIterate.mock.calls.length).toBe(1)
         })
       })
 
-      it('pressing play twice should not speed up the iteration rate', (done) => {
+      it('pressing play twice should not speed up the iteration rate', () => {
+        clickButton(wrapper, 'play')
         clickButton(wrapper, 'play')
 
-        setTimeout(() => {
-          clickButton(wrapper, 'play')
-          const generationCount1 = getGenerationCount(wrapper)
-
-          expect(generationCount1).toBeGreaterThanOrEqual(5)
-          expect(generationCount1).toBeLessThan(8)
-
-          setTimeout(() => {
-            const generationCount2 = getGenerationCount(wrapper)
-
-            expect(generationCount2).toBeGreaterThanOrEqual(11)
-            expect(generationCount2).toBeLessThan(16)
-            done()
-          }, 600)
-        }, 600)
+        expect(setTimeout.mock.calls.length).toBe(1)
       })
 
-      it('should update the generation counter to ~20', (done) => {
+      it('should set a timed callback to play', () => {
         clickButton(wrapper, 'play')
 
-        setTimeout(() => {
-          clickButton(wrapper, 'pause')
-
-          const generationCount1 = getGenerationCount(wrapper)
-
-          expect(generationCount1).toBeGreaterThanOrEqual(18)
-          expect(generationCount1).toBeLessThan(21)
-
-          setTimeout(() => {
-            expect(getGenerationCount(wrapper)).toEqual(generationCount1)
-
-            done()
-          }, 300)
-        }, 2000)
-      })
-
-      it('should update the generation counter to ~12', (done) => {
-        clickButton(wrapper, 'play')
-
-        setTimeout(() => {
-          clickButton(wrapper, 'pause')
-
-          const generationCount1 = getGenerationCount(wrapper)
-
-          expect(generationCount1).toBeGreaterThanOrEqual(11)
-          expect(generationCount1).toBeLessThan(13)
-
-          setTimeout(() => {
-            expect(getGenerationCount(wrapper)).toEqual(generationCount1)
-            done()
-          }, 500)
-        }, 1200)
+        expect(setTimeout.mock.calls.length).toBe(1)
+        expect(setTimeout.mock.calls[0][1]).toBe(100)
       })
 
       it('should allow to play after pausing', () => {
         clickButton(wrapper, 'play')
         clickButton(wrapper, 'pause')
-
-        const generationCount1 = getGenerationCount(wrapper)
-
         clickButton(wrapper, 'play')
-        clickButton(wrapper, 'pause')
-        expect(getGenerationCount(wrapper)).toBeGreaterThan(generationCount1)
+
+        expect(setTimeout.mock.calls.length).toBe(2)
       })
     })
 
@@ -160,14 +117,13 @@ describe('Board', () => {
         expect(findCell(wrapper, 1, 1).prop('state')).toEqual(0)
       })
 
-      it('clicking reset after play stops the iteration', (done) => {
+      it('clicking reset after play stops the iteration', () => {
         clickButton(wrapper, 'play')
         clickButton(wrapper, 'reset')
 
-        setTimeout(() => {
-          expect(getGenerationCount(wrapper)).toBe(0)
-          done()
-        }, 500)
+        jest.runOnlyPendingTimers()
+
+        expect(setTimeout.mock.calls.length).toBe(1)
       })
     })
   })
