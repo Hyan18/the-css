@@ -112,4 +112,18 @@ describe('CellLogic', () => {
       expect(liveCell.currentState()).toEqual(0)
     })
   })
+
+  describe('forEachNeighbour', () => {
+    it('should call the callback on itself', () => {
+      const callBack = jest.fn()
+      liveCell.addNeighbour(liveNeighbour)
+      liveCell.addNeighbour(deadNeighbour)
+
+      liveCell.forEachNeighbour(callBack)
+
+      expect(callBack.mock.calls.length).toBe(2)
+      expect(callBack.mock.calls[0][0]).toBe(liveNeighbour)
+      expect(callBack.mock.calls[1][0]).toBe(deadNeighbour)
+    })
+  })
 })

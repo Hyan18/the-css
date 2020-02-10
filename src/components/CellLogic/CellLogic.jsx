@@ -13,6 +13,10 @@ export default class CellLogic {
     return this.neighbours
   }
 
+  forEachNeighbour (callBack) {
+    this.neighbours.forEach(callBack)
+  }
+
   nextState () {
     const sum = sumNeighbourStates(this.neighbours)
 
