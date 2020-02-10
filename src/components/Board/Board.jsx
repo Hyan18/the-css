@@ -74,9 +74,9 @@ class Board extends Component {
     this.pause()
     this.board.reset()
     this.board = new BoardLogic(this.newEmptyBoard(this.state.rows, this.state.cols), CellLogic)
-    this.setState({ 
-      generationCount: this.board.getGenerationCount(), 
-      cells: this.board.cellStates() 
+    this.setState({
+      generationCount: this.board.getGenerationCount(),
+      cells: this.board.cellStates()
     })
   }
 
