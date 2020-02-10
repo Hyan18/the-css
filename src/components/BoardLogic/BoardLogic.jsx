@@ -20,19 +20,6 @@ export default class BoardLogic {
     return this.cells.map(row => row.map(cell => cell.currentState()))
   }
 
-  // TODO: Don't think we need this function need to check with group (Jamie)
-  play (timeout = setTimeout, iterate = this.iterate) {
-    if (this.isRunning) {
-      iterate()
-      timeout(this.play, 100)
-    }
-  }
-
-  pause () {
-    this.isRunning = false
-    return this.isRunning
-  }
-
   reset () {
     this.generationCount = 0
     return 0
