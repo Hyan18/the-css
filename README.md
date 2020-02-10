@@ -21,7 +21,7 @@ to run the jest/enzyme tests and the coverage:
 
 ```
 $ yarn run test
-$ yarn test --coverage --watchAll
+$ yarn run coverage
 ```
 
 This will run the jest/enzyme tests
