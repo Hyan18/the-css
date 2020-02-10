@@ -1,9 +1,11 @@
-<!-- [![Build Status](https://travis-ci.org/Hyan18/the-css.svg?branch=master)](https://travis-ci.org/Hyan18/the-css)
-[![Maintainability](https://api.codeclimate.com/v1/badges/a82bed84d0c95cae9565/maintainability)](https://codeclimate.com/github/Hyan18/the-css/maintainability) -->
+[![Build Status](https://travis-ci.org/Hyan18/the-css.svg?branch=master)](https://travis-ci.org/Hyan18/the-css)
+[![Maintainability](https://api.codeclimate.com/v1/badges/a82bed84d0c95cae9565/maintainability)](https://codeclimate.com/github/Hyan18/the-css/maintainability)
 
 # The-CSS
 
-- [x] This project fundamentals are based on cellular automata discrete model [x]
+Check out the deployed app [here](https://the-css.herokuapp.com/)
+
+Cellular Automata - single player game, evolution dependant on initial state. Using Conway's game of life you can solve puzzles on a single page web app.
 
 ## Getting Started
 
@@ -17,14 +19,12 @@ $ yarn start
 
 ## Running the tests
 
-to run the jest/enzyme tests and the coverage:
+To run the jest/enzyme tests and the coverage:
 
 ```
 $ yarn run test
 $ yarn run coverage
 ```
-
-This will run the jest/enzyme tests
 
 ### Code style
 
@@ -33,6 +33,7 @@ To run the linter
 ```
 $ yarn run lint
 ```
+
 ## User stories
 
 ```
@@ -71,22 +72,19 @@ I want to be able to click on a cell to set it's state
 
 ## Authors
 
-
-* **[Dawid Szpener](https://github.com/DawidSzpener)** - *Initial work* - 
-
-
-* **[Harrison Yan](https://github.com/Hyan18)** - *Initial work* - 
+* **[Dawid Szpener](https://github.com/DawidSzpener)**
 
 
-* **[Harry Mumford](https://github.com/HarryMumford)** - *Initial work* - 
+* **[Harrison Yan](https://github.com/Hyan18)**
 
 
-* **[Jamie Wong](https://github.com/Jamie95187)** - *Initial work* - 
+* **[Harry Mumford](https://github.com/HarryMumford)**
 
 
-* **[Alastair Gilles](https://github.com/ffgi-es)** - *Initial work* - 
+* **[Jamie Wong](https://github.com/Jamie95187)**
 
 
+* **[Alastair Gilles](https://github.com/ffgi-es)**
 
 ## License
 
