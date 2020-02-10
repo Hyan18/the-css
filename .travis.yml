@@ -8,8 +8,6 @@ script:
   - yarn test
   - yarn lint
   - yarn run build
-before_deploy:
-  - yarn global add serve
 deploy:
   provider: heroku
   skip_cleanup: true
