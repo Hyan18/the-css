@@ -3,11 +3,13 @@ export default class BoardLogic {
     this.cells = initialGrid.map(row => row.map(state => new CellLogic(state)))
     this.generationCount = 0
     this.isRunning = true
+    this.activeCells = new Set()
     setNeighbours(this.cells)
   }
 
-  getGenerationCount () {
-    return this.generationCount
+  addActiveCell (cell) {
+    this.activeCells.add(cell)
+    return this.activeCells
   }
 
   iterate () {
@@ -18,6 +20,10 @@ export default class BoardLogic {
 
   cellStates () {
     return this.cells.map(row => row.map(cell => cell.currentState()))
+  }
+
+  toggleCellState (row, col) {
+    this._findCell(row, col).toggleState()
   }
 
   // TODO: Don't think we need this function need to check with group (Jamie)
@@ -38,8 +44,8 @@ export default class BoardLogic {
     return 0
   }
 
-  toggleCellState (row, col) {
-    this._findCell(row, col).toggleState()
+  getGenerationCount () {
+    return this.generationCount
   }
 
   _findCell (row, col) {

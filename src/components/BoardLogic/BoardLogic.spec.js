@@ -97,6 +97,32 @@ describe('BoardLogic test', () => {
       expect(board.cellStates()[1][1]).toEqual(1)
     })
   })
+
+  describe('addActiveCell', () => {
+    it('should return array of active cells', () => {
+      const board = new BoardLogic([[1, 0], [0, 0]], CellLogic)
+      const fakeCell = { name: 'fakeCell1' }
+
+      expect(board.addActiveCell(fakeCell)).toEqual(new Set([fakeCell]))
+    })
+
+    it('should add the cell to array of active cells', () => {
+      const board = new BoardLogic([[1, 0], [0, 0]], CellLogic)
+      const fakeCell1 = { name: 'fakeCell1' }
+      const fakeCell2 = { name: 'fakeCell2' }
+      board.addActiveCell(fakeCell1)
+
+      expect(board.addActiveCell(fakeCell2)).toEqual(new Set([fakeCell1, fakeCell2]))
+    })
+
+    it('should not duplicate any cell in the array', () => {
+      const board = new BoardLogic([[1, 0], [0, 0]], CellLogic)
+      const fakeCell1 = { name: 'fakeCell1' }
+      board.addActiveCell(fakeCell1)
+
+      expect(board.addActiveCell(fakeCell1)).toEqual(new Set([fakeCell1]))
+    })
+  })
 })
 
 function testBoard (description, initialGrid, expectedGrid) {
