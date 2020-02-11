@@ -13,7 +13,7 @@ class Board extends Component {
   constructor () {
     super()
     this.generationCount = 0
-    this.generationLimit = 10
+    this.generationLimit = Infinity
     this.isPlaying = false
     this.inputRef = React.createRef()
     this.board = new BoardLogic(this.newEmptyBoard(), CellLogic)
@@ -45,11 +45,11 @@ class Board extends Component {
 
   iterate () {
     this.board.iterate()
-    this.generationCount++
     this.setState({
       generationCount: this.generationCount + 1,
       cells: this.board.cellStates()
     })
+    this.generationCount++
   }
 
   play () {
@@ -76,6 +76,7 @@ class Board extends Component {
   reset () {
     this.pause()
     this.board = new BoardLogic(this.newEmptyBoard(this.state.rows, this.state.cols), CellLogic)
+    this.generationCount = 0
     this.setState({
       cells: this.board.cellStates(),
       generationCount: 0
@@ -84,7 +85,7 @@ class Board extends Component {
 
   changeBoardSize (event) {
     event.preventDefault()
-
+    this.reset()
     this.setState({
       rows: this.inputRef.current.value,
       cols: this.inputRef.current.value,

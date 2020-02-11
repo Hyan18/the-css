@@ -50,28 +50,22 @@ describe('Board', () => {
 
     describe('.play', () => {
       it('iterates continuously', () => {
-        const board = new Board()
-        const iterateSpy = jest.spyOn(board, 'iterate')
-        const playSpy = jest.spyOn(board, 'play')
+        let playSpy = jest.spyOn(wrapper.instance(), 'play')
+        let iterateSpy = jest.spyOn(wrapper.instance(), 'iterate')
 
-        board.isPlaying = true
-        board.play()
+        clickButton(wrapper, 'play')
 
-        expect(iterateSpy.mock.calls.length).toBe(1)
-
-        expect(setTimeout.mock.calls.length).toBe(1)
-        expect(setTimeout.mock.calls[0][1]).toBe(100)
-
-        expect(playSpy.mock.calls.length).toBe(1)
         jest.runOnlyPendingTimers()
-        expect(playSpy.mock.calls.length).toBe(2)
-        expect(iterateSpy.mock.calls.length).toBe(2)
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+
+        expect(getGenerationCount(wrapper)).toEqual(5)
+        expect(playSpy.mock.calls.length).toBe(5)
+        expect(iterateSpy.mock.calls.length).toBe(5)
       })
 
       it('iterates for a specific number of generations', () => {
-        // const board = new Board()
-        wrapper = shallow(<Board />)
-        // const iterateSpy = jest.spyOn(board, 'iterate')
 
         wrapper.instance().isPlaying = true
         wrapper.instance().generationLimit = 1
@@ -81,13 +75,8 @@ describe('Board', () => {
         jest.runOnlyPendingTimers()
         jest.runOnlyPendingTimers()
         jest.runOnlyPendingTimers()
-        expect(getGenerationCount(wrapper)).toEqual(2)
+        expect(getGenerationCount(wrapper)).toEqual(1)
 
-        // expect(playSpy.mock.calls.length).toBe(2)
-        // expect(iterateSpy.mock.calls.length).toBe(1)
-        // expect(setTimeout.mock.calls.length).toBe(1)
-
-        // expect(board.state.generationCount).toBe(1)
       })
     })
 
@@ -131,6 +120,20 @@ describe('Board', () => {
 
         const total = 20 * 20
         expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
+      })
+
+      it('should reset the board on resize', () => {
+        wrapper = mount(<Board />)
+
+        let resetSpy = jest.spyOn(wrapper.instance(), 'reset')
+
+        const form = wrapper.find('form')
+        const input = wrapper.find('input').at(0)
+
+        input.instance().value = 20
+        form.simulate('submit')
+
+        expect(resetSpy.mock.calls.length).toBe(1)
       })
     })
 
