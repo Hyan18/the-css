@@ -21,7 +21,6 @@ class Board extends Component {
       cells: this.board.cellStates(),
       rows: ROWS,
       cols: COLS,
-      cellSize: 60,
       generationCount: this.board.getGenerationCount()
     }
 
@@ -88,8 +87,7 @@ class Board extends Component {
 
     this.setState({
       rows: this.inputRef.current.value,
-      cols: this.inputRef.current.value,
-      cellSize: this.state.cellSize
+      cols: this.inputRef.current.value
 
     }, () => {
       const cells = this.newEmptyBoard(this.state.rows, this.state.cols)
@@ -114,11 +112,11 @@ class Board extends Component {
     const presetName = this.state.preset
     const currentPreset = PRESETS.find(preset => preset.name === presetName)
     const presetData = currentPreset.data
+    
     this.board = new BoardLogic(presetData, CellLogic)
     this.setState({
       rows: presetData.length,
       cols: presetData.length,
-      cellSize: this.state.cellSize,
       cells: presetData
     })
   }
