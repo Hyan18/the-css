@@ -153,6 +153,30 @@ describe('Board', () => {
       })
     })
   })
+
+  describe('load map', () => {
+    it('should load the selected map', () => {
+      wrapper = mount(<Board />)
+
+      expect(findCell(wrapper, 0, 0).prop('state')).toBe(0)
+      expect(findCell(wrapper, 1, 0).prop('state')).toBe(0)
+      expect(findCell(wrapper, 0, 1).prop('state')).toBe(0)
+      expect(findCell(wrapper, 1, 1).prop('state')).toBe(0)
+
+      const mapSelect = wrapper.find('.map-select')
+
+      mapSelect.simulate('change', { target: { value: 'Map1' } })
+      clickButton(wrapper, 'map-submit')
+
+      const total = 2 * 2
+      expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
+
+      expect(findCell(wrapper, 0, 0).prop('state')).toBe(1)
+      expect(findCell(wrapper, 1, 0).prop('state')).toBe(1)
+      expect(findCell(wrapper, 0, 1).prop('state')).toBe(1)
+      expect(findCell(wrapper, 1, 1).prop('state')).toBe(0)
+    })
+  })
 })
 
 function getGenerationCount (wrapper) {

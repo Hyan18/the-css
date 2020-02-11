@@ -3,6 +3,7 @@ import './Board.css'
 import Cell from '../Cell/Cell'
 import BoardLogic from '../BoardLogic/BoardLogic'
 import CellLogic from '../CellLogic/CellLogic'
+import { PRESETS } from './Presets'
 
 const WIDTH = 600
 const HEIGHT = 600
@@ -16,6 +17,7 @@ class Board extends Component {
     this.inputRef = React.createRef()
     this.board = new BoardLogic(this.newEmptyBoard(), CellLogic)
     this.state = {
+      preset: 'Default',
       cells: this.board.cellStates(),
       rows: ROWS,
       cols: COLS,
@@ -24,6 +26,7 @@ class Board extends Component {
     }
 
     this.changeBoardSize = this.changeBoardSize.bind(this)
+    this.handleChangeMap = this.handleChangeMap.bind(this)
   }
 
   clickToResize () {
@@ -103,6 +106,23 @@ class Board extends Component {
     this.setState({ cells: this.board.cellStates() })
   }
 
+  handleChangeMap (event) {
+    this.setState({ preset: event.target.value })
+  }
+
+  loadMap () {
+    const presetName = this.state.preset
+    const currentPreset = PRESETS.find(preset => preset.name === presetName)
+    const presetData = currentPreset.data
+    this.board = new BoardLogic(presetData, CellLogic)
+    this.setState({
+      rows: presetData.length,
+      cols: presetData.length,
+      cellSize: this.state.cellSize,
+      cells: presetData
+    })
+  }
+
   render () {
     return (
       <div className="board-container">
@@ -123,6 +143,12 @@ class Board extends Component {
             </label>
             <input type="submit" value="submit" onClick={this.clickToResize.bind(this)}/>
           </form>
+          <select className="map-select" onChange={this.handleChangeMap}>
+            {PRESETS.map((preset, i) =>
+              (<option key={i} value={preset.name}>{preset.name}</option>)
+            )}
+          </select>
+          <button className="map-submit-button" onClick={() => this.loadMap()}>Submit</button>
         </div>
         <div className="generationCounter">
           {this.board.getGenerationCount()}
