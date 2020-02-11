@@ -48,31 +48,45 @@ describe('Board', () => {
       })
     })
 
+    describe('.play', () => {
+      it('iterates continuously', () => {
+        const board = new Board()
+        const mockIterate = jest.fn()
+        const playSpy = jest.spyOn(board, 'play')
+
+        board.isPlaying = true
+        board.play(mockIterate)
+
+        expect(mockIterate.mock.calls.length).toBe(1)
+
+        expect(setTimeout.mock.calls.length).toBe(1)
+        expect(setTimeout.mock.calls[0][1]).toBe(100)
+
+        expect(playSpy.mock.calls.length).toBe(1)
+        jest.runOnlyPendingTimers()
+        expect(playSpy.mock.calls.length).toBe(2)
+        expect(mockIterate.mock.calls.length).toBe(2)
+      })
+    })
+
     describe('play/pause buttons', () => {
-      describe('.play', () => {
-        it('iterates continuously', () => {
-          const board = new Board()
-          const mockIterate = jest.fn()
-          board.isPlaying = true
-          board.play(mockIterate)
-          expect(setTimeout.mock.calls.length).toBe(1)
-          expect(setTimeout.mock.calls[0][1]).toBe(100)
-          expect(mockIterate.mock.calls.length).toBe(1)
-        })
+      let playSpy
+
+      beforeEach(() => {
+        playSpy = jest.spyOn(wrapper.instance(), 'play')
+      })
+
+      it('click play should call play', () => {
+        clickButton(wrapper, 'play')
+
+        expect(playSpy.mock.calls.length).toBe(1)
       })
 
       it('pressing play twice should not speed up the iteration rate', () => {
         clickButton(wrapper, 'play')
         clickButton(wrapper, 'play')
 
-        expect(setTimeout.mock.calls.length).toBe(1)
-      })
-
-      it('should set a timed callback to play', () => {
-        clickButton(wrapper, 'play')
-
-        expect(setTimeout.mock.calls.length).toBe(1)
-        expect(setTimeout.mock.calls[0][1]).toBe(100)
+        expect(playSpy.mock.calls.length).toBe(1)
       })
 
       it('should allow to play after pausing', () => {
@@ -80,20 +94,22 @@ describe('Board', () => {
         clickButton(wrapper, 'pause')
         clickButton(wrapper, 'play')
 
-        expect(setTimeout.mock.calls.length).toBe(2)
+        expect(playSpy.mock.calls.length).toBe(2)
       })
     })
 
-    it('should resize the board', () => {
-      wrapper = mount(<Board />)
-      const form = wrapper.find('form')
-      const input = wrapper.find('input').at(0)
+    describe('resizing form', () => {
+      it('should resize the board', () => {
+        wrapper = mount(<Board />)
+        const form = wrapper.find('form')
+        const input = wrapper.find('input').at(0)
 
-      input.instance().value = 20
-      form.simulate('submit')
+        input.instance().value = 20
+        form.simulate('submit')
 
-      const total = 20 * 20
-      expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
+        const total = 20 * 20
+        expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
+      })
     })
 
     describe('reset button', () => {
@@ -103,18 +119,15 @@ describe('Board', () => {
         findCell(wrapper, 0, 1).simulate('click')
 
         clickButton(wrapper, 'iterate')
-
-        expect(getGenerationCount(wrapper)).toEqual(1)
-        expect(findCell(wrapper, 1, 1).prop('state')).toEqual(1)
-
         clickButton(wrapper, 'reset')
 
         expect(getGenerationCount(wrapper)).toEqual(0)
 
-        expect(findCell(wrapper, 0, 0).prop('state')).toEqual(0)
-        expect(findCell(wrapper, 1, 0).prop('state')).toEqual(0)
-        expect(findCell(wrapper, 0, 1).prop('state')).toEqual(0)
-        expect(findCell(wrapper, 1, 1).prop('state')).toEqual(0)
+        for (let i = 0; i < 2; i++) {
+          for (let j = 0; j < 2; j++) {
+            expect(findCell(wrapper, i, j).prop('state')).toBe(0)
+          }
+        }
       })
 
       it('clicking reset after play stops the iteration', () => {

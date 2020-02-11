@@ -54,7 +54,7 @@ class Board extends Component {
       } else {
         this.iterate()
       }
-      setTimeout(() => this.play(), 100)
+      setTimeout(() => this.play(iterateFunc), 100)
     }
   }
 
