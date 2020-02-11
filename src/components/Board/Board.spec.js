@@ -123,7 +123,7 @@ describe('Board', () => {
 
         expect(getGenerationCount(wrapper)).toEqual(0)
 
-        for(let i = 0; i < 2; i++) {
+        for (let i = 0; i < 2; i++) {
           for (let j = 0; j < 2; j++) {
             expect(findCell(wrapper, i, j).prop('state')).toBe(0)
           }
