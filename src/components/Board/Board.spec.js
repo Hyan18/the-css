@@ -119,18 +119,15 @@ describe('Board', () => {
         findCell(wrapper, 0, 1).simulate('click')
 
         clickButton(wrapper, 'iterate')
-
-        expect(getGenerationCount(wrapper)).toEqual(1)
-        expect(findCell(wrapper, 1, 1).prop('state')).toEqual(1)
-
         clickButton(wrapper, 'reset')
 
         expect(getGenerationCount(wrapper)).toEqual(0)
 
-        expect(findCell(wrapper, 0, 0).prop('state')).toEqual(0)
-        expect(findCell(wrapper, 1, 0).prop('state')).toEqual(0)
-        expect(findCell(wrapper, 0, 1).prop('state')).toEqual(0)
-        expect(findCell(wrapper, 1, 1).prop('state')).toEqual(0)
+        for(let i = 0; i < 2; i++) {
+          for (let j = 0; j < 2; j++) {
+            expect(findCell(wrapper, i, j).prop('state')).toBe(0)
+          }
+        }
       })
 
       it('clicking reset after play stops the iteration', () => {
