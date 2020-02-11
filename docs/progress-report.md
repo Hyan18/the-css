@@ -200,10 +200,39 @@ Dawid - map size/add description and title to page
 - https://github.com/airbnb/enzyme/issues/346
 - https://reactjs.org/docs/refs-and-the-dom.html
 
-### Retros
+### Retro
 
 #### Went poorly / could improve
  - Looked into some things which ended up being pointless
 
 #### Went well
  - Further understanding of code interaction
+
+## Day 7 11-02-2020
+
+### Goal / To do
+
+### Blockers
+ - testing express
+ - edge cases
+ - unit tests
+
+### Learning Resources
+ - https://dev.to/pacheco/my-fullstack-setup-node-js-react-js-and-mongodb-2a4k
+ - https://dev.to/thisk8brd/how-to-deploy-a-webapp-to-heroku-node-js-react-js-and-mongodb-5a7g
+
+### Retro
+
+#### Went poorly / could improve
+ - Board.spec.js is vomit inducing
+
+#### Went well
+ - loading presets
+ - generation limit (can be changed by user)
+ - button edge cases
+ - fixed Alastair
+ - David and Harry beat Hisham and Ellie at table tennis
+ - migrated the app to a frontend backend model with express and node
+
+### Todo
+ - install MongoDB
