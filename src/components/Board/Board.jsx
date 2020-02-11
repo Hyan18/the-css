@@ -15,7 +15,7 @@ class Board extends Component {
     this.generationCount = 0
     this.generationLimit = Infinity
     this.isPlaying = false
-    this.inputRef = React.createRef()
+    this.sizeRef = React.createRef()
     this.limitRef = React.createRef()
     this.board = new BoardLogic(this.newEmptyBoard(), CellLogic)
     this.state = {
@@ -35,7 +35,7 @@ class Board extends Component {
   }
 
   clickToResize () {
-    this.inputRef.current.focus()
+    this.sizeRef.current.focus()
   }
 
   changeLimit (event) {
@@ -102,8 +102,8 @@ class Board extends Component {
     event.preventDefault()
     this.reset()
     this.setState({
-      rows: this.inputRef.current.value,
-      cols: this.inputRef.current.value,
+      rows: this.sizeRef.current.value,
+      cols: this.sizeRef.current.value,
       cellSize: this.state.cellSize
 
     }, () => {
@@ -137,7 +137,7 @@ class Board extends Component {
           <form onSubmit={this.changeBoardSize}>
             <label>
               Size:
-              <input type="number" placeholder="max 60" ref={this.inputRef} name="size"/>
+              <input type="number" placeholder="max 60" ref={this.sizeRef} name="size"/>
             </label>
             <input type="submit" value="submit" onClick={this.clickToResize.bind(this)}/>
           </form>

@@ -58,6 +58,24 @@ describe('Board', () => {
 
         expect(wrapper.instance().generationCount).toBe(1)
       })
+
+      it('limit should gain focus', () => {
+        const wrapper = mount(<Board/>)
+        const focusSpy = jest.spyOn(wrapper.instance(), 'clickToSetLimit')
+
+        wrapper.instance().clickToSetLimit()
+
+        expect(focusSpy).toHaveBeenCalled()
+      })
+
+      it('size should gain focus', () => {
+        const wrapper = mount(<Board/>)
+        const focusSpy = jest.spyOn(wrapper.instance(), 'clickToResize')
+
+        wrapper.instance().clickToResize()
+
+        expect(focusSpy).toHaveBeenCalled()
+      })
     })
 
     describe('generation form', () => {
