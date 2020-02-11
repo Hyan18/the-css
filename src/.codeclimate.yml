@@ -1,2 +1,4 @@
 exclude_patterns:
   - 'src/serviceWorker.js'
+  - 'src/components/BoardLogic/BoardLogic.spec.js'
+  - 'src/components/CellLogic/CellLogic.spec.js'
