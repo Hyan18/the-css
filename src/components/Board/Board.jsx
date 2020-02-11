@@ -12,6 +12,8 @@ const COLS = 10
 class Board extends Component {
   constructor () {
     super()
+    this.generationCount = 0
+    this.generationLimit = 10
     this.isPlaying = false
     this.inputRef = React.createRef()
     this.board = new BoardLogic(this.newEmptyBoard(), CellLogic)
@@ -20,8 +22,7 @@ class Board extends Component {
       rows: ROWS,
       cols: COLS,
       cellSize: 60,
-      generationCount: this.board.getGenerationCount(),
-      generationLimit: -1
+      generationCount: 0
     }
 
     this.changeBoardSize = this.changeBoardSize.bind(this)
@@ -44,23 +45,19 @@ class Board extends Component {
 
   iterate () {
     this.board.iterate()
-    this.setState({ generationCount: this.board.getGenerationCount() })
-    this.setState({ cells: this.board.cellStates() })
+    this.generationCount++
+    this.setState({
+      generationCount: this.generationCount + 1,
+      cells: this.board.cellStates()
+    })
   }
 
-  play (iterateFunc) {
-    if (this.state.generationLimit != 0) {
-      if (this.isPlaying) {
-        if (iterateFunc) {
-          iterateFunc()
-        } else {
-          this.iterate()
-        }
-        this.state.generationLimit --
-        setTimeout(() => {
-            this.play(iterateFunc)
-        }, 100)
-      }
+  play () {
+    if (this.isPlaying && (this.generationCount < this.generationLimit)) {
+      this.iterate()
+      setTimeout(() => {
+        this.play()
+      }, 100)
     }
   }
 
@@ -78,11 +75,10 @@ class Board extends Component {
 
   reset () {
     this.pause()
-    this.board.reset()
     this.board = new BoardLogic(this.newEmptyBoard(this.state.rows, this.state.cols), CellLogic)
     this.setState({
-      generationCount: this.board.getGenerationCount(),
-      cells: this.board.cellStates()
+      cells: this.board.cellStates(),
+      generationCount: 0
     })
   }
 
@@ -131,7 +127,7 @@ class Board extends Component {
           </form>
         </div>
         <div className="generationCounter">
-          {this.board.getGenerationCount()}
+          {this.state.generationCount}
         </div>
       </div>
     )

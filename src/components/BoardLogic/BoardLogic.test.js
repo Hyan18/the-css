@@ -39,38 +39,6 @@ describe('BoardLogic test', () => {
     ]
   )
 
-  describe('controls', () => {
-    let board
-
-    beforeEach(() => {
-      board = new BoardLogic([[0, 0], [0, 0]], CellLogic)
-    })
-
-    describe('.getGenerationCount', () => {
-      it('returns correct generation count', () => {
-        board.iterate()
-        board.iterate()
-        board.iterate()
-        board.iterate()
-        expect(board.getGenerationCount()).toBe(4)
-      })
-
-      it('returns 0 generation count by default', () => {
-        expect(board.getGenerationCount()).toBe(0)
-      })
-    })
-
-    describe('.reset', () => {
-      it('returns correct generation count', () => {
-        board.iterate()
-        board.iterate()
-        board.iterate()
-        board.iterate()
-        expect(board.reset()).toEqual(0)
-      })
-    })
-  })
-
   describe('toggleCellState', () => {
     it("should toggle a cell's state given a row and col", () => {
       const board = new BoardLogic([[0, 0], [0, 0]], CellLogic)
