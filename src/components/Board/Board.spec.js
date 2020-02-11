@@ -49,6 +49,29 @@ describe('Board', () => {
     })
 
     describe('.play', () => {
+      it('iterates for a specific number of generations', () =>{
+        const board = new Board()
+        const mockIterate = jest.fn()
+        const playSpy = jest.spyOn(board, 'play')
+
+        board.isPlaying = true
+        board.state.generationLimit = 1
+        board.play(mockIterate)
+
+        expect(mockIterate.mock.calls.length).toBe(1)
+
+        expect(setTimeout.mock.calls.length).toBe(1)
+        expect(setTimeout.mock.calls[0][1]).toBe(100)
+
+        expect(playSpy.mock.calls.length).toBe(1)
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+
+        expect(playSpy.mock.calls.length).toBe(2)
+        expect(setTimeout.mock.calls.length).toBe(1)
+
+      })
+
       it('iterates continuously', () => {
         const board = new Board()
         const mockIterate = jest.fn()

@@ -20,7 +20,8 @@ class Board extends Component {
       rows: ROWS,
       cols: COLS,
       cellSize: 60,
-      generationCount: this.board.getGenerationCount()
+      generationCount: this.board.getGenerationCount(),
+      generationLimit: -1
     }
 
     this.changeBoardSize = this.changeBoardSize.bind(this)
@@ -48,13 +49,18 @@ class Board extends Component {
   }
 
   play (iterateFunc) {
-    if (this.isPlaying) {
-      if (iterateFunc) {
-        iterateFunc()
-      } else {
-        this.iterate()
+    if (this.state.generationLimit != 0) {
+      if (this.isPlaying) {
+        if (iterateFunc) {
+          iterateFunc()
+        } else {
+          this.iterate()
+        }
+        this.state.generationLimit --
+        setTimeout(() => {
+            this.play(iterateFunc)
+        }, 100)
       }
-      setTimeout(() => this.play(iterateFunc), 100)
     }
   }
 
