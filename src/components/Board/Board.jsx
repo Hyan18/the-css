@@ -47,14 +47,14 @@ class Board extends Component {
     this.setState({ cells: this.board.cellStates() })
   }
 
-  play (timeout = setTimeout, iterateFunc) {
+  play (iterateFunc) {
     if (this.isPlaying) {
       if (iterateFunc) {
         iterateFunc()
       } else {
         this.iterate()
       }
-      timeout(() => this.play(), 100)
+      setTimeout(() => this.play(iterateFunc), 100)
     }
   }
 
