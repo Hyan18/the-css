@@ -16,6 +16,7 @@ class Board extends Component {
     this.generationLimit = Infinity
     this.isPlaying = false
     this.inputRef = React.createRef()
+    this.limitRef = React.createRef()
     this.board = new BoardLogic(this.newEmptyBoard(), CellLogic)
     this.state = {
       cells: this.board.cellStates(),
@@ -26,10 +27,22 @@ class Board extends Component {
     }
 
     this.changeBoardSize = this.changeBoardSize.bind(this)
+    this.changeLimit = this.changeLimit.bind(this)
+  }
+
+  clickToSetLimit () {
+    this.limitRef.current.focus()
   }
 
   clickToResize () {
     this.inputRef.current.focus()
+  }
+
+  changeLimit (event) {
+    event.preventDefault()
+
+    this.generationLimit = this.limitRef.current.value
+    this.pause()
   }
 
   newEmptyBoard (rows = ROWS, cols = COLS) {
@@ -44,16 +57,18 @@ class Board extends Component {
   }
 
   iterate () {
-    this.board.iterate()
-    this.setState({
-      generationCount: this.generationCount + 1,
-      cells: this.board.cellStates()
-    })
-    this.generationCount++
+    if ((this.generationCount < this.generationLimit)) {
+      this.board.iterate()
+      this.setState({
+        generationCount: this.generationCount + 1,
+        cells: this.board.cellStates()
+      })
+      this.generationCount++
+    }
   }
 
   play () {
-    if (this.isPlaying && (this.generationCount < this.generationLimit)) {
+    if (this.isPlaying) {
       this.iterate()
       setTimeout(() => {
         this.play()
@@ -125,6 +140,13 @@ class Board extends Component {
               <input type="number" placeholder="max 60" ref={this.inputRef} name="size"/>
             </label>
             <input type="submit" value="submit" onClick={this.clickToResize.bind(this)}/>
+          </form>
+          <form onSubmit={this.changeLimit}>
+            <label>
+              Limit:
+              <input type="number" name="limit" ref={this.limitRef}/>
+            </label>
+            <input type="submit" value="submit" onClick={this.clickToSetLimit.bind(this)}/>
           </form>
         </div>
         <div className="generationCounter">

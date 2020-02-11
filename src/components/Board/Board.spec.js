@@ -46,12 +46,45 @@ describe('Board', () => {
         clickButton(wrapper, 'iterate')
         expect(findCell(wrapper, 1, 1).prop('state')).toBe(1)
       })
+
+      it('should not iterate over generation limit', () => {
+        clickButton(wrapper, 'iterate')
+
+        wrapper.instance().generationLimit = 1
+
+        clickButton(wrapper, 'iterate')
+        clickButton(wrapper, 'iterate')
+        clickButton(wrapper, 'iterate')
+
+        expect(wrapper.instance().generationCount).toBe(1)
+      })
+    })
+
+    describe('generation form', () => {
+      it('should change the boards generation limit', () => {
+        wrapper = mount(<Board />)
+        const form = wrapper.find('form').at(1)
+        const input = wrapper.find('input').at(2)
+
+        input.instance().value = 1
+        form.simulate('submit')
+
+        wrapper.instance().isPlaying = true
+        wrapper.instance().play()
+
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+
+        expect(getGenerationCount(wrapper)).toEqual(1)
+      })
     })
 
     describe('.play', () => {
       it('iterates continuously', () => {
-        let playSpy = jest.spyOn(wrapper.instance(), 'play')
-        let iterateSpy = jest.spyOn(wrapper.instance(), 'iterate')
+        const playSpy = jest.spyOn(wrapper.instance(), 'play')
+        const iterateSpy = jest.spyOn(wrapper.instance(), 'iterate')
 
         clickButton(wrapper, 'play')
 
@@ -66,7 +99,6 @@ describe('Board', () => {
       })
 
       it('iterates for a specific number of generations', () => {
-
         wrapper.instance().isPlaying = true
         wrapper.instance().generationLimit = 1
         wrapper.instance().play()
@@ -76,7 +108,6 @@ describe('Board', () => {
         jest.runOnlyPendingTimers()
         jest.runOnlyPendingTimers()
         expect(getGenerationCount(wrapper)).toEqual(1)
-
       })
     })
 
@@ -112,7 +143,7 @@ describe('Board', () => {
     describe('resizing form', () => {
       it('should resize the board', () => {
         wrapper = mount(<Board />)
-        const form = wrapper.find('form')
+        const form = wrapper.find('form').at(0)
         const input = wrapper.find('input').at(0)
 
         input.instance().value = 20
@@ -125,9 +156,9 @@ describe('Board', () => {
       it('should reset the board on resize', () => {
         wrapper = mount(<Board />)
 
-        let resetSpy = jest.spyOn(wrapper.instance(), 'reset')
+        const resetSpy = jest.spyOn(wrapper.instance(), 'reset')
 
-        const form = wrapper.find('form')
+        const form = wrapper.find('form').at(0)
         const input = wrapper.find('input').at(0)
 
         input.instance().value = 20
@@ -166,7 +197,7 @@ describe('Board', () => {
 
       it('clicking reset keeps the current board size', () => {
         wrapper = mount(<Board />)
-        const form = wrapper.find('form')
+        const form = wrapper.find('form').at(0)
         const input = wrapper.find('input').at(0)
 
         input.instance().value = 20
