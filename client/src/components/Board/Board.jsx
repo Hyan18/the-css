@@ -35,7 +35,10 @@ class Board extends Component {
   async getAllMaps () {
     const res = await axios.get('/api/maps')
 
-    this.setState({ presets: (res.data || []) })
+    this.setState({
+      presets: (res.data || []),
+      preset: res.data[0].name
+    })
   }
 
   componentDidMount () {
@@ -178,7 +181,7 @@ class Board extends Component {
             </label>
             <input type="submit" value="submit" onClick={this.clickToSetLimit.bind(this)}/>
           </form>
-          <select className="map-select" onChange={this.handleChangeMap}>
+          <select className="map-select" onChange={() => this.handleChangeMap()}>
             {this.state.presets && this.state.presets.map((preset, i) =>
               (<option key={i} value={preset.name}>{preset.name}</option>)
             )}
