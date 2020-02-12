@@ -14,16 +14,18 @@ For local development:
 ```
 $ git clone git@github.com:Hyan18/the-css.git
 $ yarn install
-$ yarn start
+$ yarn --cwd client install
+$ yarn dev
 ```
 
 ## Running the tests
 
-To run the jest/enzyme tests and the coverage:
+To run the jest/enzyme tests for React, the jest/supertest tests for Express and the coverage:
 
 ```
 $ yarn run test
-$ yarn run coverage
+$ yarn run coverage-server
+$ yarn run coverage-client
 ```
 
 ### Code style
@@ -68,7 +70,10 @@ I want to be able to click on a cell to set it's state
 
 ## Built With
 
-* [React](https://reactjs.org/) - The web framework used
+* [MongoDB](https://mongodb.com) - The database
+* [Express](https://expressjs.com/) - The backend server
+* [React](https://reactjs.org/) - The frontend framework
+* [Node](https://nodejs.org/) - The backend environment
 
 ## Authors
 
