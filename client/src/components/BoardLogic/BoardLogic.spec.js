@@ -48,11 +48,6 @@ describe('BoardLogic test', () => {
     })
   })
 
-  // describe('.countLiveCells', () => {
-  //   it('should count number of live cells', () => {
-
-  //   })
-  // })
 })
 
 function testBoard (description, initialGrid, expectedGrid) {
