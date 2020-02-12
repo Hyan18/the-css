@@ -175,6 +175,9 @@ class Board extends Component {
       cells: this.state.cells
     }
     axios.post('/api/maps', data)
+    this.setState({
+      presets: this.state.presets.concat([data])
+    })
   }
 
   render () {
@@ -211,7 +214,7 @@ class Board extends Component {
             </label>
             <input type="submit" value="submit" onClick={this.clickToSetLimit.bind(this)}/>
           </form>
-          <select className="map-select" onChange={() => this.handleChangeMap()}>
+          <select className="map-select" onChange={this.handleChangeMap}>
             {this.state.presets && this.state.presets.map((preset, i) =>
               (<option key={i} value={preset.name}>{preset.name}</option>)
             )}

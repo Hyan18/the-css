@@ -319,6 +319,25 @@ describe('Board', () => {
       expect(postSpy.mock.calls[0][0]).toBe('/api/maps')
       expect(postSpy.mock.calls[0][1]).toEqual(data)
     })
+
+    it('should make the saved board available', () => {
+      wrapper = mount(<Board />)
+
+      findCell(wrapper, 0, 0).simulate('click')
+      findCell(wrapper, 1, 1).simulate('click')
+      findCell(wrapper, 2, 2).simulate('click')
+      findCell(wrapper, 3, 3).simulate('click')
+      findCell(wrapper, 4, 4).simulate('click')
+
+      const form = wrapper.find('.save-board')
+      form.find('input').at(0).simulate('change', { target: { value: 'Hamlet' } })
+      form.simulate('submit')
+
+      setTimeout(() => {
+        const mapSelect = wrapper.find('.map-select')
+        expect(mapSelect.find('option').at(2).instance().value).toBe('Hamlet')
+      }, 100)
+    })
   })
 })
 
