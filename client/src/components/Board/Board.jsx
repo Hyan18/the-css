@@ -3,6 +3,7 @@ import './Board.css'
 import Cell from '../Cell/Cell'
 import BoardLogic from '../BoardLogic/BoardLogic'
 import CellLogic from '../CellLogic/CellLogic'
+import { PRESETS } from './Presets'
 
 const WIDTH = 600
 const HEIGHT = 600
@@ -12,22 +13,38 @@ const COLS = 10
 class Board extends Component {
   constructor () {
     super()
+    this.generationCount = 0
+    this.generationLimit = Infinity
     this.isPlaying = false
-    this.inputRef = React.createRef()
+    this.sizeRef = React.createRef()
+    this.limitRef = React.createRef()
     this.board = new BoardLogic(this.newEmptyBoard(), CellLogic)
     this.state = {
+      preset: 'Default',
       cells: this.board.cellStates(),
       rows: ROWS,
       cols: COLS,
-      cellSize: 60,
-      generationCount: this.board.getGenerationCount()
+      generationCount: 0
     }
 
     this.changeBoardSize = this.changeBoardSize.bind(this)
+    this.changeLimit = this.changeLimit.bind(this)
+    this.handleChangeMap = this.handleChangeMap.bind(this)
+  }
+
+  clickToSetLimit () {
+    this.limitRef.current.focus()
   }
 
   clickToResize () {
-    this.inputRef.current.focus()
+    this.sizeRef.current.focus()
+  }
+
+  changeLimit (event) {
+    event.preventDefault()
+
+    this.generationLimit = this.limitRef.current.value
+    this.pause()
   }
 
   newEmptyBoard (rows = ROWS, cols = COLS) {
@@ -42,19 +59,22 @@ class Board extends Component {
   }
 
   iterate () {
-    this.board.iterate()
-    this.setState({ generationCount: this.board.getGenerationCount() })
-    this.setState({ cells: this.board.cellStates() })
+    if ((this.generationCount < this.generationLimit)) {
+      this.board.iterate()
+      this.setState({
+        generationCount: this.generationCount + 1,
+        cells: this.board.cellStates()
+      })
+      this.generationCount++
+    }
   }
 
-  play (iterateFunc) {
+  play () {
     if (this.isPlaying) {
-      if (iterateFunc) {
-        iterateFunc()
-      } else {
-        this.iterate()
-      }
-      setTimeout(() => this.play(iterateFunc), 100)
+      this.iterate()
+      setTimeout(() => {
+        this.play()
+      }, 100)
     }
   }
 
@@ -72,22 +92,20 @@ class Board extends Component {
 
   reset () {
     this.pause()
-    this.board.reset()
     this.board = new BoardLogic(this.newEmptyBoard(this.state.rows, this.state.cols), CellLogic)
+    this.generationCount = 0
     this.setState({
-      generationCount: this.board.getGenerationCount(),
-      cells: this.board.cellStates()
+      cells: this.board.cellStates(),
+      generationCount: 0
     })
   }
 
   changeBoardSize (event) {
     event.preventDefault()
-
+    this.reset()
     this.setState({
-      rows: this.inputRef.current.value,
-      cols: this.inputRef.current.value,
-      cellSize: this.state.cellSize
-
+      rows: this.sizeRef.current.value,
+      cols: this.sizeRef.current.value
     }, () => {
       const cells = this.newEmptyBoard(this.state.rows, this.state.cols)
       this.board = new BoardLogic(cells, CellLogic)
@@ -101,6 +119,22 @@ class Board extends Component {
     this.board.toggleCellState(y, x)
 
     this.setState({ cells: this.board.cellStates() })
+  }
+
+  handleChangeMap (event) {
+    this.setState({ preset: event.target.value })
+  }
+
+  loadMap () {
+    const presetName = this.state.preset
+    const currentPreset = PRESETS.find(preset => preset.name === presetName)
+    const presetData = currentPreset.data
+    this.board = new BoardLogic(presetData, CellLogic)
+    this.setState({
+      rows: presetData.length,
+      cols: presetData.length,
+      cells: presetData
+    })
   }
 
   render () {
@@ -119,13 +153,26 @@ class Board extends Component {
           <form onSubmit={this.changeBoardSize}>
             <label>
               Size:
-              <input type="number" placeholder="max 60" ref={this.inputRef} name="size"/>
+              <input type="number" placeholder="max 60" ref={this.sizeRef} name="size"/>
             </label>
             <input type="submit" value="submit" onClick={this.clickToResize.bind(this)}/>
           </form>
+          <form onSubmit={this.changeLimit}>
+            <label>
+              Limit:
+              <input type="number" name="limit" ref={this.limitRef}/>
+            </label>
+            <input type="submit" value="submit" onClick={this.clickToSetLimit.bind(this)}/>
+          </form>
+          <select className="map-select" onChange={this.handleChangeMap}>
+            {PRESETS.map((preset, i) =>
+              (<option key={i} value={preset.name}>{preset.name}</option>)
+            )}
+          </select>
+          <button className="map-submit-button" onClick={() => this.loadMap()}>Submit</button>
         </div>
         <div className="generationCounter">
-          {this.board.getGenerationCount()}
+          {this.state.generationCount}
         </div>
       </div>
     )
