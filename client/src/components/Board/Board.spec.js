@@ -59,7 +59,7 @@ describe('Board', () => {
         expect(wrapper.instance().generationCount).toBe(1)
       })
 
-      it('limit should gain focus', () => {
+      it('generation limit input should gain focus', () => {
         const wrapper = mount(<Board/>)
         const focusSpy = jest.spyOn(wrapper.instance(), 'clickToSetLimit')
 
@@ -82,7 +82,7 @@ describe('Board', () => {
       it('should change the boards generation limit', () => {
         wrapper = mount(<Board />)
         const form = wrapper.find('form').at(1)
-        const input = wrapper.find('input').at(2)
+        const input = form.find('input').at(0)
 
         input.instance().value = 1
         form.simulate('submit')
@@ -96,6 +96,22 @@ describe('Board', () => {
         jest.runOnlyPendingTimers()
 
         expect(getGenerationCount(wrapper)).toEqual('Generations: 1')
+      })
+    })
+
+    describe('limitClick form', () => {
+      it('should change the boards click limit', () => {
+        wrapper = mount(<Board />)
+        const form = wrapper.find('form').at(2)
+        const clickLimitInput = form.find('input').at(0)
+
+        clickLimitInput.instance().value = 1
+        form.simulate('submit')
+
+        findCell(wrapper, 0, 0).simulate('click')
+        findCell(wrapper, 0, 0).simulate('click')
+
+        expect(getClickCount(wrapper)).toEqual('Click Count: 1')
       })
     })
 
@@ -187,7 +203,7 @@ describe('Board', () => {
     })
 
     describe('reset button', () => {
-      it('should reset the cells and generation count to zeros', () => {
+      fit('should reset the cells and generation count to zeros', () => {
         findCell(wrapper, 0, 0).simulate('click')
         findCell(wrapper, 1, 0).simulate('click')
         findCell(wrapper, 0, 1).simulate('click')
@@ -195,6 +211,7 @@ describe('Board', () => {
         clickButton(wrapper, 'iterate')
         clickButton(wrapper, 'reset')
 
+        expect(wrapper.instance().clickLimit).toBe(Infinity)
         expect(getGenerationCount(wrapper)).toEqual('Generations: 0')
         expect(getClickCount(wrapper)).toEqual('Click Count: 0')
 
