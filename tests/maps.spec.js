@@ -22,13 +22,24 @@ describe('maps API', () => {
     })
 
     it('should return an array containing a map', async () => {
-      await Maps.create({ name: 'testMap1', data: [[0, 0], [0, 0]] })
+      Maps.create({ name: 'testMap1', data: [[0, 0], [0, 0]] })
       const response = await request.get('/api/maps')
 
       expect(response.status).toBe(200)
-      expect(response.body.length).toEqual(1)
-      expect(response.body[0].name).toEqual('testMap1')
+      expect(response.body.length).toBe(1)
+      expect(response.body[0].name).toBe('testMap1')
       expect(response.body[0].data).toEqual([[0, 0], [0, 0]])
+    })
+
+    it('should return an array of multiple maps', async () => {
+      Maps.create({ name: 'testMap1', data: [[0, 0], [0, 1]] })
+      Maps.create({ name: 'testMap2', data: [[0, 0], [1, 0]] })
+      const response = await request.get('/api/maps')
+
+      expect(response.status).toBe(200)
+      expect(response.body.length).toBe(2)
+      expect(response.body[1].name).toBe('testMap2')
+      expect(response.body[1].data).toEqual([[0, 0], [1, 0]])
     })
   })
 })
