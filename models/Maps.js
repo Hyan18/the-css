@@ -3,7 +3,7 @@ const { Schema } = mongoose
 
 const mapsSchema = new Schema({
   name: String,
-  data: Array
+  cells: Array
 })
 
 mongoose.model('maps', mapsSchema)

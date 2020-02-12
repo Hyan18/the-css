@@ -30,14 +30,19 @@ class Board extends Component {
     this.changeBoardSize = this.changeBoardSize.bind(this)
     this.changeLimit = this.changeLimit.bind(this)
     this.handleChangeMap = this.handleChangeMap.bind(this)
+    this.clickToSaveBoard = this.clickToSaveBoard.bind(this)
+    this.handleNameChange = this.handleNameChange.bind(this)
+    this.saveBoard = this.saveBoard.bind(this)
   }
 
   async getAllMaps () {
     const res = await axios.get('/api/maps')
 
+    const presets = res.data.length > 0 ? res.data : [{ name: 'None', cells: [[0]] }]
+
     this.setState({
-      presets: (res.data || []),
-      preset: res.data[0].name
+      presets: presets,
+      preset: presets[0].name
     })
   }
 
@@ -51,6 +56,10 @@ class Board extends Component {
 
   clickToResize () {
     this.sizeRef.current.focus()
+  }
+
+  clickToSaveBoard () {
+
   }
 
   changeLimit (event) {
@@ -142,6 +151,7 @@ class Board extends Component {
     const presetName = this.state.preset
     const currentPreset = this.state.presets.find(preset => preset.name === presetName)
     const presetData = currentPreset.cells
+    console.log(currentPreset)
     this._setMap(presetData)
   }
 
@@ -152,6 +162,19 @@ class Board extends Component {
       cols: data.length,
       cells: data
     })
+  }
+
+  handleNameChange (event) {
+    this.setState({ mapName: event.target.value })
+  }
+
+  saveBoard (event) {
+    event.preventDefault()
+    const data = {
+      name: this.state.mapName,
+      cells: this.state.cells
+    }
+    axios.post('/api/maps', data)
   }
 
   render () {
@@ -167,14 +190,21 @@ class Board extends Component {
           <button className="play-button" onClick={() => { this._checkIfPlaying() } }>Play</button>
           <button className="pause-button" onClick={() => this.pause()}>Pause</button>
           <button className="reset-button" onClick={() => this.reset()}>Reset</button>
-          <form onSubmit={this.changeBoardSize}>
+          <form className="save-board" onSubmit={this.saveBoard}>
+            <label>
+              Map Name:
+              <input type="text" onChange={this.handleNameChange}/>
+            </label>
+            <input type="submit" value="save" onClick={this.clickToSaveBoard.bind(this)}/>
+          </form>
+          <form className="resize-board" onSubmit={this.changeBoardSize}>
             <label>
               Size:
               <input type="number" placeholder="max 60" ref={this.sizeRef} name="size"/>
             </label>
             <input type="submit" value="submit" onClick={this.clickToResize.bind(this)}/>
           </form>
-          <form onSubmit={this.changeLimit}>
+          <form className="set-generation-limit" onSubmit={this.changeLimit}>
             <label>
               Limit:
               <input type="number" name="limit" ref={this.limitRef}/>

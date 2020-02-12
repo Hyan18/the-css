@@ -22,24 +22,24 @@ describe('maps API', () => {
     })
 
     it('should return an array containing a map', async () => {
-      Maps.create({ name: 'testMap1', data: [[0, 0], [0, 0]] })
+      Maps.create({ name: 'testMap1', cells: [[0, 0], [0, 0]] })
       const response = await request.get('/api/maps')
 
       expect(response.status).toBe(200)
       expect(response.body.length).toBe(1)
       expect(response.body[0].name).toBe('testMap1')
-      expect(response.body[0].data).toEqual([[0, 0], [0, 0]])
+      expect(response.body[0].cells).toEqual([[0, 0], [0, 0]])
     })
 
     it('should return an array of multiple maps', async () => {
-      Maps.create({ name: 'testMap1', data: [[0, 0], [0, 1]] })
-      Maps.create({ name: 'testMap2', data: [[0, 0], [1, 0]] })
+      Maps.create({ name: 'testMap1', cells: [[0, 0], [0, 1]] })
+      Maps.create({ name: 'testMap2', cells: [[0, 0], [1, 0]] })
       const response = await request.get('/api/maps')
 
       expect(response.status).toBe(200)
       expect(response.body.length).toBe(2)
       expect(response.body[1].name).toBe('testMap2')
-      expect(response.body[1].data).toEqual([[0, 0], [1, 0]])
+      expect(response.body[1].cells).toEqual([[0, 0], [1, 0]])
     })
   })
 
@@ -47,14 +47,14 @@ describe('maps API', () => {
     it('should add a map to the database', async () => {
       const data = {
         name: 'postTestMap',
-        data: [[0, 0], [1, 1]]
+        cells: [[0, 0], [1, 1]]
       }
       const response = await request.post('/api/maps').send(data)
 
       expect(response.status).toBe(201)
       expect(response.body.error).toBe(false)
       expect(response.body.map.name).toBe('postTestMap')
-      expect(response.body.map.data).toEqual([[0, 0], [1, 1]])
+      expect(response.body.map.cells).toEqual([[0, 0], [1, 1]])
       expect(response.body.map._id).toBeDefined()
 
       const maps = await Maps.find()

@@ -110,8 +110,8 @@ describe('Board', () => {
     describe('generation form', () => {
       it('should change the boards generation limit', () => {
         wrapper = mount(<Board />)
-        const form = wrapper.find('form').at(1)
-        const input = wrapper.find('input').at(2)
+        const form = wrapper.find('.set-generation-limit')
+        const input = form.find('input').at(0)
 
         input.instance().value = 1
         form.simulate('submit')
@@ -190,8 +190,8 @@ describe('Board', () => {
     describe('resizing form', () => {
       it('should resize the board', () => {
         wrapper = mount(<Board />)
-        const form = wrapper.find('form').at(0)
-        const input = wrapper.find('input').at(0)
+        const form = wrapper.find('.resize-board')
+        const input = form.find('input').at(0)
 
         input.instance().value = 20
         form.simulate('submit')
@@ -205,8 +205,8 @@ describe('Board', () => {
 
         const resetSpy = jest.spyOn(wrapper.instance(), 'reset')
 
-        const form = wrapper.find('form').at(0)
-        const input = wrapper.find('input').at(0)
+        const form = wrapper.find('.resize-board')
+        const input = form.find('input').at(0)
 
         input.instance().value = 20
         form.simulate('submit')
@@ -244,8 +244,8 @@ describe('Board', () => {
 
       it('clicking reset keeps the current board size', () => {
         wrapper = mount(<Board />)
-        const form = wrapper.find('form').at(0)
-        const input = wrapper.find('input').at(0)
+        const form = wrapper.find('.resize-board')
+        const input = form.find('input').at(0)
 
         input.instance().value = 20
         form.simulate('submit')
@@ -280,6 +280,44 @@ describe('Board', () => {
         expect(findCell(wrapper, 0, 1).prop('state')).toBe(1)
         expect(findCell(wrapper, 1, 1).prop('state')).toBe(0)
       }, 100)
+    })
+  })
+
+  describe('save map', () => {
+    it('should post the board current cells with a name', () => {
+      wrapper = mount(<Board />)
+
+      findCell(wrapper, 0, 0).simulate('click')
+      findCell(wrapper, 1, 1).simulate('click')
+      findCell(wrapper, 2, 2).simulate('click')
+      findCell(wrapper, 3, 3).simulate('click')
+      findCell(wrapper, 4, 4).simulate('click')
+
+      const data = {
+        name: 'Gerbils',
+        cells: [
+          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        ]
+      }
+
+      const postSpy = jest.spyOn(axios, 'post')
+
+      const form = wrapper.find('.save-board')
+      form.find('input').at(0).simulate('change', { target: { value: 'Gerbils' } })
+      form.simulate('submit')
+
+      expect(postSpy.mock.calls.length).toBe(1)
+      expect(postSpy.mock.calls[0][0]).toBe('/api/maps')
+      expect(postSpy.mock.calls[0][1]).toEqual(data)
     })
   })
 })
