@@ -47,6 +47,12 @@ describe('BoardLogic test', () => {
       expect(board.cellStates()[1][1]).toEqual(1)
     })
   })
+
+  // describe('.countLiveCells', () => {
+  //   it('should count number of live cells', () => {
+
+  //   })
+  // })
 })
 
 function testBoard (description, initialGrid, expectedGrid) {
