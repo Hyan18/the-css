@@ -15,9 +15,11 @@ class Board extends Component {
     super()
     this.generationCount = 0
     this.generationLimit = Infinity
+    this.clickLimit = Infinity
     this.isPlaying = false
     this.sizeRef = React.createRef()
     this.limitRef = React.createRef()
+    this.clickLimitRef = React.createRef()
     this.board = new BoardLogic(this.newEmptyBoard(), CellLogic)
     this.state = {
       preset: 'Default',
@@ -31,11 +33,16 @@ class Board extends Component {
 
     this.changeBoardSize = this.changeBoardSize.bind(this)
     this.changeLimit = this.changeLimit.bind(this)
+    this.changeClickLimit = this.changeClickLimit.bind(this)
     this.handleChangeMap = this.handleChangeMap.bind(this)
   }
 
   clickToSetLimit () {
     this.limitRef.current.focus()
+  }
+
+  clickToSetClickLimit () {
+    this.clickLimitRef.current.focus()
   }
 
   clickToResize () {
@@ -54,7 +61,13 @@ class Board extends Component {
     this.generationLimit = Infinity
     this.setState({
       generationLimit: 'No limit'
-    })
+     })
+  }
+    
+  changeClickLimit (event) {
+    event.preventDefault()
+
+    this.clickLimit = this.clickLimitRef.current.value
   }
 
   newEmptyBoard (rows = ROWS, cols = COLS) {
@@ -103,6 +116,7 @@ class Board extends Component {
   reset () {
     this.pause()
     this.board = new BoardLogic(this.newEmptyBoard(this.state.rows, this.state.cols), CellLogic)
+    this.clickLimit = Infinity
     this.generationCount = 0
     this.setState({
       cells: this.board.cellStates(),
@@ -127,12 +141,14 @@ class Board extends Component {
   }
 
   handleClick (x, y) {
-    this.board.toggleCellState(y, x)
+    if (this.state.clickCount !== this.clickLimit) {
+      this.board.toggleCellState(y, x)
 
-    this.setState({
-      clickCount: this.state.clickCount + 1,
-      cells: this.board.cellStates()
-    })
+      this.setState({
+        clickCount: this.state.clickCount + 1,
+        cells: this.board.cellStates()
+      })
+    }
   }
 
   handleChangeMap (event) {
@@ -178,6 +194,13 @@ class Board extends Component {
               <input type="number" name="limit" ref={this.limitRef}/>
             </label>
             <input type="submit" value="submit" onClick={this.clickToSetLimit.bind(this)}/>
+          </form>
+          <form onSubmit={this.changeClickLimit}>
+            <label>
+              Click limit:
+              <input type="number" name="clickLimit" ref={this.clickLimitRef}/>
+            </label>
+            <input type="submit" value="submit" onClick={this.clickToSetClickLimit.bind(this)}/>
           </form>
           <select className="map-select" onChange={this.handleChangeMap}>
             {PRESETS.map((preset, i) =>
