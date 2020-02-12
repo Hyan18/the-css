@@ -1,5 +1,28 @@
+.board-container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  /* margin-top: 50px;
+  height: 100%;
+  display: inline-block;
+  padding-bottom: 150px;
+  position: fixed; */
+}
+
 .board-div {
-  position: relative;
+  height: 600px;
+  width: 600px;
+  /* position: relative;
   margin: 0 auto;
-  overflow: auto;
+  overflow: auto; */
+}
+
+.counters {
+
+}
+
+.controls {
+  /* position: relative;
+  margin: 0 auto;
+  overflow: auto; */
 }

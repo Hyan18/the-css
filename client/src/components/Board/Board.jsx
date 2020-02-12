@@ -209,14 +209,16 @@ class Board extends Component {
           </select>
           <button className="map-submit-button" onClick={() => this.loadMap()}>Submit</button>
         </div>
-        <div className="generationCounter">
-          {`Generations: ${this.state.generationCount}`}
-        </div>
-        <div className="generationLimit">
-          {`Generation Limit: ${this.state.generationLimit}`}
-        </div>
-        <div className="clickCounter">
-          {`Click Count: ${this.state.clickCount}`}
+        <div className="counters">
+          <div className="generationCounter">
+            {`Generations: ${this.state.generationCount}`}
+          </div>
+          <div className="generationLimit">
+            {`Generation Limit: ${this.state.generationLimit}`}
+          </div>
+          <div className="clickCounter">
+            {`Click Count: ${this.state.clickCount}`}
+          </div>
         </div>
       </div>
     )

@@ -30,15 +30,15 @@ const App = () => {
 
   return (
     <div className="app-container">
-      <Text />
+      {/* <Text /> */}
       <Board />
-      <ul className="example_list">
+      {/* <ul className="example_list">
         {(examples && examples.length > 0) ? (
           examples.map(example => renderExample(example))
         ) : (
           <p>No examples found</p>
         )}
-      </ul>
+      </ul> */}
     </div>
   )
 }
