@@ -13,7 +13,7 @@ describe('maps API', () => {
     mongoose.connection.close()
   })
 
-  describe('/api/maps', () => {
+  describe('GET /api/maps', () => {
     it('should return an empty array if no maps', async () => {
       const response = await request.get('/api/maps')
 
@@ -40,6 +40,25 @@ describe('maps API', () => {
       expect(response.body.length).toBe(2)
       expect(response.body[1].name).toBe('testMap2')
       expect(response.body[1].data).toEqual([[0, 0], [1, 0]])
+    })
+  })
+
+  describe('POST /api/maps', () => {
+    it('should add a map to the database', async () => {
+      const data = {
+        name: "postTestMap",
+        data: [[0, 0], [1, 1]]
+      }
+      const response = await request.post('/api/maps').send(data)
+
+      expect(response.status).toBe(201)
+      expect(response.body.error).toBe(false)
+      expect(response.body.map.name).toBe('postTestMap')
+      expect(response.body.map.data).toEqual([[0, 0], [1, 1]])
+      expect(response.body.map._id).toBeDefined()
+
+      const maps = await Maps.find()
+      expect(maps.length).toBe(1)
     })
   })
 })

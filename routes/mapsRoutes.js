@@ -7,4 +7,13 @@ module.exports = (app) => {
 
     return res.status(200).send(maps)
   })
+
+  app.post('/api/maps', async (req, res) => {
+    let map = await Maps.create(req.body)
+
+    return res.status(201).send({
+      error: false,
+      map: map
+    })
+  })
 }
