@@ -61,7 +61,8 @@ class Board extends Component {
   setUnlimited () {
     this.generationLimit = Infinity
     this.setState({
-      generationLimit: 'No limit'
+      generationLimit: 'No limit',
+      clickLimit: Infinity
     })
   }
 
