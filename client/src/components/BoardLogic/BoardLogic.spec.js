@@ -47,7 +47,6 @@ describe('BoardLogic test', () => {
       expect(board.cellStates()[1][1]).toEqual(1)
     })
   })
-
 })
 
 function testBoard (description, initialGrid, expectedGrid) {
