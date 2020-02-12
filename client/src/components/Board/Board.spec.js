@@ -78,8 +78,8 @@ describe('Board', () => {
       })
     })
 
-    describe('generation form', () => {
-      it('should change the boards generation limit', () => {
+    describe('generation', () => {
+      it('form should change the boards generation limit', () => {
         wrapper = mount(<Board />)
         const form = wrapper.find('form').at(1)
         const input = wrapper.find('input').at(2)
@@ -96,6 +96,34 @@ describe('Board', () => {
         jest.runOnlyPendingTimers()
 
         expect(getGenerationCount(wrapper)).toEqual(1)
+      })
+
+      describe('.setUnlimited', () => {
+        it('should set limit to unlimited', () => {
+          const wrapper = mount(<Board />)
+
+          wrapper.instance().setUnlimited()
+
+          const genLimit = wrapper.children().find('.generationLimit').text()
+          expect(genLimit).toMatch('No limit')
+        })
+      })
+
+      it('clicking unlimited sets generation limit to infinity', () => {
+        wrapper = mount(<Board />)
+        const form = wrapper.find('form').at(1)
+        const input = wrapper.find('input').at(2)
+
+        input.instance().value = 1
+        form.simulate('submit')
+        wrapper.instance().isPlaying = true
+        clickButton(wrapper, 'unlimited')
+        wrapper.instance().play()
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+
+        expect(getGenerationCount(wrapper)).toEqual(4)
       })
     })
 
@@ -254,7 +282,7 @@ describe('Board', () => {
 })
 
 function getGenerationCount (wrapper) {
-  return parseInt(wrapper.children().find('.generationCounter').text())
+  return parseInt(wrapper.children().find('.generationCounter').text().match(/\d+/))
 }
 
 function clickButton (wrapper, action) {
