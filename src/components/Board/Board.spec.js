@@ -46,26 +46,86 @@ describe('Board', () => {
         clickButton(wrapper, 'iterate')
         expect(findCell(wrapper, 1, 1).prop('state')).toBe(1)
       })
+
+      it('should not iterate over generation limit', () => {
+        clickButton(wrapper, 'iterate')
+
+        wrapper.instance().generationLimit = 1
+
+        clickButton(wrapper, 'iterate')
+        clickButton(wrapper, 'iterate')
+        clickButton(wrapper, 'iterate')
+
+        expect(wrapper.instance().generationCount).toBe(1)
+      })
+
+      it('limit should gain focus', () => {
+        const wrapper = mount(<Board/>)
+        const focusSpy = jest.spyOn(wrapper.instance(), 'clickToSetLimit')
+
+        wrapper.instance().clickToSetLimit()
+
+        expect(focusSpy).toHaveBeenCalled()
+      })
+
+      it('size should gain focus', () => {
+        const wrapper = mount(<Board/>)
+        const focusSpy = jest.spyOn(wrapper.instance(), 'clickToResize')
+
+        wrapper.instance().clickToResize()
+
+        expect(focusSpy).toHaveBeenCalled()
+      })
+    })
+
+    describe('generation form', () => {
+      it('should change the boards generation limit', () => {
+        wrapper = mount(<Board />)
+        const form = wrapper.find('form').at(1)
+        const input = wrapper.find('input').at(2)
+
+        input.instance().value = 1
+        form.simulate('submit')
+
+        wrapper.instance().isPlaying = true
+        wrapper.instance().play()
+
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+
+        expect(getGenerationCount(wrapper)).toEqual(1)
+      })
     })
 
     describe('.play', () => {
       it('iterates continuously', () => {
-        const board = new Board()
-        const mockIterate = jest.fn()
-        const playSpy = jest.spyOn(board, 'play')
+        const playSpy = jest.spyOn(wrapper.instance(), 'play')
+        const iterateSpy = jest.spyOn(wrapper.instance(), 'iterate')
 
-        board.isPlaying = true
-        board.play(mockIterate)
+        clickButton(wrapper, 'play')
 
-        expect(mockIterate.mock.calls.length).toBe(1)
-
-        expect(setTimeout.mock.calls.length).toBe(1)
-        expect(setTimeout.mock.calls[0][1]).toBe(100)
-
-        expect(playSpy.mock.calls.length).toBe(1)
         jest.runOnlyPendingTimers()
-        expect(playSpy.mock.calls.length).toBe(2)
-        expect(mockIterate.mock.calls.length).toBe(2)
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+
+        expect(getGenerationCount(wrapper)).toEqual(5)
+        expect(playSpy.mock.calls.length).toBe(5)
+        expect(iterateSpy.mock.calls.length).toBe(5)
+      })
+
+      it('iterates for a specific number of generations', () => {
+        wrapper.instance().isPlaying = true
+        wrapper.instance().generationLimit = 1
+        wrapper.instance().play()
+
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+        expect(getGenerationCount(wrapper)).toEqual(1)
       })
     })
 
@@ -101,7 +161,7 @@ describe('Board', () => {
     describe('resizing form', () => {
       it('should resize the board', () => {
         wrapper = mount(<Board />)
-        const form = wrapper.find('form')
+        const form = wrapper.find('form').at(0)
         const input = wrapper.find('input').at(0)
 
         input.instance().value = 20
@@ -109,6 +169,20 @@ describe('Board', () => {
 
         const total = 20 * 20
         expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
+      })
+
+      it('should reset the board on resize', () => {
+        wrapper = mount(<Board />)
+
+        const resetSpy = jest.spyOn(wrapper.instance(), 'reset')
+
+        const form = wrapper.find('form').at(0)
+        const input = wrapper.find('input').at(0)
+
+        input.instance().value = 20
+        form.simulate('submit')
+
+        expect(resetSpy.mock.calls.length).toBe(1)
       })
     })
 
@@ -141,7 +215,7 @@ describe('Board', () => {
 
       it('clicking reset keeps the current board size', () => {
         wrapper = mount(<Board />)
-        const form = wrapper.find('form')
+        const form = wrapper.find('form').at(0)
         const input = wrapper.find('input').at(0)
 
         input.instance().value = 20
