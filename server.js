@@ -17,6 +17,7 @@ app.use(bodyParser.json())
 
 // import routes
 require('./routes/exampleRoutes')(app)
+require('./routes/mapsRoutes')(app)
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'))
