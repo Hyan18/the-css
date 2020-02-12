@@ -129,11 +129,15 @@ class Board extends Component {
     const presetName = this.state.preset
     const currentPreset = PRESETS.find(preset => preset.name === presetName)
     const presetData = currentPreset.data
-    this.board = new BoardLogic(presetData, CellLogic)
+    this._setMap(presetData)
+  }
+
+  _setMap (data) {
+    this.board = new BoardLogic(data, CellLogic)
     this.setState({
-      rows: presetData.length,
-      cols: presetData.length,
-      cells: presetData
+      rows: data.length,
+      cols: data.length,
+      cells: data
     })
   }
 
