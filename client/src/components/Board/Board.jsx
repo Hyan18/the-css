@@ -24,7 +24,8 @@ class Board extends Component {
       cells: this.board.cellStates(),
       rows: ROWS,
       cols: COLS,
-      generationCount: 0
+      generationCount: 0,
+      clickCount: 0
     }
 
     this.changeBoardSize = this.changeBoardSize.bind(this)
@@ -96,7 +97,8 @@ class Board extends Component {
     this.generationCount = 0
     this.setState({
       cells: this.board.cellStates(),
-      generationCount: 0
+      generationCount: 0,
+      clickCount: 0
     })
   }
 
@@ -118,7 +120,10 @@ class Board extends Component {
   handleClick (x, y) {
     this.board.toggleCellState(y, x)
 
-    this.setState({ cells: this.board.cellStates() })
+    this.setState({
+      clickCount: this.state.clickCount + 1,
+      cells: this.board.cellStates()
+    })
   }
 
   handleChangeMap (event) {
@@ -172,7 +177,10 @@ class Board extends Component {
           <button className="map-submit-button" onClick={() => this.loadMap()}>Submit</button>
         </div>
         <div className="generationCounter">
-          {this.state.generationCount}
+          Generations: {this.state.generationCount}
+        </div>
+        <div className="clickCounter">
+          Click Count: {this.state.clickCount}
         </div>
       </div>
     )
