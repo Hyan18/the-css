@@ -28,7 +28,8 @@ class Board extends Component {
       cols: COLS,
       generationCount: 0,
       generationLimit: 'No Limit',
-      clickCount: 0
+      clickCount: 0,
+      clickLimit: Infinity
     }
 
     this.changeBoardSize = this.changeBoardSize.bind(this)
@@ -60,14 +61,17 @@ class Board extends Component {
   setUnlimited () {
     this.generationLimit = Infinity
     this.setState({
-      generationLimit: 'No limit'
+      generationLimit: 'No limit',
+      clickLimit: Infinity
     })
   }
 
   changeClickLimit (event) {
     event.preventDefault()
 
-    this.clickLimit = this.clickLimitRef.current.value
+    this.setState({
+      clickLimit: this.clickLimitRef.current.value
+    })
   }
 
   newEmptyBoard (rows = ROWS, cols = COLS) {
@@ -121,7 +125,8 @@ class Board extends Component {
     this.setState({
       cells: this.board.cellStates(),
       generationCount: 0,
-      clickCount: 0
+      clickCount: 0,
+      clickLimit: this.state.clickLimit
     })
   }
 
@@ -141,7 +146,7 @@ class Board extends Component {
   }
 
   handleClick (x, y) {
-    if (this.state.clickCount < this.clickLimit) {
+    if (this.state.clickCount < this.state.clickLimit) {
       this.board.toggleCellState(y, x)
 
       this.setState({
@@ -217,6 +222,9 @@ class Board extends Component {
         </div>
         <div className="clickCounter">
           {`Click Count: ${this.state.clickCount}`}
+        </div>
+        <div className="clickLimit">
+          {`Click Limit: ${this.state.clickLimit}`}
         </div>
       </div>
     )

@@ -238,7 +238,7 @@ describe('Board', () => {
         clickButton(wrapper, 'iterate')
         clickButton(wrapper, 'reset')
 
-        expect(wrapper.instance().clickLimit).toBe(Infinity)
+        expect(wrapper.instance().state.clickLimit).toBe(Infinity)
         expect(getGenerationCount(wrapper)).toEqual(0)
         expect(getClickCount(wrapper)).toEqual('Click Count: 0')
 
