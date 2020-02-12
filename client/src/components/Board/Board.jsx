@@ -15,20 +15,26 @@ class Board extends Component {
     super()
     this.generationCount = 0
     this.generationLimit = Infinity
+    this.clickLimit = Infinity
     this.isPlaying = false
     this.sizeRef = React.createRef()
     this.limitRef = React.createRef()
+    this.clickLimitRef = React.createRef()
     this.board = new BoardLogic(this.newEmptyBoard(), CellLogic)
     this.state = {
       presets: [],
       cells: this.board.cellStates(),
       rows: ROWS,
       cols: COLS,
-      generationCount: 0
+      generationCount: 0,
+      generationLimit: 'No Limit',
+      clickCount: 0,
+      clickLimit: Infinity
     }
 
     this.changeBoardSize = this.changeBoardSize.bind(this)
     this.changeLimit = this.changeLimit.bind(this)
+    this.changeClickLimit = this.changeClickLimit.bind(this)
     this.handleChangeMap = this.handleChangeMap.bind(this)
     this.clickToSaveBoard = this.clickToSaveBoard.bind(this)
     this.handleNameChange = this.handleNameChange.bind(this)
@@ -54,6 +60,10 @@ class Board extends Component {
     this.limitRef.current.focus()
   }
 
+  clickToSetClickLimit () {
+    this.clickLimitRef.current.focus()
+  }
+
   clickToResize () {
     this.sizeRef.current.focus()
   }
@@ -66,7 +76,24 @@ class Board extends Component {
     event.preventDefault()
 
     this.generationLimit = this.limitRef.current.value
+    this.setState({ generationLimit: this.generationLimit })
     this.pause()
+  }
+
+  setUnlimited () {
+    this.generationLimit = Infinity
+    this.setState({
+      generationLimit: 'No limit',
+      clickLimit: Infinity
+    })
+  }
+
+  changeClickLimit (event) {
+    event.preventDefault()
+
+    this.setState({
+      clickLimit: this.clickLimitRef.current.value
+    })
   }
 
   newEmptyBoard (rows = ROWS, cols = COLS) {
@@ -115,10 +142,13 @@ class Board extends Component {
   reset () {
     this.pause()
     this.board = new BoardLogic(this.newEmptyBoard(this.state.rows, this.state.cols), CellLogic)
+    this.clickLimit = Infinity
     this.generationCount = 0
     this.setState({
       cells: this.board.cellStates(),
-      generationCount: 0
+      generationCount: 0,
+      clickCount: 0,
+      clickLimit: this.state.clickLimit
     })
   }
 
@@ -138,9 +168,14 @@ class Board extends Component {
   }
 
   handleClick (x, y) {
-    this.board.toggleCellState(y, x)
+    if (this.state.clickCount < this.state.clickLimit) {
+      this.board.toggleCellState(y, x)
 
-    this.setState({ cells: this.board.cellStates() })
+      this.setState({
+        clickCount: this.state.clickCount + 1,
+        cells: this.board.cellStates()
+      })
+    }
   }
 
   handleChangeMap (event) {
@@ -193,6 +228,7 @@ class Board extends Component {
           <button className="play-button" onClick={() => { this._checkIfPlaying() } }>Play</button>
           <button className="pause-button" onClick={() => this.pause()}>Pause</button>
           <button className="reset-button" onClick={() => this.reset()}>Reset</button>
+          <button className="unlimited-button" onClick={() => this.setUnlimited()}>Unlimited</button>
           <form className="save-board" onSubmit={this.saveBoard}>
             <label>
               Map Name:
@@ -214,6 +250,13 @@ class Board extends Component {
             </label>
             <input type="submit" value="submit" onClick={this.clickToSetLimit.bind(this)}/>
           </form>
+          <form onSubmit={this.changeClickLimit}>
+            <label>
+              Click limit:
+              <input type="number" name="clickLimit" ref={this.clickLimitRef}/>
+            </label>
+            <input type="submit" value="submit" onClick={this.clickToSetClickLimit.bind(this)}/>
+          </form>
           <select className="map-select" onChange={this.handleChangeMap}>
             {this.state.presets && this.state.presets.map((preset, i) =>
               (<option key={i} value={preset.name}>{preset.name}</option>)
@@ -222,7 +265,16 @@ class Board extends Component {
           <button className="map-submit-button" onClick={() => this.loadMap()}>Submit</button>
         </div>
         <div className="generationCounter">
-          {this.state.generationCount}
+          {`Generations: ${this.state.generationCount}`}
+        </div>
+        <div className="generationLimit">
+          {`Generation Limit: ${this.state.generationLimit}`}
+        </div>
+        <div className="clickCounter">
+          {`Click Count: ${this.state.clickCount}`}
+        </div>
+        <div className="clickLimit">
+          {`Click Limit: ${this.state.clickLimit}`}
         </div>
       </div>
     )

@@ -88,7 +88,7 @@ describe('Board', () => {
         expect(wrapper.instance().generationCount).toBe(1)
       })
 
-      it('limit should gain focus', () => {
+      it('generation limit input should gain focus', () => {
         const wrapper = mount(<Board/>)
         const focusSpy = jest.spyOn(wrapper.instance(), 'clickToSetLimit')
 
@@ -107,9 +107,10 @@ describe('Board', () => {
       })
     })
 
-    describe('generation form', () => {
-      it('should change the boards generation limit', () => {
+    describe('generation', () => {
+      it('form should change the boards generation limit', () => {
         wrapper = mount(<Board />)
+
         const form = wrapper.find('.set-generation-limit')
         const input = form.find('input').at(0)
 
@@ -125,6 +126,49 @@ describe('Board', () => {
         jest.runOnlyPendingTimers()
 
         expect(getGenerationCount(wrapper)).toEqual(1)
+      })
+
+      describe('.setUnlimited', () => {
+        it('should set limit to unlimited', () => {
+          const wrapper = mount(<Board />)
+
+          wrapper.instance().setUnlimited()
+
+          const genLimit = wrapper.children().find('.generationLimit').text()
+          expect(genLimit).toMatch('No limit')
+        })
+      })
+
+      it('clicking unlimited sets generation limit to infinity', () => {
+        wrapper = mount(<Board />)
+        const form = wrapper.find('form').at(1)
+        const input = wrapper.find('input').at(2)
+
+        input.instance().value = 1
+        form.simulate('submit')
+        wrapper.instance().isPlaying = true
+        clickButton(wrapper, 'unlimited')
+        wrapper.instance().play()
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+
+        expect(getGenerationCount(wrapper)).toEqual(4)
+      })
+    })
+
+    describe('limitClick form', () => {
+      it('should change the boards click limit', () => {
+        wrapper = mount(<Board />)
+        const form = wrapper.find('form').at(2)
+        const clickLimitInput = form.find('input').at(0)
+
+        clickLimitInput.instance().value = 1
+        form.simulate('submit')
+        findCell(wrapper, 0, 0).simulate('click')
+        findCell(wrapper, 0, 0).simulate('click')
+
+        expect(wrapper.children().find('.clickCounter').text()).toEqual('Click Count: 1')
       })
     })
 
@@ -224,7 +268,9 @@ describe('Board', () => {
         clickButton(wrapper, 'iterate')
         clickButton(wrapper, 'reset')
 
+        expect(wrapper.instance().state.clickLimit).toBe(Infinity)
         expect(getGenerationCount(wrapper)).toEqual(0)
+        expect(getClickCount(wrapper)).toEqual('Click Count: 0')
 
         for (let i = 0; i < 2; i++) {
           for (let j = 0; j < 2; j++) {
@@ -339,10 +385,28 @@ describe('Board', () => {
       }, 100)
     })
   })
+  describe('clicks', () => {
+    it('should increase the click count by 1 on cell click', () => {
+      findCell(wrapper, 0, 0).simulate('click')
+
+      expect(wrapper.children().find('.clickCounter').text()).toEqual('Click Count: 1')
+    })
+
+    it('should increase the click count by 1 on cell click', () => {
+      findCell(wrapper, 0, 0).simulate('click')
+      findCell(wrapper, 0, 0).simulate('click')
+
+      expect(wrapper.children().find('.clickCounter').text()).toEqual('Click Count: 2')
+    })
+  })
 })
 
 function getGenerationCount (wrapper) {
-  return parseInt(wrapper.children().find('.generationCounter').text())
+  return parseInt(wrapper.children().find('.generationCounter').text().match(/\d+/))
+}
+
+function getClickCount (wrapper) {
+  return wrapper.children().find('.clickCounter').text()
 }
 
 function clickButton (wrapper, action) {
