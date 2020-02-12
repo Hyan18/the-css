@@ -160,7 +160,7 @@ describe('Board', () => {
     describe('limitClick form', () => {
       it('should change the boards click limit', () => {
         wrapper = mount(<Board />)
-        const form = wrapper.find('form').at(2)
+        const form = wrapper.find('.click-limit')
         const clickLimitInput = form.find('input').at(0)
 
         clickLimitInput.instance().value = 1

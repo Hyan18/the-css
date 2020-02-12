@@ -250,7 +250,7 @@ class Board extends Component {
             </label>
             <input type="submit" value="submit" onClick={this.clickToSetLimit.bind(this)}/>
           </form>
-          <form onSubmit={this.changeClickLimit}>
+          <form className="click-limit" onSubmit={this.changeClickLimit}>
             <label>
               Click limit:
               <input type="number" name="clickLimit" ref={this.clickLimitRef}/>
