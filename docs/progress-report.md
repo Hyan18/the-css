@@ -236,3 +236,28 @@ Dawid - map size/add description and title to page
 
 ### Todo
  - install MongoDB
+
+## Day 8 12-02-2020
+
+### Goal / To do
+
+### Blockers
+- conditional rendering
+
+### Learning Resources
+https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/
+
+### Retro
+
+#### Went poorly / could improve
+ - SOLID principles
+ - Styling
+ - Funingration tests
+
+#### Went well
+ - saving state
+
+### Todo
+ - install MongoDB
+ - refactor into a game
+ - styling
