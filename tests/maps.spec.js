@@ -9,6 +9,10 @@ describe('maps API', () => {
     await Maps.deleteMany({}, () => {})
   })
 
+  afterAll(() => {
+    mongoose.connection.close()
+  })
+  
   describe('/api/maps', () => {
     it('should return an empty array if no maps', async () => {
       const response = await request.get('/api/maps')
