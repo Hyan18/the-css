@@ -38,6 +38,11 @@ class Board extends Component {
     this.handleChangeMap = this.handleChangeMap.bind(this)
   }
 
+  calculateKilloffScore () {
+    const score = (this.state.clickCount * 10) + (this.state.generationCount * 5)
+    return score
+  }
+
   clickToSetLimit () {
     this.limitRef.current.focus()
   }
@@ -225,6 +230,9 @@ class Board extends Component {
         </div>
         <div className="clickLimit">
           {`Click Limit: ${this.state.clickLimit}`}
+        </div>
+        <div className="score-div">
+          {`Score: ${this.calculateKilloffScore()}`}
         </div>
       </div>
     )

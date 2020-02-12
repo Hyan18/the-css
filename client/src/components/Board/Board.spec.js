@@ -20,6 +20,10 @@ describe('Board', () => {
       expect(wrapper.find('.board-div').length).toEqual(1)
     })
 
+    it('should render a score', () => {
+      expect(wrapper.find('.score-div')).toBeDefined()
+    })
+
     it('should render a 10x10 grid', () => {
       const total = 10 * 10
       expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
@@ -64,6 +68,15 @@ describe('Board', () => {
         const focusSpy = jest.spyOn(wrapper.instance(), 'clickToSetLimit')
 
         wrapper.instance().clickToSetLimit()
+
+        expect(focusSpy).toHaveBeenCalled()
+      })
+
+      it('click limit input should gain focus', () => {
+        const wrapper = mount(<Board/>)
+        const focusSpy = jest.spyOn(wrapper.instance(), 'clickToSetClickLimit')
+
+        wrapper.instance().clickToSetClickLimit()
 
         expect(focusSpy).toHaveBeenCalled()
       })
@@ -296,6 +309,7 @@ describe('Board', () => {
       expect(findCell(wrapper, 1, 1).prop('state')).toBe(0)
     })
   })
+
   describe('clicks', () => {
     it('should increase the click count by 1 on cell click', () => {
       findCell(wrapper, 0, 0).simulate('click')
@@ -308,6 +322,14 @@ describe('Board', () => {
       findCell(wrapper, 0, 0).simulate('click')
 
       expect(wrapper.children().find('.clickCounter').text()).toEqual('Click Count: 2')
+    })
+  })
+
+  describe('score', () => {
+    it('should calculate killoff score properly', () => {
+      findCell(wrapper, 0, 0).simulate('click')
+
+      expect(wrapper.instance().calculateKilloffScore()).toEqual(10)
     })
   })
 })
