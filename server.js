@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 
 // import models
 require('./models/ExampleThing')
+require('./models/Maps')
 
 const app = express()
 
