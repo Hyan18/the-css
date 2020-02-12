@@ -306,7 +306,7 @@ describe('Board', () => {
       expect(findCell(wrapper, 1, 1).prop('state')).toBe(0)
     })
   })
-  
+
   describe('clicks', () => {
     it('should increase the click count by 1 on cell click', () => {
       findCell(wrapper, 0, 0).simulate('click')
