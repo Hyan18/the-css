@@ -3,7 +3,7 @@ import './Board.css'
 import Cell from '../Cell/Cell'
 import BoardLogic from '../BoardLogic/BoardLogic'
 import CellLogic from '../CellLogic/CellLogic'
-import { PRESETS } from './Presets'
+import axios from 'axios'
 
 const WIDTH = 600
 const HEIGHT = 600
@@ -20,7 +20,7 @@ class Board extends Component {
     this.limitRef = React.createRef()
     this.board = new BoardLogic(this.newEmptyBoard(), CellLogic)
     this.state = {
-      preset: 'Default',
+      presets: [],
       cells: this.board.cellStates(),
       rows: ROWS,
       cols: COLS,
@@ -30,6 +30,16 @@ class Board extends Component {
     this.changeBoardSize = this.changeBoardSize.bind(this)
     this.changeLimit = this.changeLimit.bind(this)
     this.handleChangeMap = this.handleChangeMap.bind(this)
+  }
+
+  async getAllMaps () {
+    const res = await axios.get('/api/maps')
+
+    this.setState({ presets: (res.data || []) })
+  }
+
+  componentDidMount () {
+    this.getAllMaps()
   }
 
   clickToSetLimit () {
@@ -127,8 +137,8 @@ class Board extends Component {
 
   loadMap () {
     const presetName = this.state.preset
-    const currentPreset = PRESETS.find(preset => preset.name === presetName)
-    const presetData = currentPreset.data
+    const currentPreset = this.state.presets.find(preset => preset.name === presetName)
+    const presetData = currentPreset.cells
     this._setMap(presetData)
   }
 
@@ -169,7 +179,7 @@ class Board extends Component {
             <input type="submit" value="submit" onClick={this.clickToSetLimit.bind(this)}/>
           </form>
           <select className="map-select" onChange={this.handleChangeMap}>
-            {PRESETS.map((preset, i) =>
+            {this.state.presets && this.state.presets.map((preset, i) =>
               (<option key={i} value={preset.name}>{preset.name}</option>)
             )}
           </select>

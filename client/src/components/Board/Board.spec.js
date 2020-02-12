@@ -2,8 +2,16 @@ import React from 'react'
 import { shallow, mount } from 'enzyme'
 import Board from './Board'
 import { findCell } from '../../testHelper'
+import axios from 'axios'
 
+jest.mock('axios')
 jest.useFakeTimers()
+axios.get.mockReturnValue({
+  data: [
+    { name: 'None', cells: [[0, 0], [0, 0]] },
+    { name: 'Map1', cells: [[1, 1], [1, 0]] }
+  ]
+})
 
 describe('Board', () => {
   let wrapper
@@ -12,6 +20,27 @@ describe('Board', () => {
     wrapper = shallow(<Board />)
     jest.clearAllTimers()
     setTimeout.mockClear()
+    jest.clearAllMocks()
+  })
+
+  describe('constructor loading maps', () => {
+    it('should load all maps from the API', () => {
+      const getSpy = jest.spyOn(axios, 'get')
+      shallow(<Board />)
+
+      expect(getSpy.mock.calls.length).toEqual(1)
+      expect(getSpy.mock.calls[0][0]).toEqual('/api/maps')
+    })
+
+    it('should have all the maps in the dropdown', () => {
+      wrapper = mount(<Board />)
+
+      setTimeout(() => {
+        const mapSelect = wrapper.find('.map-select')
+
+        expect(mapSelect.find('option').at(0).instance().value).toEqual('None')
+      }, 100)
+    })
   })
 
   describe('.render', () => {
@@ -237,18 +266,20 @@ describe('Board', () => {
       expect(findCell(wrapper, 0, 1).prop('state')).toBe(0)
       expect(findCell(wrapper, 1, 1).prop('state')).toBe(0)
 
-      const mapSelect = wrapper.find('.map-select')
+      setTimeout(() => {
+        const mapSelect = wrapper.find('.map-select')
 
-      mapSelect.simulate('change', { target: { value: 'Map1' } })
-      clickButton(wrapper, 'map-submit')
+        mapSelect.simulate('change', { target: { value: 'Map1' } })
+        clickButton(wrapper, 'map-submit')
 
-      const total = 2 * 2
-      expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
+        const total = 2 * 2
+        expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
 
-      expect(findCell(wrapper, 0, 0).prop('state')).toBe(1)
-      expect(findCell(wrapper, 1, 0).prop('state')).toBe(1)
-      expect(findCell(wrapper, 0, 1).prop('state')).toBe(1)
-      expect(findCell(wrapper, 1, 1).prop('state')).toBe(0)
+        expect(findCell(wrapper, 0, 0).prop('state')).toBe(1)
+        expect(findCell(wrapper, 1, 0).prop('state')).toBe(1)
+        expect(findCell(wrapper, 0, 1).prop('state')).toBe(1)
+        expect(findCell(wrapper, 1, 1).prop('state')).toBe(0)
+      }, 100)
     })
   })
 })
