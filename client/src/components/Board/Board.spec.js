@@ -95,7 +95,7 @@ describe('Board', () => {
         jest.runOnlyPendingTimers()
         jest.runOnlyPendingTimers()
 
-        expect(getGenerationCount(wrapper)).toEqual(1)
+        expect(getGenerationCount(wrapper)).toEqual('Generations: 1')
       })
     })
 
@@ -111,7 +111,7 @@ describe('Board', () => {
         jest.runOnlyPendingTimers()
         jest.runOnlyPendingTimers()
 
-        expect(getGenerationCount(wrapper)).toEqual(5)
+        expect(getGenerationCount(wrapper)).toEqual('Generations: 5')
         expect(playSpy.mock.calls.length).toBe(5)
         expect(iterateSpy.mock.calls.length).toBe(5)
       })
@@ -125,7 +125,7 @@ describe('Board', () => {
         jest.runOnlyPendingTimers()
         jest.runOnlyPendingTimers()
         jest.runOnlyPendingTimers()
-        expect(getGenerationCount(wrapper)).toEqual(1)
+        expect(getGenerationCount(wrapper)).toEqual('Generations: 1')
       })
     })
 
@@ -195,7 +195,8 @@ describe('Board', () => {
         clickButton(wrapper, 'iterate')
         clickButton(wrapper, 'reset')
 
-        expect(getGenerationCount(wrapper)).toEqual(0)
+        expect(getGenerationCount(wrapper)).toEqual('Generations: 0')
+        expect(getClickCount(wrapper)).toEqual('Click Count: 0')
 
         for (let i = 0; i < 2; i++) {
           for (let j = 0; j < 2; j++) {
@@ -251,10 +252,28 @@ describe('Board', () => {
       expect(findCell(wrapper, 1, 1).prop('state')).toBe(0)
     })
   })
+  describe('clicks', () => {
+    it('should increase the click count by 1 on cell click', () => {
+      findCell(wrapper, 0, 0).simulate('click')
+
+      expect(wrapper.children().find('.clickCounter').text()).toEqual('Click Count: 1')
+    })
+
+    it('should increase the click count by 1 on cell click', () => {
+      findCell(wrapper, 0, 0).simulate('click')
+      findCell(wrapper, 0, 0).simulate('click')
+
+      expect(wrapper.children().find('.clickCounter').text()).toEqual('Click Count: 2')
+    })
+  })
 })
 
 function getGenerationCount (wrapper) {
-  return parseInt(wrapper.children().find('.generationCounter').text())
+  return wrapper.children().find('.generationCounter').text()
+}
+
+function getClickCount (wrapper) {
+  return wrapper.children().find('.clickCounter').text()
 }
 
 function clickButton (wrapper, action) {
