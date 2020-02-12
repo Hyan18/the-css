@@ -26,6 +26,16 @@ describe('Board', () => {
     })
   })
 
+  describe('live cell count', () => {
+    it('should count number of live cells', () => {
+      findCell(wrapper, 0, 0).simulate('click')
+      findCell(wrapper, 1, 0).simulate('click')
+      findCell(wrapper, 0, 1).simulate('click')
+
+      expect(wrapper.instance().countLiveCells()).toBe(3)
+    })
+  })
+
   describe('grid interaction', () => {
     it('should turn a cell to alive', () => {
       findCell(wrapper, 0, 0).simulate('click')
@@ -296,6 +306,7 @@ describe('Board', () => {
       expect(findCell(wrapper, 1, 1).prop('state')).toBe(0)
     })
   })
+
   describe('clicks', () => {
     it('should increase the click count by 1 on cell click', () => {
       findCell(wrapper, 0, 0).simulate('click')

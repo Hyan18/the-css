@@ -145,6 +145,12 @@ class Board extends Component {
     })
   }
 
+  countLiveCells () {
+    return this.state.cells.flat().reduce((acc, cellState) => {
+      return acc + cellState
+    }, 0)
+  }
+
   handleClick (x, y) {
     if (this.state.clickCount < this.state.clickLimit) {
       this.board.toggleCellState(y, x)
