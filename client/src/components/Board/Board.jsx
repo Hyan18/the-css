@@ -27,6 +27,7 @@ class Board extends Component {
       rows: ROWS,
       cols: COLS,
       generationCount: 0,
+      generationLimit: 'No Limit',
       clickCount: 0
     }
 
@@ -52,7 +53,15 @@ class Board extends Component {
     event.preventDefault()
 
     this.generationLimit = this.limitRef.current.value
+    this.setState({ generationLimit: this.generationLimit })
     this.pause()
+  }
+
+  setUnlimited () {
+    this.generationLimit = Infinity
+    this.setState({
+      generationLimit: 'No limit'
+    })
   }
 
   changeClickLimit (event) {
@@ -132,7 +141,7 @@ class Board extends Component {
   }
 
   handleClick (x, y) {
-    if (this.state.clickCount !== this.clickLimit) {
+    if (this.state.clickCount < this.clickLimit) {
       this.board.toggleCellState(y, x)
 
       this.setState({
@@ -171,6 +180,7 @@ class Board extends Component {
           <button className="play-button" onClick={() => { this._checkIfPlaying() } }>Play</button>
           <button className="pause-button" onClick={() => this.pause()}>Pause</button>
           <button className="reset-button" onClick={() => this.reset()}>Reset</button>
+          <button className="unlimited-button" onClick={() => this.setUnlimited()}>Unlimited</button>
           <form onSubmit={this.changeBoardSize}>
             <label>
               Size:
@@ -200,10 +210,13 @@ class Board extends Component {
           <button className="map-submit-button" onClick={() => this.loadMap()}>Submit</button>
         </div>
         <div className="generationCounter">
-          Generations: {this.state.generationCount}
+          {`Generations: ${this.state.generationCount}`}
+        </div>
+        <div className="generationLimit">
+          {`Generation Limit: ${this.state.generationLimit}`}
         </div>
         <div className="clickCounter">
-          Click Count: {this.state.clickCount}
+          {`Click Count: ${this.state.clickCount}`}
         </div>
       </div>
     )
