@@ -25,7 +25,8 @@ class Board extends Component {
       rows: ROWS,
       cols: COLS,
       generationCount: 0,
-      generationLimit: 'No Limit'
+      generationLimit: 'No Limit',
+      clickCount: 0
     }
 
     this.changeBoardSize = this.changeBoardSize.bind(this)
@@ -105,7 +106,8 @@ class Board extends Component {
     this.generationCount = 0
     this.setState({
       cells: this.board.cellStates(),
-      generationCount: 0
+      generationCount: 0,
+      clickCount: 0
     })
   }
 
@@ -127,7 +129,10 @@ class Board extends Component {
   handleClick (x, y) {
     this.board.toggleCellState(y, x)
 
-    this.setState({ cells: this.board.cellStates() })
+    this.setState({
+      clickCount: this.state.clickCount + 1,
+      cells: this.board.cellStates()
+    })
   }
 
   handleChangeMap (event) {
@@ -186,6 +191,9 @@ class Board extends Component {
         </div>
         <div className="generationLimit">
           {`Generation Limit: ${this.state.generationLimit}`}
+        </div>
+        <div className="clickCounter">
+          {`CLick Count: ${this.state.clickCount}`}
         </div>
       </div>
     )
