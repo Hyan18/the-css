@@ -15,6 +15,7 @@ class Board extends Component {
     super()
     this.generationCount = 0
     this.generationLimit = Infinity
+    this.clickLimit = Infinity
     this.isPlaying = false
     this.sizeRef = React.createRef()
     this.limitRef = React.createRef()
@@ -118,6 +119,7 @@ class Board extends Component {
   reset () {
     this.pause()
     this.board = new BoardLogic(this.newEmptyBoard(this.state.rows, this.state.cols), CellLogic)
+    this.clickLimit = Infinity
     this.generationCount = 0
     this.setState({
       cells: this.board.cellStates(),
