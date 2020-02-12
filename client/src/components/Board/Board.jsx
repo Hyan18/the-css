@@ -61,9 +61,9 @@ class Board extends Component {
     this.generationLimit = Infinity
     this.setState({
       generationLimit: 'No limit'
-     })
+    })
   }
-    
+
   changeClickLimit (event) {
     event.preventDefault()
 
@@ -141,7 +141,7 @@ class Board extends Component {
   }
 
   handleClick (x, y) {
-    if (this.state.clickCount !== this.clickLimit) {
+    if (this.state.clickCount < this.clickLimit) {
       this.board.toggleCellState(y, x)
 
       this.setState({
@@ -216,7 +216,7 @@ class Board extends Component {
           {`Generation Limit: ${this.state.generationLimit}`}
         </div>
         <div className="clickCounter">
-          {`CLick Count: ${this.state.clickCount}`}
+          {`Click Count: ${this.state.clickCount}`}
         </div>
       </div>
     )
