@@ -7,6 +7,8 @@
     "test-server": "jest --watch",
     "test-client": "yarn --cwd client test",
     "test": "jest && CI=true yarn test-client --colors",
+    "coverage-server": "jest --coverage --watchAll",
+    "coverage-client": "yarn --cwd client coverage",
     "lint-server": "eslint . --ext .js,.jsx",
     "lint-client": "yarn --cwd client lint",
     "lint": "eslint . --ext .js,.jsx && yarn --cwd client lint",
