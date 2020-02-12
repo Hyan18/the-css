@@ -46,7 +46,7 @@ describe('maps API', () => {
   describe('POST /api/maps', () => {
     it('should add a map to the database', async () => {
       const data = {
-        name: "postTestMap",
+        name: 'postTestMap',
         data: [[0, 0], [1, 1]]
       }
       const response = await request.post('/api/maps').send(data)

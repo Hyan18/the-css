@@ -9,7 +9,7 @@ module.exports = (app) => {
   })
 
   app.post('/api/maps', async (req, res) => {
-    let map = await Maps.create(req.body)
+    const map = await Maps.create(req.body)
 
     return res.status(201).send({
       error: false,
