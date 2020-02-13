@@ -38,7 +38,7 @@ class Board extends Component {
     this.changeClickLimit = this.changeClickLimit.bind(this)
     this.handleChangeMap = this.handleChangeMap.bind(this)
     this.handleNameChange = this.handleNameChange.bind(this)
-    this.handleSaveBoard = this.handleSaveBoard.bind(this)
+    this.saveBoard = this.saveBoard.bind(this)
   }
 
   async getAllMaps () {
@@ -205,7 +205,7 @@ class Board extends Component {
     this.setState({ mapName: event.target.value })
   }
 
-  handleSaveBoard (event) {
+  saveBoard (event) {
     event.preventDefault()
     const data = {
       name: this.state.mapName,
@@ -233,7 +233,7 @@ class Board extends Component {
           <button className="pause-button" onClick={() => this.pause()}>Pause</button>
           <button className="reset-button" onClick={() => this.reset()}>Reset</button>
           <button className="unlimited-button" onClick={() => this.setUnlimited()}>Unlimited</button>
-          <form className="save-board" onSubmit={this.handleSaveBoard}>
+          <form className="save-board" onSubmit={this.saveBoard}>
             <label>
               Map Name:
               <input type="text" onChange={this.handleNameChange}/>
