@@ -410,6 +410,51 @@ describe('Board', () => {
       expect(wrapper.children().find('.clickCounter').text()).toEqual('Click Count: 2')
     })
   })
+
+  describe('death game', () => {
+    it('should display an efficiency score of zero at the start', () => {
+      expect(wrapper.find('.death-efficiency').text()).toBe('Death Efficiency: 0')
+    })
+
+    it('should display an efficiency score equal to the product of clicks and generations', () => {
+      findCell(wrapper, 1, 1).simulate('click')
+      clickButton(wrapper, 'iterate')
+
+      expect(wrapper.find('.death-efficiency').text()).toBe('Death Efficiency: 1')
+    })
+
+    it('should stop increasing the death efficiency when the board has been cleared', () => {
+      findCell(wrapper, 1, 1).simulate('click')
+      clickButton(wrapper, 'iterate')
+      clickButton(wrapper, 'iterate')
+
+      expect(wrapper.find('.death-efficiency').text()).toBe('Death Efficiency: 1')
+    })
+
+    it('should handle multiple generation solutions correctly', () => {
+      findCell(wrapper, 1, 1).simulate('click')
+      findCell(wrapper, 1, 2).simulate('click')
+      findCell(wrapper, 2, 3).simulate('click')
+      clickButton(wrapper, 'iterate')
+      clickButton(wrapper, 'iterate')
+      clickButton(wrapper, 'iterate')
+
+      expect(wrapper.find('.death-efficiency').text()).toBe('Death Efficiency: 6')
+    })
+
+    it('should reset death efficiency when reset', () => {
+      findCell(wrapper, 1, 1).simulate('click')
+      findCell(wrapper, 1, 2).simulate('click')
+      findCell(wrapper, 2, 3).simulate('click')
+      clickButton(wrapper, 'iterate')
+      clickButton(wrapper, 'iterate')
+      clickButton(wrapper, 'iterate')
+
+      clickButton(wrapper, 'reset')
+
+      expect(wrapper.find('.death-efficiency').text()).toBe('Death Efficiency: 0')
+    })
+  })
 })
 
 function getGenerationCount (wrapper) {
