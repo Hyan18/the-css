@@ -3,7 +3,6 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 
 // import models
-require('./models/ExampleThing')
 require('./models/Maps')
 
 const app = express()
@@ -17,7 +16,6 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/the-css',
 app.use(bodyParser.json())
 
 // import routes
-require('./routes/exampleRoutes')(app)
 require('./routes/mapsRoutes')(app)
 
 if (process.env.NODE_ENV === 'production') {
