@@ -203,7 +203,6 @@ class Board extends Component {
     const presetName = this.state.preset
     const currentPreset = this.state.presets.find(preset => preset.name === presetName)
     const presetData = currentPreset.cells
-    console.log(currentPreset)
     this._setMap(presetData)
   }
 
@@ -247,25 +246,19 @@ class Board extends Component {
           <a className="reset-button" onClick={() => this.reset()}><FontAwesomeIcon icon={faStopCircle} size="3x"/></a>
         </div>
         <div className="settings">
-          <form onSubmit={this.changeBoardSize}>
+          <form className="resize-board" onSubmit={this.changeBoardSize}>
             <label>
                 Size:
               <input type="number" placeholder="max 60" ref={this.sizeRef} name="size"/>
             </label>
             <input type="submit" value="Submit" onClick={this.clickToResize.bind(this)}/>
+          </form>
           <form className="save-board" onSubmit={this.saveBoard}>
             <label>
               Map Name:
               <input type="text" onChange={this.handleNameChange}/>
             </label>
             <input type="submit" value="save"/>
-          </form>
-          <form className="resize-board" onSubmit={this.changeBoardSize}>
-            <label>
-                Limit:
-              <input type="number" name="limit" ref={this.limitRef}/>
-            </label>
-            <input type="submit" value="Submit" onClick={this.clickToSetLimit.bind(this)}/>
           </form>
           <form onSubmit={this.changeClickLimit}>
             <label>
@@ -275,7 +268,6 @@ class Board extends Component {
             <input type="submit" value="Submit" onClick={this.clickToSetClickLimit.bind(this)}/>
           </form>
           <button className="unlimited-button" onClick={() => this.setUnlimited()}>Unlimited</button>
-          </form>
           <Form name="generation" onSubmit={this.changeLimit} refer={this.limitRef} onClick={this.clickToSetLimit.bind(this)}/>
           <Form name="click" onSubmit={this.changeClickLimit} refer={this.clickLimitRef} onClick={this.clickToSetClickLimit.bind(this)}/>
           <select className="map-select" onChange={this.handleChangeMap}>
