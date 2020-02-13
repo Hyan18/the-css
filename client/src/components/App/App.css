@@ -1,14 +1,12 @@
-.board-container {
-  margin-top: 50px;
-  height: 100%;
-  display: inline-block;
-  padding-bottom: 150px;
-  position: fixed;
-}
 .app-container {
-  height: 700px;
+  display: flex;
+  /* flex-wrap: nowrap; */
+  /* background-color: DodgerBlue;
+  width: 100vw;
+  height: 100vh; */
+  /* height: 700px;
   max-height: 745px;
   width: 1100px;
   max-width: 1100px;
-  position: fixed;
+  position: fixed; */
 }

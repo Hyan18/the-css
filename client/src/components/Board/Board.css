@@ -1,5 +1,68 @@
+.board-container {
+  align-content: center;
+  width: 100vw;
+  height: 100vh;
+  padding: 10px;
+}
+
 .board-div {
   position: relative;
-  margin: 0 auto;
-  overflow: auto;
+  display: inline-block;
 }
+
+.counters {
+  display: block;
+  padding: 0 10 0 0;
+  width: 600px;
+}
+
+.settings {
+  top: 100px;
+  float: right;
+  right: 380px;
+  padding: 10px;
+  display: block;
+  position: relative;
+  width: 200px;
+  background-color: #0f4c75;
+  border-radius: 10px;
+}
+
+.controls {
+  float: right;
+  right: 600px;
+  padding: 10px;
+  display: block;
+  position: relative;
+  width: 200px;
+  background-color: #0f4c75;
+  border-radius: 10px;
+}
+
+input {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+input[type=submit] {
+  width: 100%;
+  background-color: #bbe1fa;
+  color: #0f4c75;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+input[type=submit]:hover {
+  background-color: #bbe1fa;
+}
+/* div {
+  border-radius: 5px;
+  background-color: #F2F2F2;
+  padding: 20px;
+} */
