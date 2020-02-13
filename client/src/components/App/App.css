@@ -1,12 +1,39 @@
 .app-container {
   display: flex;
-  /* flex-wrap: nowrap; */
-  /* background-color: DodgerBlue;
-  width: 100vw;
-  height: 100vh; */
-  /* height: 700px;
-  max-height: 745px;
-  width: 1100px;
-  max-width: 1100px;
-  position: fixed; */
+  max-width: 1500px;
+}
+
+img.bg {
+  min-height: 100%;
+  min-width: 1024px;
+  opacity: 0.4;
+  width: 100%;
+  height: auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+div.admin-bg {
+  min-height: 100%;
+  min-width: 1024px;
+  width: 100%;
+  height: auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+@media screen and (max-width: 1024px) { 
+  img.bg {
+    left: 50%;
+    margin-left: -512px;
+  }
+
+  div.admin-bg {
+    left: 50%;
+    margin-left: -512px;
+  }
 }

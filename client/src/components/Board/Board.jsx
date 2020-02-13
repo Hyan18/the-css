@@ -4,9 +4,9 @@ import Cell from '../Cell/Cell'
 import Form from '../Form/Form'
 import BoardLogic from '../BoardLogic/BoardLogic'
 import CellLogic from '../CellLogic/CellLogic'
+import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPauseCircle, faPlayCircle, faChevronCircleRight, faStopCircle } from '@fortawesome/free-solid-svg-icons'
-import axios from 'axios'
 
 const WIDTH = 600
 const HEIGHT = 600
@@ -239,12 +239,6 @@ class Board extends Component {
             (<Cell x={j} y={i} state={cell} cellSize={WIDTH / this.state.cols} key={`${j}, ${i}`} onClick={ () => this.handleClick(j, i) }/>)
           ))}
         </div>
-        <div className="controls">
-          <a className="play-button" onClick={() => this._checkIfPlaying()}><FontAwesomeIcon icon={faPlayCircle} size="3x" /></a>
-          <a className="pause-button" onClick={() => this.pause()}><FontAwesomeIcon icon={faPauseCircle} size="3x" /></a>
-          <a className="iterate-button" onClick={() => this.iterate()}><FontAwesomeIcon icon={faChevronCircleRight} size="3x" /></a>
-          <a className="reset-button" onClick={() => this.reset()}><FontAwesomeIcon icon={faStopCircle} size="3x"/></a>
-        </div>
         <div className="settings">
           <form className="resize-board" onSubmit={this.changeBoardSize}>
             <label>
@@ -260,14 +254,6 @@ class Board extends Component {
             </label>
             <input type="submit" value="save"/>
           </form>
-          <form onSubmit={this.changeClickLimit}>
-            <label>
-                Click limit:
-              <input type="number" name="clickLimit" ref={this.clickLimitRef}/>
-            </label>
-            <input type="submit" value="Submit" onClick={this.clickToSetClickLimit.bind(this)}/>
-          </form>
-          <button className="unlimited-button" onClick={() => this.setUnlimited()}>Unlimited</button>
           <Form name="generation" onSubmit={this.changeLimit} refer={this.limitRef} onClick={this.clickToSetLimit.bind(this)}/>
           <Form name="click" onSubmit={this.changeClickLimit} refer={this.clickLimitRef} onClick={this.clickToSetClickLimit.bind(this)}/>
           <select className="map-select" onChange={this.handleChangeMap}>
@@ -276,6 +262,7 @@ class Board extends Component {
             )}
           </select>
           <button className="map-submit-button" onClick={() => this.loadMap()}>Submit</button>
+          <button className="unlimited-button" onClick={() => this.setUnlimited()}>Sandbox Mode</button>
         </div>
         <div className="counters">
           <div className="generationCounter">
@@ -287,12 +274,18 @@ class Board extends Component {
           <div className="clickCounter">
             {`Click Count: ${this.state.clickCount}`}
           </div>
+          <div className="clickLimit">
+            {`Click Limit: ${this.state.clickLimit}`}
+          </div>
+          <div className="death-efficiency">
+            {`Death Efficiency: ${this.state.deathEfficiency}`}
+          </div>
         </div>
-        <div className="clickLimit">
-          {`Click Limit: ${this.state.clickLimit}`}
-        </div>
-        <div className="death-efficiency">
-          {`Death Efficiency: ${this.state.deathEfficiency}`}
+        <div className="controls">
+          <a className="play-button" onClick={() => this._checkIfPlaying()}><FontAwesomeIcon icon={faPlayCircle} size="3x" /></a>
+          <a className="pause-button" onClick={() => this.pause()}><FontAwesomeIcon icon={faPauseCircle} size="3x" /></a>
+          <a className="iterate-button" onClick={() => this.iterate()}><FontAwesomeIcon icon={faChevronCircleRight} size="3x" /></a>
+          <a className="reset-button" onClick={() => this.reset()}><FontAwesomeIcon icon={faStopCircle} size="3x"/></a>
         </div>
       </div>
     )
