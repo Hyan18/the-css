@@ -13,6 +13,7 @@ describe('Controls', () => {
   const saveBoardFuncMock = jest.fn()
   const changeBoardSizeFuncMock = jest.fn()
   const changeGenerationLimitFuncMock = jest.fn()
+  const changeClickLimitFuncMock = jest.fn()
 
   beforeEach(() => {
     wrapper = shallow(
@@ -25,16 +26,9 @@ describe('Controls', () => {
         saveBoardFunc={saveBoardFuncMock}
         changeBoardSizeFunc={changeBoardSizeFuncMock}
         changeGenerationLimitFunc={changeGenerationLimitFuncMock}
+        changeClickLimitFunc={changeClickLimitFuncMock}
       />
     )
-    playFuncMock.mockClear()
-    iterateFuncMock.mockClear()
-    pauseFuncMock.mockClear()
-    resetFuncMock.mockClear()
-    unlimitedFuncMock.mockClear()
-    saveBoardFuncMock.mockClear()
-    changeBoardSizeFuncMock.mockClear()
-    changeGenerationLimitFuncMock.mockClear()
   })
 
   it('should have a controls-container div', () => {
@@ -65,6 +59,8 @@ describe('Controls', () => {
   describeParameterInput('board-size', 'Size:', 'Resize', changeBoardSizeFuncMock)
 
   describeParameterInput('generation-limit', 'Generation Limit:', 'Set', changeGenerationLimitFuncMock)
+
+  describeParameterInput('click-limit', 'Click Limit:', 'Set', changeClickLimitFuncMock)
 
   function describeButton(buttonName, buttonText, onClickFunc) {
     describe(buttonName, () => {

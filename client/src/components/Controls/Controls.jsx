@@ -50,6 +50,13 @@ export default class Controls extends Component {
         buttonText="Set"
         func={this.props.changeGenerationLimitFunc}
       />
+
+      <ParameterInput
+        parameter="click-limit"
+        prompt="Click Limit:"
+        buttonText="Set"
+        func={this.props.changeClickLimitFunc}
+      />
     </div>
   )}
 }
