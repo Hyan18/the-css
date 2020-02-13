@@ -4,10 +4,15 @@ export default class Controls extends Component {
   constructor (props) {
     super(props)
     this.mapName = ""
+    this.boardSize = 10
   }
 
   handleMapNameChange (event) {
     this.mapName = event.target.value
+  }
+
+  handleSizeChange (event) {
+    this.boardSize = parseInt(event.target.value)
   }
 
   render () { return (
@@ -21,10 +26,16 @@ export default class Controls extends Component {
       </div>
 
       <label className="map-name">
-        Name: 
+        Name:
         <input type="text" className="map-name" onChange={(event) => this.handleMapNameChange(event)}/>
       </label>
       <button className="save-map-button" onClick={() => this.props.saveBoardFunc(this.mapName)}>Save</button>
+
+      <label className="board-size">
+        Size:
+        <input type="text" className="board-size" onChange={(event) => this.handleSizeChange(event)}/>
+      </label>
+      <button className="board-size-button" onClick={() => this.props.changeBoardSizeFunc(this.boardSize)}>Resize</button>
     </div>
   )}
 }

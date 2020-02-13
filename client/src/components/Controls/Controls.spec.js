@@ -10,6 +10,7 @@ describe('Controls', () => {
   const resetFuncMock = jest.fn()
   const unlimitedFuncMock = jest.fn()
   const saveBoardFuncMock = jest.fn()
+  const changeBoardSizeFuncMock = jest.fn()
 
   beforeEach(() => {
     wrapper = shallow(
@@ -20,6 +21,7 @@ describe('Controls', () => {
         resetFunc={resetFuncMock}
         unlimitedFunc={unlimitedFuncMock}
         saveBoardFunc={saveBoardFuncMock}
+        changeBoardSizeFunc={changeBoardSizeFuncMock}
       />
     )
     playFuncMock.mockClear()
@@ -28,6 +30,7 @@ describe('Controls', () => {
     resetFuncMock.mockClear()
     unlimitedFuncMock.mockClear()
     saveBoardFuncMock.mockClear()
+    changeBoardSizeFuncMock.mockClear()
   })
 
   it('should have a controls-container div', () => {
@@ -73,6 +76,29 @@ describe('Controls', () => {
 
       expect(saveBoardFuncMock.mock.calls.length).toBe(1)
       expect(saveBoardFuncMock.mock.calls[0][0]).toBe('Test Map Name')
+    })
+  })
+
+  describe('resize-board', () => {
+    it('should have a input for the board size', () => {
+      expect(wrapper.find('label.board-size').text()).toBe('Size:')
+      expect(wrapper.find('input.board-size').length).toBe(1)
+    })
+
+    it('should have a button to save the board', () => {
+      expect(wrapper.find('button.board-size-button').length).toBe(1)
+      expect(wrapper.find('button.board-size-button').text()).toBe('Resize')
+    })
+
+    it('should call the save board method when clicked', () => {
+      const input = wrapper.find('input.board-size')
+      const button = wrapper.find('button.board-size-button')
+
+      input.simulate('change', { target: { value: '40' } })
+      button.simulate('click')
+
+      expect(changeBoardSizeFuncMock.mock.calls.length).toBe(1)
+      expect(changeBoardSizeFuncMock.mock.calls[0][0]).toBe(40)
     })
   })
 
