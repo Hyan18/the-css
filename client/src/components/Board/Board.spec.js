@@ -220,7 +220,6 @@ describe('Board', () => {
       })
 
       it('click play should call play', () => {
-        // wrapper = mount(<Board />)
         wrapper.find('.play-button').simulate('click')
         clickButton(wrapper, 'play')
 
