@@ -1,28 +1,30 @@
 .board-container {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  /* margin-top: 50px;
-  height: 100%;
-  display: inline-block;
-  padding-bottom: 150px;
-  position: fixed; */
+  width: 100vw;
+  height: 100vh;
+  padding: 10px;
 }
 
 .board-div {
-  height: 600px;
-  width: 600px;
-  /* position: relative;
-  margin: 0 auto;
-  overflow: auto; */
+  position: relative;
+  display: inline-block;
+}
+
+.right-col {
+  float: right;
+  width: 400px;
+  left: 10px;
+  display: inline-block;
 }
 
 .counters {
-
+  display: block;
+  padding: 10px;
+  width: 400px;
 }
 
 .controls {
-  /* position: relative;
-  margin: 0 auto;
-  overflow: auto; */
+  padding: 10px;
+  display: block;
+  position: relative;
+  width: 400px;
 }

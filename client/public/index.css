@@ -1,0 +1,13 @@
+#root {
+  display: flex;
+  position: relative; 
+  justify-content: center;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  background-color: #1b262c;
+  color: #bbe1fa;
+  font-family: 'Roboto', sans-serif;
+}
