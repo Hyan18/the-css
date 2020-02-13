@@ -14,6 +14,10 @@ export default class Controls extends Component {
   handleSizeChange (event) {
     this.boardSize = parseInt(event.target.value)
   }
+  
+  handleGenerationChange (event) {
+    this.generationLimit = parseInt(event.target.value)
+  }
 
   render () { return (
     <div className="controls-container">
@@ -36,6 +40,12 @@ export default class Controls extends Component {
         <input type="text" className="board-size" onChange={(event) => this.handleSizeChange(event)}/>
       </label>
       <button className="board-size-button" onClick={() => this.props.changeBoardSizeFunc(this.boardSize)}>Resize</button>
+
+      <label className="generation-limit">
+        Generation Limit:
+        <input type="text" className="generation-limit" onChange={(event) => this.handleGenerationChange(event)}/>
+      </label>
+      <button className="generation-limit-button" onClick={() => this.props.changeGenerationLimitFunc(this.generationLimit)}>Submit</button>
     </div>
   )}
 }

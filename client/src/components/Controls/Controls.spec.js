@@ -11,6 +11,7 @@ describe('Controls', () => {
   const unlimitedFuncMock = jest.fn()
   const saveBoardFuncMock = jest.fn()
   const changeBoardSizeFuncMock = jest.fn()
+  const changeGenerationLimitFuncMock = jest.fn()
 
   beforeEach(() => {
     wrapper = shallow(
@@ -22,6 +23,7 @@ describe('Controls', () => {
         unlimitedFunc={unlimitedFuncMock}
         saveBoardFunc={saveBoardFuncMock}
         changeBoardSizeFunc={changeBoardSizeFuncMock}
+        changeGenerationLimitFunc={changeGenerationLimitFuncMock}
       />
     )
     playFuncMock.mockClear()
@@ -31,6 +33,7 @@ describe('Controls', () => {
     unlimitedFuncMock.mockClear()
     saveBoardFuncMock.mockClear()
     changeBoardSizeFuncMock.mockClear()
+    changeGenerationLimitFuncMock.mockClear()
   })
 
   it('should have a controls-container div', () => {
@@ -85,12 +88,12 @@ describe('Controls', () => {
       expect(wrapper.find('input.board-size').length).toBe(1)
     })
 
-    it('should have a button to save the board', () => {
+    it('should have a button to resize the board', () => {
       expect(wrapper.find('button.board-size-button').length).toBe(1)
       expect(wrapper.find('button.board-size-button').text()).toBe('Resize')
     })
 
-    it('should call the save board method when clicked', () => {
+    it('should call the change board size method when clicked', () => {
       const input = wrapper.find('input.board-size')
       const button = wrapper.find('button.board-size-button')
 
@@ -99,6 +102,29 @@ describe('Controls', () => {
 
       expect(changeBoardSizeFuncMock.mock.calls.length).toBe(1)
       expect(changeBoardSizeFuncMock.mock.calls[0][0]).toBe(40)
+    })
+  })
+
+  describe('generation-limit', () => {
+    it('should have a input for the generation limit', () => {
+      expect(wrapper.find('label.generation-limit').text()).toBe('Generation Limit:')
+      expect(wrapper.find('input.generation-limit').length).toBe(1)
+    })
+
+    it('should have a button to resize the board', () => {
+      expect(wrapper.find('button.generation-limit-button').length).toBe(1)
+      expect(wrapper.find('button.generation-limit-button').text()).toBe('Submit')
+    })
+
+    it('should call the change board size method when clicked', () => {
+      const input = wrapper.find('input.generation-limit')
+      const button = wrapper.find('button.generation-limit-button')
+
+      input.simulate('change', { target: { value: '100' } })
+      button.simulate('click')
+
+      expect(changeGenerationLimitFuncMock.mock.calls.length).toBe(1)
+      expect(changeGenerationLimitFuncMock.mock.calls[0][0]).toBe(100)
     })
   })
 
