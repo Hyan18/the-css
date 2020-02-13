@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Board from '../Board/Board'
 import { Text } from '../Text/Text'
 import './App.css'
