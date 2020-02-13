@@ -1,6 +1,7 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
 import Controls from './Controls'
+import ParameterInput from '../ParameterInput/ParameterInput'
 
 describe('Controls', () => {
   let wrapper
@@ -59,74 +60,11 @@ describe('Controls', () => {
     describeButton('unlimited', 'Unlimited', unlimitedFuncMock)
   })
 
-  describe('save board', () => {
-    it('should have a input for the map name', () => {
-      expect(wrapper.find('label.map-name').text()).toBe('Name:')
-      expect(wrapper.find('input.map-name').length).toBe(1)
-    })
+  describeParameterInput('save-board', 'Name:', 'Save', saveBoardFuncMock)
 
-    it('should have a button to save the board', () => {
-      expect(wrapper.find('button.save-map-button').length).toBe(1)
-      expect(wrapper.find('button.save-map-button').text()).toBe('Save')
-    })
+  describeParameterInput('board-size', 'Size:', 'Resize', changeBoardSizeFuncMock)
 
-    it('should call the save board method when clicked', () => {
-      const input = wrapper.find('input.map-name')
-      const button = wrapper.find('button.save-map-button')
-
-      input.simulate('change', { target: { value: 'Test Map Name' } })
-      button.simulate('click')
-
-      expect(saveBoardFuncMock.mock.calls.length).toBe(1)
-      expect(saveBoardFuncMock.mock.calls[0][0]).toBe('Test Map Name')
-    })
-  })
-
-  describe('resize-board', () => {
-    it('should have a input for the board size', () => {
-      expect(wrapper.find('label.board-size').text()).toBe('Size:')
-      expect(wrapper.find('input.board-size').length).toBe(1)
-    })
-
-    it('should have a button to resize the board', () => {
-      expect(wrapper.find('button.board-size-button').length).toBe(1)
-      expect(wrapper.find('button.board-size-button').text()).toBe('Resize')
-    })
-
-    it('should call the change board size method when clicked', () => {
-      const input = wrapper.find('input.board-size')
-      const button = wrapper.find('button.board-size-button')
-
-      input.simulate('change', { target: { value: '40' } })
-      button.simulate('click')
-
-      expect(changeBoardSizeFuncMock.mock.calls.length).toBe(1)
-      expect(changeBoardSizeFuncMock.mock.calls[0][0]).toBe(40)
-    })
-  })
-
-  describe('generation-limit', () => {
-    it('should have a input for the generation limit', () => {
-      expect(wrapper.find('label.generation-limit').text()).toBe('Generation Limit:')
-      expect(wrapper.find('input.generation-limit').length).toBe(1)
-    })
-
-    it('should have a button to resize the board', () => {
-      expect(wrapper.find('button.generation-limit-button').length).toBe(1)
-      expect(wrapper.find('button.generation-limit-button').text()).toBe('Submit')
-    })
-
-    it('should call the change board size method when clicked', () => {
-      const input = wrapper.find('input.generation-limit')
-      const button = wrapper.find('button.generation-limit-button')
-
-      input.simulate('change', { target: { value: '100' } })
-      button.simulate('click')
-
-      expect(changeGenerationLimitFuncMock.mock.calls.length).toBe(1)
-      expect(changeGenerationLimitFuncMock.mock.calls[0][0]).toBe(100)
-    })
-  })
+  describeParameterInput('generation-limit', 'Generation Limit:', 'Set', changeGenerationLimitFuncMock)
 
   function describeButton(buttonName, buttonText, onClickFunc) {
     describe(buttonName, () => {
@@ -145,6 +83,17 @@ describe('Controls', () => {
         button.simulate('click')
         expect(onClickFunc.mock.calls.length).toBe(1)
       })
+    })
+  }
+
+  function describeParameterInput (parameter, promptText, buttonText, func) {
+    it(`should have a ${parameter} parameter input`, () => {
+      const input = wrapper.find(ParameterInput)
+        .findWhere(n => n.props().parameter === parameter)
+      expect(input.length).toBe(1)
+      expect(input.props().prompt).toBe(promptText)
+      expect(input.props().buttonText).toBe(buttonText)
+      expect(input.props().func).toBe(func)
     })
   }
 })
