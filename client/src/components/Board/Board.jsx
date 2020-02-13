@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import './Board.css'
 import Cell from '../Cell/Cell'
+import Form from '../Form/Form'
 import BoardLogic from '../BoardLogic/BoardLogic'
 import CellLogic from '../CellLogic/CellLogic'
-import { PRESETS } from './Presets'
+import axios from 'axios'
 
 const WIDTH = 600
 const HEIGHT = 600
@@ -22,19 +23,39 @@ class Board extends Component {
     this.clickLimitRef = React.createRef()
     this.board = new BoardLogic(this.newEmptyBoard(), CellLogic)
     this.state = {
-      preset: 'Default',
+      presets: [],
       cells: this.board.cellStates(),
       rows: ROWS,
       cols: COLS,
       generationCount: 0,
       generationLimit: 'No Limit',
-      clickCount: 0
+      clickCount: 0,
+      clickLimit: Infinity,
+      deathEfficiency: 0
     }
 
     this.changeBoardSize = this.changeBoardSize.bind(this)
     this.changeLimit = this.changeLimit.bind(this)
     this.changeClickLimit = this.changeClickLimit.bind(this)
     this.handleChangeMap = this.handleChangeMap.bind(this)
+    // this.clickToSaveBoard = this.clickToSaveBoard.bind(this)
+    this.handleNameChange = this.handleNameChange.bind(this)
+    this.saveBoard = this.saveBoard.bind(this)
+  }
+
+  async getAllMaps () {
+    const res = await axios.get('/api/maps')
+
+    const presets = res.data.length > 0 ? res.data : [{ name: 'None', cells: [[0]] }]
+
+    this.setState({
+      presets: presets,
+      preset: presets[0].name
+    })
+  }
+
+  componentDidMount () {
+    this.getAllMaps()
   }
 
   clickToSetLimit () {
@@ -60,14 +81,17 @@ class Board extends Component {
   setUnlimited () {
     this.generationLimit = Infinity
     this.setState({
-      generationLimit: 'No limit'
+      generationLimit: 'No limit',
+      clickLimit: Infinity
     })
   }
 
   changeClickLimit (event) {
     event.preventDefault()
 
-    this.clickLimit = this.clickLimitRef.current.value
+    this.setState({
+      clickLimit: this.clickLimitRef.current.value
+    })
   }
 
   newEmptyBoard (rows = ROWS, cols = COLS) {
@@ -84,11 +108,20 @@ class Board extends Component {
   iterate () {
     if ((this.generationCount < this.generationLimit)) {
       this.board.iterate()
-      this.setState({
-        generationCount: this.generationCount + 1,
-        cells: this.board.cellStates()
-      })
-      this.generationCount++
+
+      if (!this.deathReached) {
+        this.setState({
+          generationCount: ++this.generationCount,
+          cells: this.board.cellStates(),
+          deathEfficiency: this.generationCount * this.state.clickCount
+        })
+        if (this.countLiveCells() === 0) { this.deathReached = true }
+      } else {
+        this.setState({
+          generationCount: ++this.generationCount,
+          cells: this.board.cellStates()
+        })
+      }
     }
   }
 
@@ -118,10 +151,13 @@ class Board extends Component {
     this.board = new BoardLogic(this.newEmptyBoard(this.state.rows, this.state.cols), CellLogic)
     this.clickLimit = Infinity
     this.generationCount = 0
+    this.deathReached = false
     this.setState({
       cells: this.board.cellStates(),
       generationCount: 0,
-      clickCount: 0
+      clickCount: 0,
+      clickLimit: this.state.clickLimit,
+      deathEfficiency: 0
     })
   }
 
@@ -140,8 +176,14 @@ class Board extends Component {
     })
   }
 
+  countLiveCells () {
+    return this.board.cellStates().flat().reduce((acc, cellState) => {
+      return acc + cellState
+    }, 0)
+  }
+
   handleClick (x, y) {
-    if (this.state.clickCount < this.clickLimit) {
+    if (this.state.clickCount < this.state.clickLimit) {
       this.board.toggleCellState(y, x)
 
       this.setState({
@@ -157,13 +199,34 @@ class Board extends Component {
 
   loadMap () {
     const presetName = this.state.preset
-    const currentPreset = PRESETS.find(preset => preset.name === presetName)
-    const presetData = currentPreset.data
-    this.board = new BoardLogic(presetData, CellLogic)
+    const currentPreset = this.state.presets.find(preset => preset.name === presetName)
+    const presetData = currentPreset.cells
+    console.log(currentPreset)
+    this._setMap(presetData)
+  }
+
+  _setMap (data) {
+    this.board = new BoardLogic(data, CellLogic)
     this.setState({
-      rows: presetData.length,
-      cols: presetData.length,
-      cells: presetData
+      rows: data.length,
+      cols: data.length,
+      cells: data
+    })
+  }
+
+  handleNameChange (event) {
+    this.setState({ mapName: event.target.value })
+  }
+
+  saveBoard (event) {
+    event.preventDefault()
+    const data = {
+      name: this.state.mapName,
+      cells: this.state.cells
+    }
+    axios.post('/api/maps', data)
+    this.setState({
+      presets: this.state.presets.concat([data])
     })
   }
 
@@ -181,29 +244,24 @@ class Board extends Component {
           <button className="pause-button" onClick={() => this.pause()}>Pause</button>
           <button className="reset-button" onClick={() => this.reset()}>Reset</button>
           <button className="unlimited-button" onClick={() => this.setUnlimited()}>Unlimited</button>
-          <form onSubmit={this.changeBoardSize}>
+          <form className="save-board" onSubmit={this.saveBoard}>
+            <label>
+              Map Name:
+              <input type="text" onChange={this.handleNameChange}/>
+            </label>
+            <input type="submit" value="save"/>
+          </form>
+          <form className="resize-board" onSubmit={this.changeBoardSize}>
             <label>
               Size:
               <input type="number" placeholder="max 60" ref={this.sizeRef} name="size"/>
             </label>
             <input type="submit" value="submit" onClick={this.clickToResize.bind(this)}/>
           </form>
-          <form onSubmit={this.changeLimit}>
-            <label>
-              Limit:
-              <input type="number" name="limit" ref={this.limitRef}/>
-            </label>
-            <input type="submit" value="submit" onClick={this.clickToSetLimit.bind(this)}/>
-          </form>
-          <form onSubmit={this.changeClickLimit}>
-            <label>
-              Click limit:
-              <input type="number" name="clickLimit" ref={this.clickLimitRef}/>
-            </label>
-            <input type="submit" value="submit" onClick={this.clickToSetClickLimit.bind(this)}/>
-          </form>
+          <Form name="generation" onSubmit={this.changeLimit} refer={this.limitRef} onClick={this.clickToSetLimit.bind(this)}/>
+          <Form name="click" onSubmit={this.changeClickLimit} refer={this.clickLimitRef} onClick={this.clickToSetClickLimit.bind(this)}/>
           <select className="map-select" onChange={this.handleChangeMap}>
-            {PRESETS.map((preset, i) =>
+            {this.state.presets && this.state.presets.map((preset, i) =>
               (<option key={i} value={preset.name}>{preset.name}</option>)
             )}
           </select>
@@ -217,6 +275,12 @@ class Board extends Component {
         </div>
         <div className="clickCounter">
           {`Click Count: ${this.state.clickCount}`}
+        </div>
+        <div className="clickLimit">
+          {`Click Limit: ${this.state.clickLimit}`}
+        </div>
+        <div className="death-efficiency">
+          {`Death Efficiency: ${this.state.deathEfficiency}`}
         </div>
       </div>
     )
