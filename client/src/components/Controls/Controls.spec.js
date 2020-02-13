@@ -55,6 +55,7 @@ describe('Controls', () => {
 
   describe('save board', () => {
     it('should have a input for the map name', () => {
+      expect(wrapper.find('label.map-name').text()).toBe('Name:')
       expect(wrapper.find('input.map-name').length).toBe(1)
     })
 

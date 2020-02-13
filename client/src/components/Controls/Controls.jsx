@@ -20,7 +20,10 @@ export default class Controls extends Component {
         <button className="unlimited-button" onClick={this.props.unlimitedFunc}>Unlimited</button>
       </div>
 
-      <input type="text" className="map-name" onChange={(event) => this.handleMapNameChange(event)}/>
+      <label className="map-name">
+        Name: 
+        <input type="text" className="map-name" onChange={(event) => this.handleMapNameChange(event)}/>
+      </label>
       <button className="save-map-button" onClick={() => this.props.saveBoardFunc(this.mapName)}>Save</button>
     </div>
   )}
