@@ -27,6 +27,10 @@ describe('Controls', () => {
     unlimitedFuncMock.mockClear()
   })
 
+  it('should have a controls-container div', () => {
+    expect(wrapper.find('div.controls-container').length).toBe(1)
+  })
+
   describe('iteration controls', () => {
     describeButton('play', 'Play', playFuncMock)
 

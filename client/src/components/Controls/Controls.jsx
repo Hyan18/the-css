@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 export default class Controls extends Component {
   render () { return (
-    <div>
+    <div className="controls-container">
       <button className="play-button" onClick={this.props.playFunc}>Play</button>
       <button className="step-button" onClick={this.props.stepFunc}>Step</button>
       <button className="pause-button" onClick={this.props.pauseFunc}>Pause</button>
