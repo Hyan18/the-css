@@ -1,9 +1,12 @@
 .Cell0 {
-  background: #bbe1fa;
+  background: azure;
   position: absolute;
 }
 
 .Cell1 {
-  background: #3282b8;
   position: absolute;
+  background-image: url("https://i.imgur.com/6P7Nkdf.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }

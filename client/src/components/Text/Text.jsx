@@ -5,10 +5,18 @@ import './Text.css'
 export const Text = () =>
   <Fragment>
     <div className="description-div">
-      <img src={logo} alt="Logo" width="400" height="200" />
+      <img src={logo} alt="Logo" width="300" height="200" />
       <br></br><br></br><br></br>
-    Is a collection of cells arranged in a grid,<br></br>
-    such that each cell changes state as a function of time according to
-    a defined set of rules that includes the states of neighboring cells.
+    Is a collection of cells arranged in a grid.
+    Each cell changes state according to
+    a defined set of rules:
+      <br></br>
+    1.
+      <br></br>
+    2.
+      <br></br>
+    3.
+      <br></br>
+    4.
     </div>
   </Fragment>
