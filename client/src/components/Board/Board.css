@@ -3,3 +3,9 @@
   margin: 0 auto;
   overflow: auto;
 }
+
+.map-list {
+  float: right;
+  overflow-y: scroll;
+  height: 100px;
+}

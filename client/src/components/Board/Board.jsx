@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import './Board.css'
 import Cell from '../Cell/Cell'
 import Form from '../Form/Form'
+import MapList from '../MapList/MapList'
 import BoardLogic from '../BoardLogic/BoardLogic'
 import CellLogic from '../CellLogic/CellLogic'
 import axios from 'axios'
@@ -191,8 +192,9 @@ class Board extends Component {
     this.setState({ preset: event.target.value })
   }
 
-  loadMap () {
-    const presetName = this.state.preset
+  loadMap (presetName) {
+    // const presetName = this.state.preset
+    console.log(presetName)
     const currentPreset = this.state.presets.find(preset => preset.name === presetName)
     const presetData = currentPreset.cells
     this._setMap(presetData)
@@ -223,6 +225,8 @@ class Board extends Component {
   }
 
   render () {
+    const presets = this.state.presets
+
     return (
       <div className="board-container">
         <div className="board-div" style={{ width: WIDTH, maxWidth: WIDTH, height: HEIGHT, maxHeight: HEIGHT }}>
@@ -252,13 +256,7 @@ class Board extends Component {
           </form>
           <Form name="generation" onSubmit={this.changeGenerationLimit} refer={this.limitRef} onClick={this.clickToSetLimit.bind(this)}/>
           <Form name="click" onSubmit={this.changeClickLimit} refer={this.clickLimitRef} onClick={this.clickToSetClickLimit.bind(this)}/>
-          <select className="map-select" onChange={this.handleChangeMap}>
-            {this.state.presets && this.state.presets.map((preset, i) =>
-              (<option key={i} value={preset.name}>{preset.name}</option>)
-            )}
-          </select>
-          <button className="map-submit-button" onClick={() => this.loadMap()}>Submit</button>
-        </div>
+          </div>
         <div className="generationCounter">
           {`Generations: ${this.state.generationCount}`}
         </div>
@@ -273,6 +271,9 @@ class Board extends Component {
         </div>
         <div className="death-efficiency">
           {`Death Efficiency: ${this.state.deathEfficiency}`}
+        </div>
+        <div className="map-list">
+        <MapList presets={presets} onClick={this.loadMap.bind(this)}/>
         </div>
       </div>
     )
