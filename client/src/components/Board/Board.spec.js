@@ -118,7 +118,7 @@ describe('Board', () => {
     })
 
     describe('generation', () => {
-      it('form should change the boards generation limit', () => {
+      fit('form should change the boards generation limit', () => {
         wrapper = mount(<Board />)
 
         const form = wrapper.find('.set-generation-limit')

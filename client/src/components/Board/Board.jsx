@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './Board.css'
 import Cell from '../Cell/Cell'
+import Form from '../Form/Form'
 import BoardLogic from '../BoardLogic/BoardLogic'
 import CellLogic from '../CellLogic/CellLogic'
 import axios from 'axios'
@@ -249,20 +250,8 @@ class Board extends Component {
             </label>
             <input type="submit" value="submit" onClick={this.clickToResize.bind(this)}/>
           </form>
-          <form className="set-generation-limit" onSubmit={this.changeLimit}>
-            <label>
-              Limit:
-              <input type="number" name="limit" ref={this.limitRef}/>
-            </label>
-            <input type="submit" value="submit" onClick={this.clickToSetLimit.bind(this)}/>
-          </form>
-          <form className="click-limit" onSubmit={this.changeClickLimit}>
-            <label>
-              Click limit:
-              <input type="number" name="clickLimit" ref={this.clickLimitRef}/>
-            </label>
-            <input type="submit" value="submit" onClick={this.clickToSetClickLimit.bind(this)}/>
-          </form>
+          <Form name="generation" onSubmit={this.changeLimit} refer={this.limitRef} onClick={this.clickToSetLimit.bind(this)}/>
+          <Form name="click" onSubmit={this.changeClickLimit} refer={this.clickLimitRef} onClick={this.clickToSetClickLimit.bind(this)}/>
           <select className="map-select" onChange={this.handleChangeMap}>
             {this.state.presets && this.state.presets.map((preset, i) =>
               (<option key={i} value={preset.name}>{preset.name}</option>)
