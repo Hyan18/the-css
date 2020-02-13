@@ -30,14 +30,15 @@ class Board extends Component {
       generationCount: 0,
       generationLimit: 'No Limit',
       clickCount: 0,
-      clickLimit: Infinity
+      clickLimit: Infinity,
+      deathEfficiency: 0
     }
 
     this.changeBoardSize = this.changeBoardSize.bind(this)
     this.changeLimit = this.changeLimit.bind(this)
     this.changeClickLimit = this.changeClickLimit.bind(this)
     this.handleChangeMap = this.handleChangeMap.bind(this)
-    this.clickToSaveBoard = this.clickToSaveBoard.bind(this)
+    // this.clickToSaveBoard = this.clickToSaveBoard.bind(this)
     this.handleNameChange = this.handleNameChange.bind(this)
     this.saveBoard = this.saveBoard.bind(this)
   }
@@ -67,10 +68,6 @@ class Board extends Component {
 
   clickToResize () {
     this.sizeRef.current.focus()
-  }
-
-  clickToSaveBoard () {
-
   }
 
   changeLimit (event) {
@@ -111,11 +108,20 @@ class Board extends Component {
   iterate () {
     if ((this.generationCount < this.generationLimit)) {
       this.board.iterate()
-      this.setState({
-        generationCount: this.generationCount + 1,
-        cells: this.board.cellStates()
-      })
-      this.generationCount++
+
+      if (!this.deathReached) {
+        this.setState({
+          generationCount: ++this.generationCount,
+          cells: this.board.cellStates(),
+          deathEfficiency: this.generationCount * this.state.clickCount
+        })
+        if (this.countLiveCells() === 0) { this.deathReached = true }
+      } else {
+        this.setState({
+          generationCount: ++this.generationCount,
+          cells: this.board.cellStates()
+        })
+      }
     }
   }
 
@@ -145,11 +151,13 @@ class Board extends Component {
     this.board = new BoardLogic(this.newEmptyBoard(this.state.rows, this.state.cols), CellLogic)
     this.clickLimit = Infinity
     this.generationCount = 0
+    this.deathReached = false
     this.setState({
       cells: this.board.cellStates(),
       generationCount: 0,
       clickCount: 0,
-      clickLimit: this.state.clickLimit
+      clickLimit: this.state.clickLimit,
+      deathEfficiency: 0
     })
   }
 
@@ -169,7 +177,7 @@ class Board extends Component {
   }
 
   countLiveCells () {
-    return this.state.cells.flat().reduce((acc, cellState) => {
+    return this.board.cellStates().flat().reduce((acc, cellState) => {
       return acc + cellState
     }, 0)
   }
@@ -241,7 +249,7 @@ class Board extends Component {
               Map Name:
               <input type="text" onChange={this.handleNameChange}/>
             </label>
-            <input type="submit" value="save" onClick={this.clickToSaveBoard.bind(this)}/>
+            <input type="submit" value="save"/>
           </form>
           <form className="resize-board" onSubmit={this.changeBoardSize}>
             <label>
@@ -270,6 +278,9 @@ class Board extends Component {
         </div>
         <div className="clickLimit">
           {`Click Limit: ${this.state.clickLimit}`}
+        </div>
+        <div className="death-efficiency">
+          {`Death Efficiency: ${this.state.deathEfficiency}`}
         </div>
       </div>
     )
