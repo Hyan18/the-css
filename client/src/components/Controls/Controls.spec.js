@@ -1,5 +1,5 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { shallow } from 'enzyme'
 import Controls from './Controls'
 import ParameterInput from '../ParameterInput/ParameterInput'
 
@@ -62,7 +62,7 @@ describe('Controls', () => {
 
   describeParameterInput('click-limit', 'Click Limit:', 'Set', changeClickLimitFuncMock)
 
-  function describeButton(buttonName, buttonText, onClickFunc) {
+  function describeButton (buttonName, buttonText, onClickFunc) {
     describe(buttonName, () => {
       let button
 
