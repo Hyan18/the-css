@@ -37,7 +37,7 @@ class Board extends Component {
     this.changeLimit = this.changeLimit.bind(this)
     this.changeClickLimit = this.changeClickLimit.bind(this)
     this.handleChangeMap = this.handleChangeMap.bind(this)
-    this.clickToSaveBoard = this.clickToSaveBoard.bind(this)
+    // this.clickToSaveBoard = this.clickToSaveBoard.bind(this)
     this.handleNameChange = this.handleNameChange.bind(this)
     this.saveBoard = this.saveBoard.bind(this)
   }
@@ -67,10 +67,6 @@ class Board extends Component {
 
   clickToResize () {
     this.sizeRef.current.focus()
-  }
-
-  clickToSaveBoard () {
-
   }
 
   changeLimit (event) {
@@ -241,7 +237,7 @@ class Board extends Component {
               Map Name:
               <input type="text" onChange={this.handleNameChange}/>
             </label>
-            <input type="submit" value="save" onClick={this.clickToSaveBoard.bind(this)}/>
+            <input type="submit" value="save"/>
           </form>
           <form className="resize-board" onSubmit={this.changeBoardSize}>
             <label>

@@ -5,7 +5,7 @@ const request = supertest(app)
 const Maps = mongoose.model('maps')
 
 describe('maps API', () => {
-  afterEach(async () => {
+  beforeEach(async () => {
     await Maps.deleteMany({}, () => {})
   })
 
@@ -22,7 +22,7 @@ describe('maps API', () => {
     })
 
     it('should return an array containing a map', async () => {
-      Maps.create({ name: 'testMap1', cells: [[0, 0], [0, 0]] })
+      await Maps.create({ name: 'testMap1', cells: [[0, 0], [0, 0]] })
       const response = await request.get('/api/maps')
 
       expect(response.status).toBe(200)
@@ -32,8 +32,8 @@ describe('maps API', () => {
     })
 
     it('should return an array of multiple maps', async () => {
-      Maps.create({ name: 'testMap1', cells: [[0, 0], [0, 1]] })
-      Maps.create({ name: 'testMap2', cells: [[0, 0], [1, 0]] })
+      await Maps.create({ name: 'testMap1', cells: [[0, 0], [0, 1]] })
+      await Maps.create({ name: 'testMap2', cells: [[0, 0], [1, 0]] })
       const response = await request.get('/api/maps')
 
       expect(response.status).toBe(200)
