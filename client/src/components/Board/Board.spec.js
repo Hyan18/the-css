@@ -180,8 +180,11 @@ describe('Board', () => {
       })
 
       it('click play should call play', () => {
+        // wrapper = mount(<Board />)
+        wrapper.find(`.play-button`).simulate('click')
         clickButton(wrapper, 'play')
 
+        // console.log(wrapper.find(`.fa-play-circle`).debug())
         expect(playSpy.mock.calls.length).toBe(1)
       })
 

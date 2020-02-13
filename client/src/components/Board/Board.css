@@ -9,20 +9,14 @@
   display: inline-block;
 }
 
-.right-col {
-  float: right;
-  width: 400px;
-  left: 10px;
-  display: inline-block;
-}
-
 .counters {
   display: block;
-  padding: 10px;
-  width: 400px;
+  padding: 0 10 0 0;
+  width: 600px;
 }
 
 .controls {
+  float: right;
   padding: 10px;
   display: block;
   position: relative;

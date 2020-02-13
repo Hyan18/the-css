@@ -177,55 +177,50 @@ class Board extends Component {
             (<Cell x={j} y={i} state={cell} cellSize={WIDTH / this.state.cols} key={`${j}, ${i}`} onClick={ () => this.handleClick(j, i) }/>)
           ))}
         </div>
-        <div className="right-col">
-          <div className="controls">
-            <FontAwesomeIcon icon={faPauseCircle} />
-            <FontAwesomeIcon icon={faPlayCircle} />
-            <FontAwesomeIcon icon={faChevronCircleRight} />
-            <FontAwesomeIcon icon={faStopCircle} />
-            <button className="iterate-button" onClick={() => this.iterate()}>Iterate</button>
-            <button className="play-button" onClick={() => { this._checkIfPlaying() } }>Play</button>
-            <button className="pause-button" onClick={() => this.pause()}>Pause</button>
-            <button className="reset-button" onClick={() => this.reset()}>Reset</button>
-            <button className="unlimited-button" onClick={() => this.setUnlimited()}>Unlimited</button>
-            <form onSubmit={this.changeBoardSize}>
-              <label>
-                Size:
-                <input type="number" placeholder="max 60" ref={this.sizeRef} name="size"/>
-              </label>
-              <input type="submit" value="submit" onClick={this.clickToResize.bind(this)}/>
-            </form>
-            <form onSubmit={this.changeLimit}>
-              <label>
-                Limit:
-                <input type="number" name="limit" ref={this.limitRef}/>
-              </label>
-              <input type="submit" value="submit" onClick={this.clickToSetLimit.bind(this)}/>
-            </form>
-            <form onSubmit={this.changeClickLimit}>
-              <label>
-                Click limit:
-                <input type="number" name="clickLimit" ref={this.clickLimitRef}/>
-              </label>
-              <input type="submit" value="submit" onClick={this.clickToSetClickLimit.bind(this)}/>
-            </form>
-            <select className="map-select" onChange={this.handleChangeMap}>
-              {PRESETS.map((preset, i) =>
-                (<option key={i} value={preset.name}>{preset.name}</option>)
-              )}
-            </select>
-            <button className="map-submit-button" onClick={() => this.loadMap()}>Submit</button>
+        <div className="controls">
+          <a className="play-button" onClick={() => this._checkIfPlaying()}><FontAwesomeIcon icon={faPlayCircle} size="3x" /></a>
+          <a className="pause-button" onClick={() => this.pause()}><FontAwesomeIcon icon={faPauseCircle} size="3x" /></a>
+          <a className="iterate-button" onClick={() => this.iterate()}><FontAwesomeIcon icon={faChevronCircleRight} size="3x" /></a>
+          <a className="reset-button" onClick={() => this.reset()}><FontAwesomeIcon icon={faStopCircle} size="3x"/></a>  
+        </div>
+          <form onSubmit={this.changeBoardSize}>
+            <label>
+              Size:
+              <input type="number" placeholder="max 60" ref={this.sizeRef} name="size"/>
+            </label>
+            <input type="submit" value="submit" onClick={this.clickToResize.bind(this)}/>
+          </form>
+          <form onSubmit={this.changeLimit}>
+            <label>
+              Limit:
+              <input type="number" name="limit" ref={this.limitRef}/>
+            </label>
+            <input type="submit" value="submit" onClick={this.clickToSetLimit.bind(this)}/>
+          </form>
+          <form onSubmit={this.changeClickLimit}>
+            <label>
+              Click limit:
+              <input type="number" name="clickLimit" ref={this.clickLimitRef}/>
+            </label>
+            <input type="submit" value="submit" onClick={this.clickToSetClickLimit.bind(this)}/>
+          </form>
+          <button className="unlimited-button" onClick={() => this.setUnlimited()}>Unlimited</button>
+          <select className="map-select" onChange={this.handleChangeMap}>
+            {PRESETS.map((preset, i) =>
+              (<option key={i} value={preset.name}>{preset.name}</option>)
+            )}
+          </select>
+          <button className="map-submit-button" onClick={() => this.loadMap()}>Submit</button>
+        
+        <div className="counters">
+          <div className="generationCounter">
+            {`Generations: ${this.state.generationCount}`}
           </div>
-          <div className="counters">
-            <div className="generationCounter">
-              {`Generations: ${this.state.generationCount}`}
-            </div>
-            <div className="generationLimit">
-              {`Generation Limit: ${this.state.generationLimit}`}
-            </div>
-            <div className="clickCounter">
-              {`Click Count: ${this.state.clickCount}`}
-            </div>
+          <div className="generationLimit">
+            {`Generation Limit: ${this.state.generationLimit}`}
+          </div>
+          <div className="clickCounter">
+            {`Click Count: ${this.state.clickCount}`}
           </div>
         </div>
       </div>
