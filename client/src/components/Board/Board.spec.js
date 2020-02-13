@@ -220,6 +220,7 @@ describe('Board', () => {
       })
 
       it('click play should call play', () => {
+        wrapper.find('.play-button').simulate('click')
         clickButton(wrapper, 'play')
 
         expect(playSpy.mock.calls.length).toBe(1)
@@ -304,9 +305,11 @@ describe('Board', () => {
         const input = form.find('input').at(0)
 
         input.instance().value = 20
+
         form.simulate('submit')
 
         const total = 20 * 20
+
         clickButton(wrapper, 'reset')
         expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
       })
