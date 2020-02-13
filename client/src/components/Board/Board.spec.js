@@ -82,18 +82,18 @@ describe('Board', () => {
 
         expect(findCell(wrapper, 1, 1).prop('state')).toBe(0)
 
-        clickButton(wrapper, 'iterate')
+        wrapper.instance().iterate()
         expect(findCell(wrapper, 1, 1).prop('state')).toBe(1)
       })
 
       it('should not iterate over generation limit', () => {
-        clickButton(wrapper, 'iterate')
+        wrapper.instance().iterate()
 
         wrapper.instance().generationLimit = 1
 
-        clickButton(wrapper, 'iterate')
-        clickButton(wrapper, 'iterate')
-        clickButton(wrapper, 'iterate')
+        wrapper.instance().iterate()
+        wrapper.instance().iterate()
+        wrapper.instance().iterate()
 
         expect(wrapper.instance().generationCount).toBe(1)
       })
@@ -157,7 +157,7 @@ describe('Board', () => {
         input.instance().value = 1
         form.simulate('submit')
         wrapper.instance().isPlaying = true
-        clickButton(wrapper, 'unlimited')
+        wrapper.instance().setUnlimited()
         wrapper.instance().play()
         jest.runOnlyPendingTimers()
         jest.runOnlyPendingTimers()
@@ -187,7 +187,7 @@ describe('Board', () => {
         const playSpy = jest.spyOn(wrapper.instance(), 'play')
         const iterateSpy = jest.spyOn(wrapper.instance(), 'iterate')
 
-        clickButton(wrapper, 'play')
+        wrapper.instance().startPlaying()
 
         jest.runOnlyPendingTimers()
         jest.runOnlyPendingTimers()
@@ -220,50 +220,39 @@ describe('Board', () => {
       })
 
       it('click play should call play', () => {
-        clickButton(wrapper, 'play')
+        wrapper.instance().startPlaying()
 
         expect(playSpy.mock.calls.length).toBe(1)
       })
 
       it('pressing play twice should not speed up the iteration rate', () => {
-        clickButton(wrapper, 'play')
-        clickButton(wrapper, 'play')
+        wrapper.instance().startPlaying()
+        wrapper.instance().startPlaying()
 
         expect(playSpy.mock.calls.length).toBe(1)
       })
 
       it('should allow to play after pausing', () => {
-        clickButton(wrapper, 'play')
-        clickButton(wrapper, 'pause')
-        clickButton(wrapper, 'play')
+        wrapper.instance().startPlaying()
+        wrapper.instance().pause()
+        wrapper.instance().startPlaying()
 
         expect(playSpy.mock.calls.length).toBe(2)
       })
     })
 
-    describe('resizing form', () => {
+    describe('changeBoardSize', () => {
       it('should resize the board', () => {
-        wrapper = mount(<Board />)
-        const form = wrapper.find('.resize-board')
-        const input = form.find('input').at(0)
-
-        input.instance().value = 20
-        form.simulate('submit')
+        wrapper.instance().changeBoardSize(20)
 
         const total = 20 * 20
         expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
       })
 
       it('should reset the board on resize', () => {
-        wrapper = mount(<Board />)
-
         const resetSpy = jest.spyOn(wrapper.instance(), 'reset')
 
-        const form = wrapper.find('.resize-board')
-        const input = form.find('input').at(0)
-
-        input.instance().value = 20
-        form.simulate('submit')
+        wrapper.instance().changeBoardSize(20)
 
         expect(resetSpy.mock.calls.length).toBe(1)
       })
@@ -275,8 +264,8 @@ describe('Board', () => {
         findCell(wrapper, 1, 0).simulate('click')
         findCell(wrapper, 0, 1).simulate('click')
 
-        clickButton(wrapper, 'iterate')
-        clickButton(wrapper, 'reset')
+        wrapper.instance().iterate()
+        wrapper.instance().reset()
 
         expect(wrapper.instance().state.clickLimit).toBe(Infinity)
         expect(getGenerationCount(wrapper)).toEqual(0)
@@ -290,8 +279,8 @@ describe('Board', () => {
       })
 
       it('clicking reset after play stops the iteration', () => {
-        clickButton(wrapper, 'play')
-        clickButton(wrapper, 'reset')
+        wrapper.instance().startPlaying()
+        wrapper.instance().reset()
 
         jest.runOnlyPendingTimers()
 
@@ -299,15 +288,10 @@ describe('Board', () => {
       })
 
       it('clicking reset keeps the current board size', () => {
-        wrapper = mount(<Board />)
-        const form = wrapper.find('.resize-board')
-        const input = form.find('input').at(0)
-
-        input.instance().value = 20
-        form.simulate('submit')
+        wrapper.instance().changeBoardSize(20)
 
         const total = 20 * 20
-        clickButton(wrapper, 'reset')
+        wrapper.instance().reset()
         expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
       })
     })
@@ -341,8 +325,6 @@ describe('Board', () => {
 
   describe('save map', () => {
     it('should post the board current cells with a name', () => {
-      wrapper = mount(<Board />)
-
       findCell(wrapper, 0, 0).simulate('click')
       findCell(wrapper, 1, 1).simulate('click')
       findCell(wrapper, 2, 2).simulate('click')
@@ -367,9 +349,7 @@ describe('Board', () => {
 
       const postSpy = jest.spyOn(axios, 'post')
 
-      const form = wrapper.find('.save-board')
-      form.find('input').at(0).simulate('change', { target: { value: 'Gerbils' } })
-      form.simulate('submit')
+      wrapper.instance().saveBoard('Gerbils')
 
       expect(postSpy.mock.calls.length).toBe(1)
       expect(postSpy.mock.calls[0][0]).toBe('/api/maps')
@@ -377,17 +357,13 @@ describe('Board', () => {
     })
 
     it('should make the saved board available', () => {
-      wrapper = mount(<Board />)
-
       findCell(wrapper, 0, 0).simulate('click')
       findCell(wrapper, 1, 1).simulate('click')
       findCell(wrapper, 2, 2).simulate('click')
       findCell(wrapper, 3, 3).simulate('click')
       findCell(wrapper, 4, 4).simulate('click')
 
-      const form = wrapper.find('.save-board')
-      form.find('input').at(0).simulate('change', { target: { value: 'Hamlet' } })
-      form.simulate('submit')
+      wrapper.instance().saveBoard('Hamlet')
 
       setTimeout(() => {
         const mapSelect = wrapper.find('.map-select')
@@ -418,15 +394,15 @@ describe('Board', () => {
 
     it('should display an efficiency score equal to the product of clicks and generations', () => {
       findCell(wrapper, 1, 1).simulate('click')
-      clickButton(wrapper, 'iterate')
+      wrapper.instance().iterate()
 
       expect(wrapper.find('.death-efficiency').text()).toBe('Death Efficiency: 1')
     })
 
     it('should stop increasing the death efficiency when the board has been cleared', () => {
       findCell(wrapper, 1, 1).simulate('click')
-      clickButton(wrapper, 'iterate')
-      clickButton(wrapper, 'iterate')
+      wrapper.instance().iterate()
+      wrapper.instance().iterate()
 
       expect(wrapper.find('.death-efficiency').text()).toBe('Death Efficiency: 1')
     })
@@ -435,9 +411,9 @@ describe('Board', () => {
       findCell(wrapper, 1, 1).simulate('click')
       findCell(wrapper, 1, 2).simulate('click')
       findCell(wrapper, 2, 3).simulate('click')
-      clickButton(wrapper, 'iterate')
-      clickButton(wrapper, 'iterate')
-      clickButton(wrapper, 'iterate')
+      wrapper.instance().iterate()
+      wrapper.instance().iterate()
+      wrapper.instance().iterate()
 
       expect(wrapper.find('.death-efficiency').text()).toBe('Death Efficiency: 6')
     })
@@ -446,11 +422,11 @@ describe('Board', () => {
       findCell(wrapper, 1, 1).simulate('click')
       findCell(wrapper, 1, 2).simulate('click')
       findCell(wrapper, 2, 3).simulate('click')
-      clickButton(wrapper, 'iterate')
-      clickButton(wrapper, 'iterate')
-      clickButton(wrapper, 'iterate')
+      wrapper.instance().iterate()
+      wrapper.instance().iterate()
+      wrapper.instance().iterate()
 
-      clickButton(wrapper, 'reset')
+      wrapper.instance().reset()
 
       expect(wrapper.find('.death-efficiency').text()).toBe('Death Efficiency: 0')
     })

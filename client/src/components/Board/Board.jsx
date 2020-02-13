@@ -134,7 +134,7 @@ class Board extends Component {
     }
   }
 
-  _checkIfPlaying () {
+  startPlaying () {
     if (this.isPlaying === true) {
       return
     }
@@ -161,12 +161,11 @@ class Board extends Component {
     })
   }
 
-  changeBoardSize (event) {
-    event.preventDefault()
+  changeBoardSize (boardSize) {
     this.reset()
     this.setState({
-      rows: this.sizeRef.current.value,
-      cols: this.sizeRef.current.value
+      rows: boardSize,
+      cols: boardSize
     }, () => {
       const cells = this.newEmptyBoard(this.state.rows, this.state.cols)
       this.board = new BoardLogic(cells, CellLogic)
@@ -201,7 +200,6 @@ class Board extends Component {
     const presetName = this.state.preset
     const currentPreset = this.state.presets.find(preset => preset.name === presetName)
     const presetData = currentPreset.cells
-    console.log(currentPreset)
     this._setMap(presetData)
   }
 
@@ -218,10 +216,9 @@ class Board extends Component {
     this.setState({ mapName: event.target.value })
   }
 
-  saveBoard (event) {
-    event.preventDefault()
+  saveBoard (name) {
     const data = {
-      name: this.state.mapName,
+      name: name,
       cells: this.state.cells
     }
     axios.post('/api/maps', data)
@@ -240,7 +237,7 @@ class Board extends Component {
         </div>
         <div className="controls">
           <button className="iterate-button" onClick={() => this.iterate()}>Iterate</button>
-          <button className="play-button" onClick={() => { this._checkIfPlaying() } }>Play</button>
+          <button className="play-button" onClick={() => { this.startPlaying() } }>Play</button>
           <button className="pause-button" onClick={() => this.pause()}>Pause</button>
           <button className="reset-button" onClick={() => this.reset()}>Reset</button>
           <button className="unlimited-button" onClick={() => this.setUnlimited()}>Unlimited</button>
