@@ -2,8 +2,16 @@ import React from 'react'
 import { shallow, mount } from 'enzyme'
 import Board from './Board'
 import { findCell } from '../../testHelper'
+import axios from 'axios'
 
+jest.mock('axios')
 jest.useFakeTimers()
+axios.get.mockReturnValue({
+  data: [
+    { name: 'None', cells: [[0, 0], [0, 0]] },
+    { name: 'Map1', cells: [[1, 1], [1, 0]] }
+  ]
+})
 
 describe('Board', () => {
   let wrapper
@@ -12,6 +20,27 @@ describe('Board', () => {
     wrapper = shallow(<Board />)
     jest.clearAllTimers()
     setTimeout.mockClear()
+    jest.clearAllMocks()
+  })
+
+  describe('constructor loading maps', () => {
+    it('should load all maps from the API', () => {
+      const getSpy = jest.spyOn(axios, 'get')
+      shallow(<Board />)
+
+      expect(getSpy.mock.calls.length).toEqual(1)
+      expect(getSpy.mock.calls[0][0]).toEqual('/api/maps')
+    })
+
+    it('should have all the maps in the dropdown', () => {
+      wrapper = mount(<Board />)
+
+      setTimeout(() => {
+        const mapSelect = wrapper.find('.map-select')
+
+        expect(mapSelect.find('option').at(0).instance().value).toEqual('None')
+      }, 100)
+    })
   })
 
   describe('.render', () => {
@@ -23,6 +52,16 @@ describe('Board', () => {
     it('should render a 10x10 grid', () => {
       const total = 10 * 10
       expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
+    })
+  })
+
+  describe('live cell count', () => {
+    it('should count number of live cells', () => {
+      findCell(wrapper, 0, 0).simulate('click')
+      findCell(wrapper, 1, 0).simulate('click')
+      findCell(wrapper, 0, 1).simulate('click')
+
+      expect(wrapper.instance().countLiveCells()).toBe(3)
     })
   })
 
@@ -81,7 +120,8 @@ describe('Board', () => {
     describe('generation', () => {
       it('form should change the boards generation limit', () => {
         wrapper = mount(<Board />)
-        const form = wrapper.find('form').at(1)
+
+        const form = wrapper.find('.set-generation-limit')
         const input = form.find('input').at(0)
 
         input.instance().value = 1
@@ -130,7 +170,7 @@ describe('Board', () => {
     describe('limitClick form', () => {
       it('should change the boards click limit', () => {
         wrapper = mount(<Board />)
-        const form = wrapper.find('form').at(2)
+        const form = wrapper.find('.click-limit')
         const clickLimitInput = form.find('input').at(0)
 
         clickLimitInput.instance().value = 1
@@ -204,8 +244,8 @@ describe('Board', () => {
     describe('resizing form', () => {
       it('should resize the board', () => {
         wrapper = mount(<Board />)
-        const form = wrapper.find('form').at(0)
-        const input = wrapper.find('input').at(0)
+        const form = wrapper.find('.resize-board')
+        const input = form.find('input').at(0)
 
         input.instance().value = 20
         form.simulate('submit')
@@ -219,8 +259,8 @@ describe('Board', () => {
 
         const resetSpy = jest.spyOn(wrapper.instance(), 'reset')
 
-        const form = wrapper.find('form').at(0)
-        const input = wrapper.find('input').at(0)
+        const form = wrapper.find('.resize-board')
+        const input = form.find('input').at(0)
 
         input.instance().value = 20
         form.simulate('submit')
@@ -260,8 +300,8 @@ describe('Board', () => {
 
       it('clicking reset keeps the current board size', () => {
         wrapper = mount(<Board />)
-        const form = wrapper.find('form').at(0)
-        const input = wrapper.find('input').at(0)
+        const form = wrapper.find('.resize-board')
+        const input = form.find('input').at(0)
 
         input.instance().value = 20
         form.simulate('submit')
@@ -282,20 +322,80 @@ describe('Board', () => {
       expect(findCell(wrapper, 0, 1).prop('state')).toBe(0)
       expect(findCell(wrapper, 1, 1).prop('state')).toBe(0)
 
-      const mapSelect = wrapper.find('.map-select')
+      setTimeout(() => {
+        const mapSelect = wrapper.find('.map-select')
 
-      mapSelect.simulate('change', { target: { value: 'Map1' } })
-      clickButton(wrapper, 'map-submit')
+        mapSelect.simulate('change', { target: { value: 'Map1' } })
+        clickButton(wrapper, 'map-submit')
 
-      const total = 2 * 2
-      expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
+        const total = 2 * 2
+        expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
 
-      expect(findCell(wrapper, 0, 0).prop('state')).toBe(1)
-      expect(findCell(wrapper, 1, 0).prop('state')).toBe(1)
-      expect(findCell(wrapper, 0, 1).prop('state')).toBe(1)
-      expect(findCell(wrapper, 1, 1).prop('state')).toBe(0)
+        expect(findCell(wrapper, 0, 0).prop('state')).toBe(1)
+        expect(findCell(wrapper, 1, 0).prop('state')).toBe(1)
+        expect(findCell(wrapper, 0, 1).prop('state')).toBe(1)
+        expect(findCell(wrapper, 1, 1).prop('state')).toBe(0)
+      }, 100)
     })
   })
+
+  describe('save map', () => {
+    it('should post the board current cells with a name', () => {
+      wrapper = mount(<Board />)
+
+      findCell(wrapper, 0, 0).simulate('click')
+      findCell(wrapper, 1, 1).simulate('click')
+      findCell(wrapper, 2, 2).simulate('click')
+      findCell(wrapper, 3, 3).simulate('click')
+      findCell(wrapper, 4, 4).simulate('click')
+
+      const data = {
+        name: 'Gerbils',
+        cells: [
+          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        ]
+      }
+
+      const postSpy = jest.spyOn(axios, 'post')
+
+      const form = wrapper.find('.save-board')
+      form.find('input').at(0).simulate('change', { target: { value: 'Gerbils' } })
+      form.simulate('submit')
+
+      expect(postSpy.mock.calls.length).toBe(1)
+      expect(postSpy.mock.calls[0][0]).toBe('/api/maps')
+      expect(postSpy.mock.calls[0][1]).toEqual(data)
+    })
+
+    it('should make the saved board available', () => {
+      wrapper = mount(<Board />)
+
+      findCell(wrapper, 0, 0).simulate('click')
+      findCell(wrapper, 1, 1).simulate('click')
+      findCell(wrapper, 2, 2).simulate('click')
+      findCell(wrapper, 3, 3).simulate('click')
+      findCell(wrapper, 4, 4).simulate('click')
+
+      const form = wrapper.find('.save-board')
+      form.find('input').at(0).simulate('change', { target: { value: 'Hamlet' } })
+      form.simulate('submit')
+
+      setTimeout(() => {
+        const mapSelect = wrapper.find('.map-select')
+        expect(mapSelect.find('option').at(2).instance().value).toBe('Hamlet')
+      }, 100)
+    })
+  })
+
   describe('clicks', () => {
     it('should increase the click count by 1 on cell click', () => {
       findCell(wrapper, 0, 0).simulate('click')
