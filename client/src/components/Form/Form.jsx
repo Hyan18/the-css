@@ -17,12 +17,15 @@ export default class Form extends Component {
   }
 }
 
-function capitalize(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+function capitalize (string) {
+  return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
 Form.propTypes = {
   name: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  refer: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) })]),
   onClick: PropTypes.func.isRequired
 }

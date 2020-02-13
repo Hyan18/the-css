@@ -118,7 +118,7 @@ describe('Board', () => {
     })
 
     describe('generation', () => {
-      fit('form should change the boards generation limit', () => {
+      it('form should change the boards generation limit', () => {
         wrapper = mount(<Board />)
 
         const form = wrapper.find('.set-generation-limit')
@@ -170,7 +170,7 @@ describe('Board', () => {
     describe('limitClick form', () => {
       it('should change the boards click limit', () => {
         wrapper = mount(<Board />)
-        const form = wrapper.find('.click-limit')
+        const form = wrapper.find('Form').findWhere(n => n.prop('name') === "click")
         const clickLimitInput = form.find('input').at(0)
 
         clickLimitInput.instance().value = 1
