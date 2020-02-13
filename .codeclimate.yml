@@ -1,0 +1,3 @@
+exclude_patterns:
+  - 'client/src/serviceWorker.js'
+  - '**/*.spec.js'
