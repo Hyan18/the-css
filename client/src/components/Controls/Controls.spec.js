@@ -9,6 +9,7 @@ describe('Controls', () => {
   const pauseFuncMock = jest.fn()
   const resetFuncMock = jest.fn()
   const unlimitedFuncMock = jest.fn()
+  const saveBoardFuncMock = jest.fn()
 
   beforeEach(() => {
     wrapper = shallow(
@@ -18,6 +19,7 @@ describe('Controls', () => {
         pauseFunc={pauseFuncMock}
         resetFunc={resetFuncMock}
         unlimitedFunc={unlimitedFuncMock}
+        saveBoardFunc={saveBoardFuncMock}
       />
     )
     playFuncMock.mockClear()
@@ -25,6 +27,7 @@ describe('Controls', () => {
     pauseFuncMock.mockClear()
     resetFuncMock.mockClear()
     unlimitedFuncMock.mockClear()
+    saveBoardFuncMock.mockClear()
   })
 
   it('should have a controls-container div', () => {
@@ -32,6 +35,13 @@ describe('Controls', () => {
   })
 
   describe('iteration controls', () => {
+    it('should have an iteration-container', () => {
+      expect(wrapper
+        .find('div.controls-container')
+        .find('div.iteration-container')
+        .length).toBe(1)
+    })
+
     describeButton('play', 'Play', playFuncMock)
 
     describeButton('step', 'Step', iterateFuncMock)
@@ -41,6 +51,28 @@ describe('Controls', () => {
     describeButton('reset', 'Reset', resetFuncMock)
 
     describeButton('unlimited', 'Unlimited', unlimitedFuncMock)
+  })
+
+  describe('save board', () => {
+    it('should have a input for the map name', () => {
+      expect(wrapper.find('input.map-name').length).toBe(1)
+    })
+
+    it('should have a button to save the board', () => {
+      expect(wrapper.find('button.save-map-button').length).toBe(1)
+      expect(wrapper.find('button.save-map-button').text()).toBe('Save')
+    })
+
+    it('should call the save board method when clicked', () => {
+      const input = wrapper.find('input.map-name')
+      const button = wrapper.find('button.save-map-button')
+
+      input.simulate('change', { target: { value: 'Test Map Name' } })
+      button.simulate('click')
+
+      expect(saveBoardFuncMock.mock.calls.length).toBe(1)
+      expect(saveBoardFuncMock.mock.calls[0][0]).toBe('Test Map Name')
+    })
   })
 
   function describeButton(buttonName, buttonText, onClickFunc) {
