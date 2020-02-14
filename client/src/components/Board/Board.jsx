@@ -242,17 +242,17 @@ class Board extends Component {
         <div className="settings">
           <form className="resize-board" onSubmit={this.changeBoardSize}>
             <label>
-                Size:
+                Map Size
               <input type="number" placeholder="max 60" ref={this.sizeRef} name="size"/>
             </label>
-            <input type="submit" value="Submit" onClick={this.clickToResize.bind(this)}/>
+            <input type="submit" value="Set Size" onClick={this.clickToResize.bind(this)}/>
           </form>
           <form className="save-board" onSubmit={this.saveBoard}>
             <label>
-              Map Name:
+              Map Name
               <input type="text" onChange={this.handleNameChange}/>
             </label>
-            <input type="submit" value="save"/>
+            <input type="submit" value="Save Map"/>
           </form>
           <Form name="generation" onSubmit={this.changeLimit} refer={this.limitRef} onClick={this.clickToSetLimit.bind(this)}/>
           <Form name="click" onSubmit={this.changeClickLimit} refer={this.clickLimitRef} onClick={this.clickToSetClickLimit.bind(this)}/>
@@ -265,20 +265,24 @@ class Board extends Component {
           <button className="unlimited-button" onClick={() => this.setUnlimited()}>Sandbox Mode</button>
         </div>
         <div className="counters">
-          <div className="generationCounter">
-            {`Generations: ${this.state.generationCount}`}
+          <div className="limits">
+            <div className="clickLimit">
+              {`Click Limit: ${this.state.clickLimit}`}
+            </div>
+            <div className="generationLimit">
+              {`Gen Limit: ${this.state.generationLimit}`}
+            </div>
           </div>
-          <div className="generationLimit">
-            {`Generation Limit: ${this.state.generationLimit}`}
-          </div>
-          <div className="clickCounter">
-            {`Click Count: ${this.state.clickCount}`}
-          </div>
-          <div className="clickLimit">
-            {`Click Limit: ${this.state.clickLimit}`}
-          </div>
-          <div className="death-efficiency">
-            {`Death Efficiency: ${this.state.deathEfficiency}`}
+          <div className="counts">
+            <div className="generationCounter">
+              {`Generation: ${this.state.generationCount}`}
+            </div>
+            <div className="clickCounter">
+              {`Click Count: ${this.state.clickCount}`}
+            </div>
+            <div className="death-efficiency">
+              {`Death Efficiency: ${this.state.deathEfficiency}`}
+            </div>
           </div>
         </div>
         <div className="controls">
