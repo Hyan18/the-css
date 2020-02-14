@@ -1,36 +1,45 @@
 .board-container {
   align-content: center;
-  width: 100vw;
-  height: 100vh;
   padding: 10px;
+  width: 1500px;
+  max-width: 1500px;
+  max-width: 900px;
 }
 
 .board-div {
+  float: left;
   position: relative;
-  display: inline-block;
-}
-
-.counters {
-  display: block;
-  padding: 0 10 0 0;
-  width: 600px;
 }
 
 .settings {
-  top: 100px;
-  float: right;
-  right: 380px;
+  float: left;
+  max-width: 250px;
+  max-height: 600px;
+  height: 550px;
+  margin-left: 10px;
   padding: 10px;
   display: block;
   position: relative;
-  width: 200px;
+  width: 250px;
+  background-color: #0f4c75;
+  border-radius: 10px;
+}
+
+.counters {
+  margin-top: 10px;
+  padding: 10px;
+  margin-left: 10px;
+  font-size: large;
+  color: azure;
+  width: 350px;
+  display: inline-block;
   background-color: #0f4c75;
   border-radius: 10px;
 }
 
 .controls {
-  float: right;
-  right: 600px;
+  margin-top: 10px;
+  float: left;
   padding: 10px;
   display: block;
   position: relative;
@@ -61,8 +70,44 @@ input[type=submit] {
 input[type=submit]:hover {
   background-color: #bbe1fa;
 }
-/* div {
-  border-radius: 5px;
-  background-color: #F2F2F2;
-  padding: 20px;
-} */
+
+.reset-button:hover {
+  color: brown;
+}
+
+.reset-button:active {
+  color: black;
+}
+
+
+.play-button:hover {
+  color: brown;
+}
+
+.play-button:active {
+  color: black;
+}
+
+.pause-button:hover {
+  color: brown;
+}
+
+.pause-button:active {
+  color: black;
+}
+
+.iterate-button:hover {
+  color: brown;
+}
+
+.iterate-button:active {
+  color: black;
+}
+
+.limits {
+  float: right;
+}
+
+.counts {
+  float: left;
+}

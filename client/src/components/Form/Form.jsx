@@ -8,10 +8,10 @@ export default class Form extends Component {
     return (
       <form className={`set-${name}-limit`} onSubmit={onSubmit}>
         <label>
-          {capitalize(name)} Limit:
+          {capitalize(name)} Limit
           <input type="number" name={`${name} limit`} ref={refer}/>
         </label>
-        <input type="submit" value="submit" onClick={onClick}/>
+        <input type="submit" value="Set Limit" onClick={onClick}/>
       </form>
     )
   }
