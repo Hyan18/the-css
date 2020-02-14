@@ -168,15 +168,11 @@ class Board extends Component {
   }
 
   loadMap (map) {
-    this._setMap(map.cells)
-  }
-
-  _setMap (data) {
-    this.board = new BoardLogic(data, CellLogic)
+    this.board = new BoardLogic(map.cells, CellLogic)
     this.setState({
-      rows: data.length,
-      cols: data.length,
-      cells: data
+      rows: map.cells.length,
+      cols: map.cells.length,
+      cells: map.cells
     })
   }
 
@@ -197,7 +193,7 @@ class Board extends Component {
       <div className="board-container">
         <div className="board-div" style={{ width: WIDTH, maxWidth: WIDTH, height: HEIGHT, maxHeight: HEIGHT }}>
           {this.state.cells.map((row, i) => row.map((cell, j) =>
-            (<Cell x={j} y={i} state={cell} cellSize={WIDTH / this.state.cols} key={`${j}, ${i}`} onClick={ () => this.handleClick(j, i) }/>)
+            (<Cell x={j} y={i} state={cell} cellSize={WIDTH / this.state.cols} key={`${j}, ${i}`} onClick={() => this.handleClick(j, i)}/>)
           ))}
         </div>
 
