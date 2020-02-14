@@ -15,10 +15,9 @@
   float: left;
   max-width: 250px;
   max-height: 600px;
-  height: 600px;
-  margin-left: 20px;
-  padding-left: 10px;
-  padding-right: 10px;
+  height: 550px;
+  margin-left: 10px;
+  padding: 10px;
   display: block;
   position: relative;
   width: 250px;
@@ -27,14 +26,19 @@
 }
 
 .counters {
-  margin-left: 100px;
+  margin-top: 10px;
+  padding: 10px;
+  margin-left: 10px;
   font-size: large;
   color: azure;
-  width: 300px;
+  width: 350px;
   display: inline-block;
+  background-color: #0f4c75;
+  border-radius: 10px;
 }
 
 .controls {
+  margin-top: 10px;
   float: left;
   padding: 10px;
   display: block;
@@ -98,4 +102,12 @@ input[type=submit]:hover {
 
 .iterate-button:active {
   color: black;
+}
+
+.limits {
+  float: right;
+}
+
+.counts {
+  float: left;
 }
