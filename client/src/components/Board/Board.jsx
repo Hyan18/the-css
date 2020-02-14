@@ -24,7 +24,6 @@ class Board extends Component {
     this.clickLimitRef = React.createRef()
     this.board = new BoardLogic(this.newEmptyBoard(), CellLogic)
     this.state = {
-      presets: [],
       cells: this.board.cellStates(),
       rows: ROWS,
       cols: COLS,
@@ -182,9 +181,6 @@ class Board extends Component {
       cells: this.state.cells
     }
     axios.post('/api/maps', data)
-    this.setState({
-      presets: this.state.presets.concat([data])
-    })
     return data
   }
 
