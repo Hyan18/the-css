@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 export default class MapList extends Component {
-
   render () {
     const { presets, onClick } = this.props
 

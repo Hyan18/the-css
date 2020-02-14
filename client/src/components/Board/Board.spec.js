@@ -1,6 +1,9 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { shallow } from 'enzyme'
+
 import Board from './Board'
+import Controls from '../Controls/Controls'
+
 import { findCell } from '../../testHelper'
 import axios from 'axios'
 
@@ -54,6 +57,20 @@ describe('Board', () => {
       const total = 10 * 10
       expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
     })
+
+    it('should render Controls with callbacks', () => {
+      const controls = wrapper.find(Controls)
+      expect(controls.length).toBe(1)
+      expect(controls.props().playFunc).toBe(wrapper.instance().startPlaying)
+      expect(controls.props().stepFunc).toBe(wrapper.instance().iterate)
+      expect(controls.props().pauseFunc).toBe(wrapper.instance().pause)
+      expect(controls.props().resetFunc).toBe(wrapper.instance().reset)
+      expect(controls.props().unlimitedFunc).toBe(wrapper.instance().setUnlimited)
+      expect(controls.props().saveBoardFunc).toBe(wrapper.instance().saveBoard)
+      expect(controls.props().changeBoardSizeFunc).toBe(wrapper.instance().changeBoardSize)
+      expect(controls.props().changeGenerationLimitFunc).toBe(wrapper.instance().changeGenerationLimit)
+      expect(controls.props().changeClickLimitFunc).toBe(wrapper.instance().changeClickLimit)
+    })
   })
 
   describe('live cell count', () => {
@@ -88,33 +105,15 @@ describe('Board', () => {
       })
 
       it('should not iterate over generation limit', () => {
-        wrapper.instance().iterate()
+        wrapper.instance().changeGenerationLimit(1)
 
-        wrapper.instance().generationLimit = 1
+        wrapper.instance().iterate()
 
         wrapper.instance().iterate()
         wrapper.instance().iterate()
         wrapper.instance().iterate()
 
         expect(wrapper.instance().generationCount).toBe(1)
-      })
-
-      it('generation limit input should gain focus', () => {
-        const wrapper = mount(<Board/>)
-        const focusSpy = jest.spyOn(wrapper.instance(), 'clickToSetLimit')
-
-        wrapper.instance().clickToSetLimit()
-
-        expect(focusSpy).toHaveBeenCalled()
-      })
-
-      it('size should gain focus', () => {
-        const wrapper = mount(<Board/>)
-        const focusSpy = jest.spyOn(wrapper.instance(), 'clickToResize')
-
-        wrapper.instance().clickToResize()
-
-        expect(focusSpy).toHaveBeenCalled()
       })
     })
 
@@ -134,24 +133,17 @@ describe('Board', () => {
       })
 
       describe('.setUnlimited', () => {
-        it('should set limit to unlimited', () => {
+        it('should set generation limit to infinity', () => {
+          wrapper.instance().changeGenerationLimit(1)
+          wrapper.instance().isPlaying = true
           wrapper.instance().setUnlimited()
+          wrapper.instance().play()
+          jest.runOnlyPendingTimers()
+          jest.runOnlyPendingTimers()
+          jest.runOnlyPendingTimers()
 
-          const genLimit = wrapper.children().find('.generationLimit').text()
-          expect(genLimit).toMatch('No limit')
+          expect(getGenerationCount(wrapper)).toEqual(4)
         })
-      })
-
-      it('clicking unlimited sets generation limit to infinity', () => {
-        wrapper.instance().changeGenerationLimit(1)
-        wrapper.instance().isPlaying = true
-        wrapper.instance().setUnlimited()
-        wrapper.instance().play()
-        jest.runOnlyPendingTimers()
-        jest.runOnlyPendingTimers()
-        jest.runOnlyPendingTimers()
-
-        expect(getGenerationCount(wrapper)).toEqual(4)
       })
     })
 
@@ -165,50 +157,22 @@ describe('Board', () => {
       })
     })
 
-    describe('.play', () => {
-      it('iterates continuously', () => {
-        const playSpy = jest.spyOn(wrapper.instance(), 'play')
-        const iterateSpy = jest.spyOn(wrapper.instance(), 'iterate')
-
-        wrapper.instance().startPlaying()
-
-        jest.runOnlyPendingTimers()
-        jest.runOnlyPendingTimers()
-        jest.runOnlyPendingTimers()
-        jest.runOnlyPendingTimers()
-
-        expect(getGenerationCount(wrapper)).toEqual(5)
-        expect(playSpy.mock.calls.length).toBe(5)
-        expect(iterateSpy.mock.calls.length).toBe(5)
-      })
-
-      it('iterates for a specific number of generations', () => {
-        wrapper.instance().isPlaying = true
-        wrapper.instance().generationLimit = 1
-        wrapper.instance().play()
-
-        jest.runOnlyPendingTimers()
-        jest.runOnlyPendingTimers()
-        jest.runOnlyPendingTimers()
-        jest.runOnlyPendingTimers()
-        expect(getGenerationCount(wrapper)).toEqual(1)
-      })
-    })
-
-    describe('play/pause buttons', () => {
+    describe('.startPlaying', () => {
+      let iterateSpy
       let playSpy
 
       beforeEach(() => {
+        iterateSpy = jest.spyOn(wrapper.instance(), '_iterate')
         playSpy = jest.spyOn(wrapper.instance(), 'play')
       })
 
-      it('click play should call play', () => {
+      it('should call play', () => {
         wrapper.instance().startPlaying()
 
         expect(playSpy.mock.calls.length).toBe(1)
       })
 
-      it('pressing play twice should not speed up the iteration rate', () => {
+      it('should not speed up the iteration rate if called twice', () => {
         wrapper.instance().startPlaying()
         wrapper.instance().startPlaying()
 
@@ -222,9 +186,45 @@ describe('Board', () => {
 
         expect(playSpy.mock.calls.length).toBe(2)
       })
+
+      it('iterates continuously', () => {
+        wrapper.instance().startPlaying()
+
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+
+        expect(iterateSpy.mock.calls.length).toBe(5)
+      })
+
+      it('iterates for a specific number of generations', () => {
+        wrapper.instance().changeGenerationLimit(1)
+        wrapper.instance().startPlaying()
+
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+        jest.runOnlyPendingTimers()
+
+        expect(iterateSpy.mock.calls.length).toBe(1)
+      })
+
+      describe('.pause', () => {
+        it('should stop iteration', () => {
+          wrapper.instance().startPlaying() // run once
+          jest.runOnlyPendingTimers() // run twice
+
+          wrapper.instance().pause()
+          jest.runOnlyPendingTimers()
+          jest.runOnlyPendingTimers()
+
+          expect(iterateSpy.mock.calls.length).toBe(2)
+        })
+      })
     })
 
-    describe('changeBoardSize', () => {
+    describe('.changeBoardSize', () => {
       it('should resize the board', () => {
         wrapper.instance().changeBoardSize(20)
 
@@ -261,53 +261,47 @@ describe('Board', () => {
         }
       })
 
-      it('clicking reset after play stops the iteration', () => {
+      it('should stop the iteration', () => {
+        const iterateSpy = jest.spyOn(wrapper.instance(), '_iterate')
         wrapper.instance().startPlaying()
         wrapper.instance().reset()
 
         jest.runOnlyPendingTimers()
 
-        expect(setTimeout.mock.calls.length).toBe(1)
+        expect(iterateSpy.mock.calls.length).toBe(1)
       })
 
-      it('clicking reset keeps the current board size', () => {
+      it('keeps the current board size', () => {
         wrapper.instance().changeBoardSize(20)
 
         const total = 20 * 20
         wrapper.instance().reset()
+
         expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
       })
     })
   })
 
-  // describe('load map', () => {
-  //   it('should load the selected map', () => {
-  //     wrapper = mount(<Board />)
+  describe('.loadMap', () => {
+    it('should load the selected map', () => {
+      expect(findCell(wrapper, 0, 0).prop('state')).toBe(0)
+      expect(findCell(wrapper, 1, 0).prop('state')).toBe(0)
+      expect(findCell(wrapper, 0, 1).prop('state')).toBe(0)
+      expect(findCell(wrapper, 1, 1).prop('state')).toBe(0)
 
-  //     expect(findCell(wrapper, 0, 0).prop('state')).toBe(0)
-  //     expect(findCell(wrapper, 1, 0).prop('state')).toBe(0)
-  //     expect(findCell(wrapper, 0, 1).prop('state')).toBe(0)
-  //     expect(findCell(wrapper, 1, 1).prop('state')).toBe(0)
+      wrapper.instance().loadMap('Map1')
 
-  //     setTimeout(() => {
-  //       // const mapSelect = wrapper.find('.map-select')
+      const total = 2 * 2
+      expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
 
-  //       // mapSelect.simulate('change', { target: { value: 'Map1' } })
-  //       // clickButton(wrapper, 'map-submit')
+      expect(findCell(wrapper, 0, 0).prop('state')).toBe(1)
+      expect(findCell(wrapper, 1, 0).prop('state')).toBe(1)
+      expect(findCell(wrapper, 0, 1).prop('state')).toBe(1)
+      expect(findCell(wrapper, 1, 1).prop('state')).toBe(0)
+    })
+  })
 
-  //       const total = 2 * 2
-  //       expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
-
-  //       expect(findCell(wrapper, 0, 0).prop('state')).toBe(1)
-  //       expect(findCell(wrapper, 1, 0).prop('state')).toBe(1)
-  //       expect(findCell(wrapper, 0, 1).prop('state')).toBe(1)
-  //       expect(findCell(wrapper, 1, 1).prop('state')).toBe(0)
-  //     }, 100)
-  //     jest.runAllTimers()
-  //   })
-  // })
-
-  describe('save map', () => {
+  describe('.saveBoard', () => {
     it('should post the board current cells with a name', () => {
       findCell(wrapper, 0, 0).simulate('click')
       findCell(wrapper, 1, 1).simulate('click')

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './Board.css'
 import Cell from '../Cell/Cell'
-import Form from '../Form/Form'
+import Controls from '../Controls/Controls'
 import MapList from '../MapList/MapList'
 import BoardLogic from '../BoardLogic/BoardLogic'
 import CellLogic from '../CellLogic/CellLogic'
@@ -35,12 +35,16 @@ class Board extends Component {
       deathEfficiency: 0
     }
 
+    this.startPlaying = this.startPlaying.bind(this)
+    this.iterate = this.iterate.bind(this)
+    this.pause = this.pause.bind(this)
+    this.reset = this.reset.bind(this)
+    this.setUnlimited = this.setUnlimited.bind(this)
+    this.saveBoard = this.saveBoard.bind(this)
     this.changeBoardSize = this.changeBoardSize.bind(this)
     this.changeGenerationLimit = this.changeGenerationLimit.bind(this)
     this.changeClickLimit = this.changeClickLimit.bind(this)
-    this.handleChangeMap = this.handleChangeMap.bind(this)
-    this.handleNameChange = this.handleNameChange.bind(this)
-    this.saveBoard = this.saveBoard.bind(this)
+    this.loadMap = this.loadMap.bind(this)
   }
 
   async getAllMaps () {
@@ -56,18 +60,6 @@ class Board extends Component {
 
   componentDidMount () {
     this.getAllMaps()
-  }
-
-  clickToSetLimit () {
-    this.limitRef.current.focus()
-  }
-
-  clickToSetClickLimit () {
-    this.clickLimitRef.current.focus()
-  }
-
-  clickToResize () {
-    this.sizeRef.current.focus()
   }
 
   changeGenerationLimit (newLimit) {
@@ -103,27 +95,31 @@ class Board extends Component {
 
   iterate () {
     if ((this.generationCount < this.generationLimit)) {
-      this.board.iterate()
+      this._iterate()
+    }
+  }
 
-      if (!this.deathReached) {
-        this.setState({
-          generationCount: ++this.generationCount,
-          cells: this.board.cellStates(),
-          deathEfficiency: this.generationCount * this.state.clickCount
-        })
-        if (this.countLiveCells() === 0) { this.deathReached = true }
-      } else {
-        this.setState({
-          generationCount: ++this.generationCount,
-          cells: this.board.cellStates()
-        })
-      }
+  _iterate () {
+    this.board.iterate()
+
+    if (!this.deathReached) {
+      this.setState({
+        generationCount: ++this.generationCount,
+        cells: this.board.cellStates(),
+        deathEfficiency: this.generationCount * this.state.clickCount
+      })
+      if (this.countLiveCells() === 0) { this.deathReached = true }
+    } else {
+      this.setState({
+        generationCount: ++this.generationCount,
+        cells: this.board.cellStates()
+      })
     }
   }
 
   play () {
-    if (this.isPlaying) {
-      this.iterate()
+    if (this.isPlaying && this.generationCount < this.generationLimit) {
+      this._iterate()
       setTimeout(() => {
         this.play()
       }, 100)
@@ -145,14 +141,12 @@ class Board extends Component {
   reset () {
     this.pause()
     this.board = new BoardLogic(this.newEmptyBoard(this.state.rows, this.state.cols), CellLogic)
-    this.clickLimit = Infinity
     this.generationCount = 0
     this.deathReached = false
     this.setState({
       cells: this.board.cellStates(),
       generationCount: 0,
       clickCount: 0,
-      clickLimit: this.state.clickLimit,
       deathEfficiency: 0
     })
   }
@@ -188,13 +182,7 @@ class Board extends Component {
     }
   }
 
-  handleChangeMap (event) {
-    this.setState({ preset: event.target.value })
-  }
-
   loadMap (presetName) {
-    // const presetName = this.state.preset
-    console.log(presetName)
     const currentPreset = this.state.presets.find(preset => preset.name === presetName)
     const presetData = currentPreset.cells
     this._setMap(presetData)
@@ -209,10 +197,6 @@ class Board extends Component {
     })
   }
 
-  handleNameChange (event) {
-    this.setState({ mapName: event.target.value })
-  }
-
   saveBoard (name) {
     const data = {
       name: name,
@@ -225,8 +209,6 @@ class Board extends Component {
   }
 
   render () {
-    const presets = this.state.presets
-
     return (
       <div className="board-container">
         <div className="board-div" style={{ width: WIDTH, maxWidth: WIDTH, height: HEIGHT, maxHeight: HEIGHT }}>
@@ -234,29 +216,19 @@ class Board extends Component {
             (<Cell x={j} y={i} state={cell} cellSize={WIDTH / this.state.cols} key={`${j}, ${i}`} onClick={ () => this.handleClick(j, i) }/>)
           ))}
         </div>
-        <div className="controls">
-          <button className="iterate-button" onClick={() => this.iterate()}>Iterate</button>
-          <button className="play-button" onClick={() => { this.startPlaying() } }>Play</button>
-          <button className="pause-button" onClick={() => this.pause()}>Pause</button>
-          <button className="reset-button" onClick={() => this.reset()}>Reset</button>
-          <button className="unlimited-button" onClick={() => this.setUnlimited()}>Unlimited</button>
-          <form className="save-board" onSubmit={this.saveBoard}>
-            <label>
-              Map Name:
-              <input type="text" onChange={this.handleNameChange}/>
-            </label>
-            <input type="submit" value="save"/>
-          </form>
-          <form className="resize-board" onSubmit={this.changeBoardSize}>
-            <label>
-              Size:
-              <input type="number" placeholder="max 60" ref={this.sizeRef} name="size"/>
-            </label>
-            <input type="submit" value="submit" onClick={this.clickToResize.bind(this)}/>
-          </form>
-          <Form name="generation" onSubmit={this.changeGenerationLimit} refer={this.limitRef} onClick={this.clickToSetLimit.bind(this)}/>
-          <Form name="click" onSubmit={this.changeClickLimit} refer={this.clickLimitRef} onClick={this.clickToSetClickLimit.bind(this)}/>
-          </div>
+
+        <Controls
+          playFunc={this.startPlaying}
+          stepFunc={this.iterate}
+          pauseFunc={this.pause}
+          resetFunc={this.reset}
+          unlimitedFunc={this.setUnlimited}
+          saveBoardFunc={this.saveBoard}
+          changeBoardSizeFunc={this.changeBoardSize}
+          changeGenerationLimitFunc={this.changeGenerationLimit}
+          changeClickLimitFunc={this.changeClickLimit}
+        />
+
         <div className="generationCounter">
           {`Generations: ${this.state.generationCount}`}
         </div>
@@ -273,7 +245,7 @@ class Board extends Component {
           {`Death Efficiency: ${this.state.deathEfficiency}`}
         </div>
         <div className="map-list">
-        <MapList presets={presets} onClick={this.loadMap.bind(this)}/>
+          <MapList presets={this.state.presets} onClick={this.loadMap}/>
         </div>
       </div>
     )
