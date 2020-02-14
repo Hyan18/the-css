@@ -47,21 +47,6 @@ class Board extends Component {
     this.loadMap = this.loadMap.bind(this)
   }
 
-  async getAllMaps () {
-    const res = await axios.get('/api/maps')
-
-    const presets = res.data.length > 0 ? res.data : [{ name: 'None', cells: [[0]] }]
-
-    this.setState({
-      presets: presets,
-      preset: presets[0].name
-    })
-  }
-
-  componentDidMount () {
-    this.getAllMaps()
-  }
-
   changeGenerationLimit (newLimit) {
     this.generationLimit = newLimit
     this.setState({ generationLimit: this.generationLimit })
@@ -182,10 +167,8 @@ class Board extends Component {
     }
   }
 
-  loadMap (presetName) {
-    const currentPreset = this.state.presets.find(preset => preset.name === presetName)
-    const presetData = currentPreset.cells
-    this._setMap(presetData)
+  loadMap (map) {
+    this._setMap(map.cells)
   }
 
   _setMap (data) {
@@ -206,6 +189,7 @@ class Board extends Component {
     this.setState({
       presets: this.state.presets.concat([data])
     })
+    return data
   }
 
   render () {
@@ -223,7 +207,6 @@ class Board extends Component {
           pauseFunc={this.pause}
           resetFunc={this.reset}
           unlimitedFunc={this.setUnlimited}
-          saveBoardFunc={this.saveBoard}
           changeBoardSizeFunc={this.changeBoardSize}
           changeGenerationLimitFunc={this.changeGenerationLimit}
           changeClickLimitFunc={this.changeClickLimit}
@@ -244,9 +227,12 @@ class Board extends Component {
         <div className="death-efficiency">
           {`Death Efficiency: ${this.state.deathEfficiency}`}
         </div>
-        <div className="map-list">
-          <MapList presets={this.state.presets} onClick={this.loadMap}/>
-        </div>
+
+        <MapList
+          presets={this.state.presets}
+          saveBoardFunc={this.saveBoard}
+          loadMapFunc={this.loadMap}
+        />
       </div>
     )
   }

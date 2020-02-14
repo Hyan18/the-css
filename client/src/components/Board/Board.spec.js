@@ -3,18 +3,13 @@ import { shallow } from 'enzyme'
 
 import Board from './Board'
 import Controls from '../Controls/Controls'
+import MapList from '../MapList/MapList'
 
 import { findCell } from '../../testHelper'
 import axios from 'axios'
 
 jest.mock('axios')
 jest.useFakeTimers()
-axios.get.mockReturnValue({
-  data: [
-    { name: 'None', cells: [[0, 0], [0, 0]] },
-    { name: 'Map1', cells: [[1, 1], [1, 0]] }
-  ]
-})
 
 describe('Board', () => {
   let wrapper
@@ -24,27 +19,6 @@ describe('Board', () => {
     jest.clearAllTimers()
     setTimeout.mockClear()
     jest.clearAllMocks()
-  })
-
-  describe('constructor loading maps', () => {
-    it('should load all maps from the API', () => {
-      const getSpy = jest.spyOn(axios, 'get')
-      shallow(<Board />)
-
-      expect(getSpy.mock.calls.length).toEqual(1)
-      expect(getSpy.mock.calls[0][0]).toEqual('/api/maps')
-    })
-
-    // it('should have all the maps in the dropdown', () => {
-    //   wrapper = mount(<Board />)
-
-    //   setTimeout(() => {
-    //     const mapSelect = wrapper.find('.map-select')
-
-    //     expect(mapSelect.find('option').at(0).instance().value).toEqual('None')
-    //   }, 100)
-    //   jest.runAllTimers()
-    // })
   })
 
   describe('.render', () => {
@@ -66,10 +40,16 @@ describe('Board', () => {
       expect(controls.props().pauseFunc).toBe(wrapper.instance().pause)
       expect(controls.props().resetFunc).toBe(wrapper.instance().reset)
       expect(controls.props().unlimitedFunc).toBe(wrapper.instance().setUnlimited)
-      expect(controls.props().saveBoardFunc).toBe(wrapper.instance().saveBoard)
       expect(controls.props().changeBoardSizeFunc).toBe(wrapper.instance().changeBoardSize)
       expect(controls.props().changeGenerationLimitFunc).toBe(wrapper.instance().changeGenerationLimit)
       expect(controls.props().changeClickLimitFunc).toBe(wrapper.instance().changeClickLimit)
+    })
+
+    it('should render MapList with callbacks', () => {
+      const mapList = wrapper.find(MapList)
+      expect(mapList.length).toBe(1)
+      expect(mapList.props().saveBoardFunc).toBe(wrapper.instance().saveBoard)
+      expect(mapList.props().loadMapFunc).toBe(wrapper.instance().loadMap)
     })
   })
 
@@ -92,7 +72,7 @@ describe('Board', () => {
   })
 
   describe('controls', () => {
-    describe('iterate button', () => {
+    describe('.iterate', () => {
       it('should iterate', () => {
         findCell(wrapper, 0, 0).simulate('click')
         findCell(wrapper, 1, 0).simulate('click')
@@ -135,9 +115,8 @@ describe('Board', () => {
       describe('.setUnlimited', () => {
         it('should set generation limit to infinity', () => {
           wrapper.instance().changeGenerationLimit(1)
-          wrapper.instance().isPlaying = true
           wrapper.instance().setUnlimited()
-          wrapper.instance().play()
+          wrapper.instance().startPlaying()
           jest.runOnlyPendingTimers()
           jest.runOnlyPendingTimers()
           jest.runOnlyPendingTimers()
@@ -284,12 +263,12 @@ describe('Board', () => {
 
   describe('.loadMap', () => {
     it('should load the selected map', () => {
-      expect(findCell(wrapper, 0, 0).prop('state')).toBe(0)
-      expect(findCell(wrapper, 1, 0).prop('state')).toBe(0)
-      expect(findCell(wrapper, 0, 1).prop('state')).toBe(0)
-      expect(findCell(wrapper, 1, 1).prop('state')).toBe(0)
+      const map = {
+        name: 'Map1',
+        cells: [[1, 1], [1, 0]]
+      }
 
-      wrapper.instance().loadMap('Map1')
+      wrapper.instance().loadMap(map)
 
       const total = 2 * 2
       expect(wrapper.find('.board-div').children('Cell').length).toEqual(total)
@@ -334,20 +313,31 @@ describe('Board', () => {
       expect(postSpy.mock.calls[0][1]).toEqual(data)
     })
 
-    // it('should make the saved board available', () => {
-    //   findCell(wrapper, 0, 0).simulate('click')
-    //   findCell(wrapper, 1, 1).simulate('click')
-    //   findCell(wrapper, 2, 2).simulate('click')
-    //   findCell(wrapper, 3, 3).simulate('click')
-    //   findCell(wrapper, 4, 4).simulate('click')
+    it('should return a map object', () => {
+      findCell(wrapper, 0, 0).simulate('click')
+      findCell(wrapper, 1, 1).simulate('click')
+      findCell(wrapper, 2, 2).simulate('click')
+      findCell(wrapper, 3, 3).simulate('click')
+      findCell(wrapper, 4, 4).simulate('click')
 
-    //   wrapper.instance().saveBoard('Hamlet')
+      const map = {
+        name: 'Gerbils',
+        cells: [
+          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        ]
+      }
 
-    //   setTimeout(() => {
-    //     const mapSelect = wrapper.find('.map-select')
-    //     expect(mapSelect.find('option').at(2).instance().value).toBe('Hamlet')
-    //   }, 100)
-    // })
+      expect(wrapper.instance().saveBoard('Gerbils')).toEqual(map)
+    })
   })
 
   describe('clicks', () => {

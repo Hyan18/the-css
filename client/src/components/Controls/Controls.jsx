@@ -33,13 +33,6 @@ export default class Controls extends Component {
         </div>
 
         <ParameterInput
-          parameter="save-board"
-          prompt="Name:"
-          buttonText="Save"
-          func={this.props.saveBoardFunc}
-        />
-
-        <ParameterInput
           parameter="board-size"
           prompt="Size:"
           buttonText="Resize"
@@ -70,7 +63,6 @@ Controls.propTypes = {
   pauseFunc: PropTypes.func.isRequired,
   resetFunc: PropTypes.func.isRequired,
   unlimitedFunc: PropTypes.func.isRequired,
-  saveBoardFunc: PropTypes.func.isRequired,
   changeBoardSizeFunc: PropTypes.func.isRequired,
   changeGenerationLimitFunc: PropTypes.func.isRequired,
   changeClickLimitFunc: PropTypes.func.isRequired

@@ -10,7 +10,6 @@ describe('Controls', () => {
   const pauseFuncMock = jest.fn()
   const resetFuncMock = jest.fn()
   const unlimitedFuncMock = jest.fn()
-  const saveBoardFuncMock = jest.fn()
   const changeBoardSizeFuncMock = jest.fn()
   const changeGenerationLimitFuncMock = jest.fn()
   const changeClickLimitFuncMock = jest.fn()
@@ -23,7 +22,6 @@ describe('Controls', () => {
         pauseFunc={pauseFuncMock}
         resetFunc={resetFuncMock}
         unlimitedFunc={unlimitedFuncMock}
-        saveBoardFunc={saveBoardFuncMock}
         changeBoardSizeFunc={changeBoardSizeFuncMock}
         changeGenerationLimitFunc={changeGenerationLimitFuncMock}
         changeClickLimitFunc={changeClickLimitFuncMock}
@@ -53,8 +51,6 @@ describe('Controls', () => {
 
     describeButton('unlimited', 'Unlimited', unlimitedFuncMock)
   })
-
-  describeParameterInput('save-board', 'Name:', 'Save', saveBoardFuncMock)
 
   describeParameterInput('board-size', 'Size:', 'Resize', changeBoardSizeFuncMock)
 
