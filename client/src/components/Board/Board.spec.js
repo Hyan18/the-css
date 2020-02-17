@@ -145,7 +145,7 @@ describe('Board', () => {
           wrapper.instance().setUnlimited()
 
           const genLimit = wrapper.children().find('.generationLimit').text()
-          expect(genLimit).toMatch('No limit')
+          expect(genLimit).toMatch('No Limit')
         })
       })
 

@@ -37,10 +37,9 @@ class Board extends Component {
     }
 
     this.changeBoardSize = this.changeBoardSize.bind(this)
-    this.changeLimit = this.changeLimit.bind(this)
+    this.changeGenerationLimit = this.changeGenerationLimit.bind(this)
     this.changeClickLimit = this.changeClickLimit.bind(this)
     this.handleChangeMap = this.handleChangeMap.bind(this)
-    // this.clickToSaveBoard = this.clickToSaveBoard.bind(this)
     this.handleNameChange = this.handleNameChange.bind(this)
     this.saveBoard = this.saveBoard.bind(this)
   }
@@ -72,7 +71,7 @@ class Board extends Component {
     this.sizeRef.current.focus()
   }
 
-  changeLimit (event) {
+  changeGenerationLimit (event) {
     event.preventDefault()
 
     this.generationLimit = this.limitRef.current.value
@@ -83,7 +82,7 @@ class Board extends Component {
   setUnlimited () {
     this.generationLimit = Infinity
     this.setState({
-      generationLimit: 'No limit',
+      generationLimit: 'No Limit',
       clickLimit: Infinity
     })
   }
@@ -232,11 +231,13 @@ class Board extends Component {
   }
 
   render () {
+    const cellSize = WIDTH / this.state.cols
+
     return (
       <div className="board-container">
         <div className="board-div" style={{ width: WIDTH, maxWidth: WIDTH, height: HEIGHT, maxHeight: HEIGHT }}>
           {this.state.cells.map((row, i) => row.map((cell, j) =>
-            (<Cell x={j} y={i} state={cell} cellSize={WIDTH / this.state.cols} key={`${j}, ${i}`} onClick={ () => this.handleClick(j, i) }/>)
+            (<Cell x={j} y={i} state={cell} cellSize={cellSize} key={`${j}, ${i}`} onClick={ () => this.handleClick(j, i) }/>)
           ))}
         </div>
         <div className="settings">
@@ -254,7 +255,7 @@ class Board extends Component {
             </label>
             <input type="submit" value="Save Map"/>
           </form>
-          <Form name="generation" onSubmit={this.changeLimit} refer={this.limitRef} onClick={this.clickToSetLimit.bind(this)}/>
+          <Form name="generation" onSubmit={this.changeGenerationLimit} refer={this.limitRef} onClick={this.clickToSetLimit.bind(this)}/>
           <Form name="click" onSubmit={this.changeClickLimit} refer={this.clickLimitRef} onClick={this.clickToSetClickLimit.bind(this)}/>
           <select className="map-select" onChange={this.handleChangeMap}>
             {this.state.presets && this.state.presets.map((preset, i) =>

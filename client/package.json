@@ -28,6 +28,13 @@
     "lint": "eslint src --ext .js,.jsx",
     "coverage": "react-scripts test --coverage --watchAll"
   },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!src/index.js",
+      "!src/setupProxy.js"
+    ]
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
