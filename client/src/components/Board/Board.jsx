@@ -6,6 +6,8 @@ import MapList from '../MapList/MapList'
 import BoardLogic from '../BoardLogic/BoardLogic'
 import CellLogic from '../CellLogic/CellLogic'
 import axios from 'axios'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPauseCircle, faPlayCircle, faChevronCircleRight, faStopCircle } from '@fortawesome/free-solid-svg-icons'
 
 const WIDTH = 600
 const HEIGHT = 600
@@ -55,7 +57,7 @@ class Board extends Component {
   setUnlimited () {
     this.generationLimit = Infinity
     this.setState({
-      generationLimit: 'No limit',
+      generationLimit: 'No Limit',
       clickLimit: Infinity
     })
   }
@@ -185,11 +187,13 @@ class Board extends Component {
   }
 
   render () {
+    const cellSize = WIDTH / this.state.cols
+
     return (
       <div className="board-container">
         <div className="board-div" style={{ width: WIDTH, maxWidth: WIDTH, height: HEIGHT, maxHeight: HEIGHT }}>
           {this.state.cells.map((row, i) => row.map((cell, j) =>
-            (<Cell x={j} y={i} state={cell} cellSize={WIDTH / this.state.cols} key={`${j}, ${i}`} onClick={() => this.handleClick(j, i)}/>)
+            (<Cell x={j} y={i} state={cell} cellSize={cellSize} key={`${j}, ${i}`} onClick={ () => this.handleClick(j, i) }/>)
           ))}
         </div>
 
@@ -204,20 +208,34 @@ class Board extends Component {
           changeClickLimitFunc={this.changeClickLimit}
         />
 
-        <div className="generationCounter">
-          {`Generations: ${this.state.generationCount}`}
+        <div className="counters">
+          <div className="limits">
+            <div className="clickLimit">
+              {`Click Limit: ${this.state.clickLimit}`}
+            </div>
+            <div className="generationLimit">
+              {`Gen Limit: ${this.state.generationLimit}`}
+            </div>
+          </div>
+          <div className="counts">
+            <div className="generationCounter">
+              {`Generation: ${this.state.generationCount}`}
+            </div>
+            <div className="clickCounter">
+              {`Click Count: ${this.state.clickCount}`}
+            </div>
+            <div className="death-efficiency">
+              {`Death Efficiency: ${this.state.deathEfficiency}`}
+            </div>
+          </div>
         </div>
-        <div className="generationLimit">
-          {`Generation Limit: ${this.state.generationLimit}`}
-        </div>
-        <div className="clickCounter">
-          {`Click Count: ${this.state.clickCount}`}
-        </div>
-        <div className="clickLimit">
-          {`Click Limit: ${this.state.clickLimit}`}
-        </div>
-        <div className="death-efficiency">
-          {`Death Efficiency: ${this.state.deathEfficiency}`}
+        
+        <!-- Needs to be moved into Controls -->
+        <div className="controls">
+          <a className="play-button" onClick={() => this._checkIfPlaying()}><FontAwesomeIcon icon={faPlayCircle} size="3x" /></a>
+          <a className="pause-button" onClick={() => this.pause()}><FontAwesomeIcon icon={faPauseCircle} size="3x" /></a>
+          <a className="iterate-button" onClick={() => this.iterate()}><FontAwesomeIcon icon={faChevronCircleRight} size="3x" /></a>
+          <a className="reset-button" onClick={() => this.reset()}><FontAwesomeIcon icon={faStopCircle} size="3x"/></a>
         </div>
 
         <MapList

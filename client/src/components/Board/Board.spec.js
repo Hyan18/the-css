@@ -122,6 +122,8 @@ describe('Board', () => {
           jest.runOnlyPendingTimers()
 
           expect(getGenerationCount(wrapper)).toEqual(4)
+          const genLimit = wrapper.children().find('.generationLimit').text()
+          expect(genLimit).toMatch('No Limit')
         })
       })
     })
