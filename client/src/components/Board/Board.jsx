@@ -229,8 +229,10 @@ class Board extends Component {
             </div>
           </div>
         </div>
-        
-        <!-- Needs to be moved into Controls -->
+
+        {
+          // Needs to be moved into Controls
+        }
         <div className="controls">
           <a className="play-button" onClick={() => this._checkIfPlaying()}><FontAwesomeIcon icon={faPlayCircle} size="3x" /></a>
           <a className="pause-button" onClick={() => this.pause()}><FontAwesomeIcon icon={faPauseCircle} size="3x" /></a>
