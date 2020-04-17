@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/Hyan18/the-css.svg?branch=master)](https://travis-ci.org/Hyan18/the-css)
 [![Maintainability](https://api.codeclimate.com/v1/badges/a82bed84d0c95cae9565/maintainability)](https://codeclimate.com/github/Hyan18/the-css/maintainability)
 
-# The-CSS
+# Mind Over Cells
 
 Check out the deployed app [here](https://the-css.herokuapp.com/)
 
